@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>WebStudy01</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <!-- 2024.02.26 -->
+  <!-- 서블릿 등록 --> 
+  <!-- <servlet>
+  	<servlet-name>DescriptionServlet</servlet-name>
+  	<servlet-class>kr.or.ddit.servlet01.DescriptionServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>요고요고 !!
+  </servlet> -->
+  
+  <!-- 서블릿 맵핑 -->
+  <!-- <servlet-mapping>
+  	<servlet-name>DescriptionServlet</servlet-name>
+  	<url-pattern>/desc</url-pattern>
+  </servlet-mapping> --> 
+  
+  <!-- 2024.02.27 -->
+  <servlet>
+  	<servlet-name>MimeTextDesc</servlet-name><!-- 서블릿 네임 -->
+  	<servlet-class>kr.or.ddit.servlet02.MimeTextDescServlet</servlet-class><!-- 클래스경로 -->
+  	<init-param><!-- 초기 파라미터 값 할당하는 방법 -->
+  		<param-name>p1</param-name><!-- 파라미터는 이름과 값의 싸으로 이루어진다. -->
+  		<param-value>VALUE</param-value><!-- 파라미터값 -->
+  	</init-param>
+  	<load-on-startup>1</load-on-startup><!-- 톰켓was 로그 후 로드순번, xml작성시 요소당 순서가 있다 -->
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>MimeTextDesc</servlet-name><!-- 서블릿 네임 -->
+  	<url-pattern>/mime</url-pattern><!-- URL -->
+  </servlet-mapping>
+</web-app>
