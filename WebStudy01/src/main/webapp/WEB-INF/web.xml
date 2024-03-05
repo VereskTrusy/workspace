@@ -6,7 +6,7 @@
   </welcome-file-list>
   <!-- 2024.02.26 -->
   <!-- 서블릿 등록 -->
-  <!-- <servlet>
+  <!-- <servlet> 
   	<servlet-name>DescriptionServlet</servlet-name>
   	<servlet-class>kr.or.ddit.servlet01.DescriptionServlet</servlet-class>
   	<load-on-startup>1</load-on-startup>요고요고 !!

@@ -14,6 +14,9 @@
 	: 자바와 서블릿 스펙을 기반으로 SSR 을 구현하는 템플릿 엔진.
 	출력결과물이 랜더링 되는 방식?
 	SSR 방식(Server Side Rendering) : document 의 모든 엘리먼트가 서버에서 텍스트 템플릿으로 생성되는 구조.(jsp)
+		템플릿 엔진 : 데이터와 템플릿이 분리되어 개발되고, 분리된 두 요소를 결합해 최종 컨텐츠를 생성하는 소프트웨어
+			content -> Mime type (maintype/subtype)
+			ex) HTML, JSON, Image, XML(application/xml)
 	CSR 방식(Client Side Rendering) : 엘리먼트는 클라이언트측 에서 생성되고, 서버에서 데이터만 서비스 받는 구조.(리액트, 뷰js)
 	
 	jsp 문법 구성요소
@@ -55,6 +58,13 @@
 // 			var dummy = "더미"; // javascript 주석처리
 		</script>
 		<%-- JSP 주석 처리 --%>
+		
+	3. 기본 객체 
+		<%-- <% 여기서 코드어시스트로 나오는 객체들 %> --%>
+	4. action Tag
+		
+	5. 표현언어(EL) ${attributeName}
+	6. JSTL 커스텀 태그 라이브러리
 </pre>
 </body>
 </html>
