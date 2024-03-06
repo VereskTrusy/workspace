@@ -75,4 +75,6 @@ public class DescriptionServlet extends HttpServlet {
 		super.destroy();
 		System.out.println("servlet 객체 소멸");
 	}
+	
+	
 }
