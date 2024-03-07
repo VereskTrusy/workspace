@@ -8,9 +8,9 @@
 </head>
 <body>
 <h4>request(HttpServletRequest)</h4>
-<form method="get" enctype="multipart/form-data">
+<form method="post">
 	<input type="text" name="param1" value="VALUE1" />
-	<input type="text" name="param2" value="VALUE2" />
+	<input type="text" name="param2" value="한글값" />
 	<input type="file" name="sendFile" />
 	<button type="submit"> 전송 </button>
 </form>

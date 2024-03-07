@@ -4,6 +4,7 @@ import java.util.List;
 
 import kr.or.ddit.person.dao.PersonDAO;
 import kr.or.ddit.person.dao.PersonDAOImpl;
+import kr.or.ddit.person.exception.PersonNotFoundException;
 import kr.or.ddit.vo.PersonVo;
 
 public class PersonServiceImpl implements PersonService {
@@ -13,16 +14,20 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	public List<PersonVo> retrievePersonList() {
 		List<PersonVo> people = dao.selectPersonList();
-		for(PersonVo once : people) {
-			System.out.printf("%s 조회함\n", once.getName());
-		}
+//		for(PersonVo once : people) {
+//			System.out.printf("%s 조회함\n", once.getName());
+//		}
 		return people;
 	}
 
 	@Override
 	public PersonVo retrievePerson(String id) {
+		PersonVo person = dao.selectPerson(id);
 		
-		return null;
+		if(person == null) {
+			throw new PersonNotFoundException(id);
+		}
+		
+		return person;
 	}
-	
 }
