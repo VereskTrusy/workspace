@@ -9,6 +9,7 @@
 <body>
 <h4>request(HttpServletRequest)</h4>
 <form method="post">
+	<input type="hidden" name="_method" value="put"/>
 	<input type="text" name="param1" value="VALUE1" />
 	<input type="text" name="param2" value="한글값" />
 	<input type="file" name="sendFile" />

@@ -27,6 +27,7 @@
 <pre>
 	1. Line
 		<%= request.getRequestURL() %>, <%= request.getMethod() %>
+		<%= request.getRequestURI() %>
 	2. Hearder
 		getHeader(name), getHeaderNames(), getDate[Int]Header(name)
 	3. body
@@ -56,7 +57,7 @@
 				}
 			} */
 			
-			request.setCharacterEncoding("UTF-8");
+			//request.setCharacterEncoding("UTF-8");
 			
 			Map<String, String[]> parameterMap = request.getParameterMap();
 			for( Entry<String, String[]> entry :parameterMap.entrySet()){
