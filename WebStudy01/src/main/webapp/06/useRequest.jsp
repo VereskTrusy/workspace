@@ -86,7 +86,7 @@
 		trTags.delete(0, trTags.length());
 		
 		Enumeration<String> headerNames = request.getHeaderNames();
-	
+		
 		while(headerNames.hasMoreElements()){
 			String name = (String) headerNames.nextElement();
 			String value = request.getHeader(name);

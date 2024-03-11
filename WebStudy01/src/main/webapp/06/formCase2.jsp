@@ -24,12 +24,12 @@
 		<lable for="p8_2">ch2</lable>
 		<input type="checkbox" id="p8_3" name="p8" value="CH3"/>ch3
 		<select name="p9"> <!-- 단일선택 -->
-			<option value>선택</option> <!-- 프롬프트 텍스트, value 속성을 안주면 선택이란 텍스트가 파라미터로 넘어간다. -->
+			<!-- <option value>선택</option> --> <!-- 프롬프트 텍스트, value 속성을 안주면 선택이란 텍스트가 파라미터로 넘어간다. -->
 			<option value="value1">text1</option>
 			<option value="value2">text2</option>
 		</select>
 		<select name="p10" multiple="multiple"> <!-- 다중선택 -->
-			<option value>선택</option> <!-- 멀티플 셀렉트 박스에선 프롬프트 속성을 아예 안준다 -->
+			<!-- <option value>선택</option> --> <!-- 멀티플 셀렉트 박스에선 프롬프트 속성을 아예 안준다 -->
 			<option value="value1">text1</option>
 			<option value="value2">text2</option>
 		</select>
@@ -37,6 +37,7 @@
 		<button type="rest">취소</button>
 	</pre>
 </form>
+<div id="resultArea"></div>
 
 <script src="<%=request.getContextPath() %>/resources/js/app/06/formCase2.js"></script>
 </body>

@@ -34,19 +34,19 @@ aTags.forEach(v => {
 
 
 // case 2 : form의 전송 이벤트를 비동기로 변경하기
-
 // 폼 셀렉팅하기
-let forms = document.forms;
-forms[0].addEventListener("submit", (e) => {
-	e.preventDefault();
-	let form = e.target;
+let forms = document.forms; // 폼의 모든 양식 가져오기
+forms[0].addEventListener("submit", (e) => { // 이벤트 부여. // 버그코드 (1)
+//document.addEventListener("submit", (e) => { // 이벤트 부여. // document 전체에 대한 submit 이벤트를 캐치 
+	e.preventDefault(); // 폼객체 서브밋 이벤트 소거
+	let form = e.target; // 폼 요소 가져오기
 	
 	// request line
-	let url = form.action;
-	let method = form.method;
+	let url = form.action; // 폼-액션 URL 정보 가져오기
+	let method = form.method; // 폼-메서드 정보 가져오기
 	
 	// request header
-	let headers ={
+	let headers = {
 		"content-type" : form.enctype, // 메소드 형식이 post인 경우에만 사용가능
 		"accept" : "text/html"
 	};
@@ -78,7 +78,11 @@ forms[0].addEventListener("submit", (e) => {
 	.then((html) => {
 		//console.log(html);
 		//document.body.append(html);
-		document.body.innerHTML = document.body.innerHTML + html;
+		//document.body.innerHTML = document.body.innerHTML + html; // 버그 코드 (2) 
+		let parser = new DOMParser;
+		let newDoc = parser.parseFromString(html, 'text/html'); // 새로운 도큐먼트를 만듬
+		let h4Element = newDoc.querySelector("h4");
+		document.body.append(h4Element);
 	})
 	.catch((err) => {
 		console.log(err);

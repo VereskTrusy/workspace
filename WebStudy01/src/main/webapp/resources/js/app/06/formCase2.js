@@ -1,6 +1,3 @@
-/**
- * 
- */
 // case 2 : a 태그의 요청을 비동기로 처리하기
 //document.querySelector("a") // 하나의 a 태그만 검색
 let aTags = document.querySelectorAll("a") // 하나의 a 태그만 검색
@@ -11,7 +8,7 @@ aTags.forEach(v => {
 		e.preventDefault(); // 동기요청 중단
 		
 		let url = e.target.href;
-		let p5 = v.dataset.p5; // 얘는 맵이야 이름에 속지마랑
+		let p5 = v.dataset.p5; // dataset 얘는 맵이야 이름에 속지마랑
 		let options = { // options 객체
 			method : "post", // 생략가능 
 			headers : {
@@ -20,6 +17,7 @@ aTags.forEach(v => {
 			},
 			body : "p5="+p5 // 생략가능
 		};
+		
 		fetch(url, options) // promise 객체가 리턴이 된다. 리절브함수(정상처리), 리젝트함수(문제발생)
 		.then((resp) => { // 리절브 함수 바인딩
 			if(resp.ok){
@@ -83,7 +81,9 @@ forms[0].addEventListener("submit", (e) => {
 	.then((html) => {
 		//console.log(html);
 		//document.body.append(html);
-		document.body.innerHTML = document.body.innerHTML + html;
+		
+		//document.body.innerHTML = document.body.innerHTML + html;
+		resultArea.innerHTML = html; // 좋은 방식이 아니다. 왜냐면 
 	})
 	.catch((err) => {
 		console.log(err);
