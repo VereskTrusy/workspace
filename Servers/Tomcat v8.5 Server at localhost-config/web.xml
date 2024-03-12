@@ -110,7 +110,7 @@
 
     <servlet>
         <servlet-name>default</servlet-name>
-        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class><!-- 정적자원 처리 담당한다. -->
         <init-param>
             <param-name>debug</param-name>
             <param-value>0</param-value>
@@ -146,7 +146,7 @@
   <!--                       pages.  See the jasper documentation for more  -->
   <!--                       information.                                   -->
   <!--                                                                      -->
-  <!--   compilerSourceVM    Compiler source VM. [1.7]                      -->
+  <!--   compilerSourceVM    Compiler source VM. [1.7]                      --><!-- 1.8 이상으로 설정해줘야 람다사용가능 -->
   <!--                                                                      -->
   <!--   compilerTargetVM    Compiler target VM. [1.7]                      -->
   <!--                                                                      -->
@@ -266,6 +266,14 @@
         <init-param>
             <param-name>xpoweredBy</param-name>
             <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>compilerSourceVM</param-name>
+            <param-value>1.8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>compilerTargetVM</param-name>
+            <param-value>1.8</param-value>
         </init-param>
         <load-on-startup>3</load-on-startup>
     </servlet>

@@ -15,13 +15,13 @@ public enum BrowserInfo {
 	SAFARI("사파리"),
 	OTHERS("기타");
 	
+	private String browserName;
+	
 	// 생성자
 	private BrowserInfo(String browserName) {
 		this.browserName = browserName;
 	}
 
-	private String browserName;
-	
 	// 브라우저명 반환
 	private String getBrowserName() {
 		return browserName;

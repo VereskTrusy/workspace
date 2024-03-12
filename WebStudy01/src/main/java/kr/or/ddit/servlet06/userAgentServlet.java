@@ -16,6 +16,11 @@ import kr.or.ddit.enumpkg.BrowserInfo;
 
 @WebServlet("/07/userAgent.do")
 public class userAgentServlet extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 오버라이드 하기 전까지 모든 메서드는 405 상태코드를 발생시킴
+		super.doGet(req, resp);
+	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
