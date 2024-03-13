@@ -11,34 +11,30 @@ document.addEventListener("DOMContentLoaded", (e)=>{
 	cal.addEventListener("click", (e) => {
 		// console.log(e.target); // "=" 버튼 엘리먼트
 		e.preventDefault();
-		
-		let leftOp = document.frm.leftOp; // 숫자1
-		let rightOp = document.frm.leftOp; // 숫자2
+		let form = document.frm;
+		let leftOp = form.leftOp; // 숫자1
+		let rightOp = form.leftOp; // 숫자2
 		//console.log(leftOp);
-		let operator = document.frm.operator; // 연산자
+		let operator = form.operator; // 연산자
 		
 		let lov = leftOp.value; // 1
 		let rov = rightOp.value; // 2
 		let os = operator.value; // MULTIPLY
 		
-		url = document.frm.action;
-		let method = document.frm.method ?? "get";
+		url = form.action;
+		let method = form.method ?? "get";
 		
 		let headers = {
-			"content-type" : document.frm.enctype,
+			"content-type" : "text/plain",
 			"Accept" : "application/json"
 		};
 		
-		let body = {
-			"leftOp" : lov,
-			"rightOp" : rov,
-			"operator" : os
-		};
+		let body = new FormData(form);
 		
 		let options = {
 			method : method,
 			headers : headers,
-			body : JSON.stringify(body)
+			body : body
 		};
 		
 		fetch(url, options)
