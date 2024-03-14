@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<pre>
+	동적타입 언어는 객체의 구조가 런타임에 변경되는 문법 구조를 갖고있음.
+	객체의 프로퍼티에 접근 방법이 두가지.
+	1) dot notation : object.identifier 
+	2) association array : object[literal]
+</pre>
+<form id="prop-form">
+	<input type="text" name="propName" placeholder="새로 추가할 프로퍼티 네임" />
+	<input type="text" name="propValue" placeholder="새로 추가할 프로퍼티 값" />
+	<button type="submit" id="btn">기존 객체에 새로운 프로퍼티 추가</button>
+</form>
+<form id="array-form">
+	<input type="text" name="elementValue" placeholder="새로 추가할 요소" />
+	<button type="submit">기존 배열에 새로운 요소 추가</button>
+</form>
+<script>
+// 속성을 담을 빈객체
+let blankObj = {};
+let form = window['prop-form'];
+form.addEventListener("submit", (e)=>{
+	e.preventDefault();
+	let propName = e.target.propName;
+	let propValue = e.target.propValue;
+	blankObj[propName.value] = propValue.value;
+	console.log(blankObj);
+	form.reset();
+});
+
+let array = [];
+window['array-form'].addEventListener("submit", (e)=>{
+	e.preventDefault();
+	let form = e.target;
+	let newValue = form['elementValue']['value'];
+	array.push(newValue);
+	form.reset();
+	for(let element of array){
+		console.log(element);
+	}
+});
+</script>
+</body>
+</html>

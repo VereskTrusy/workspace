@@ -52,7 +52,7 @@
 		response.setHeader("Date", String.format("%s", new Date().getTime()));
 		response.setDateHeader("Date", new Date().getTime());
 	--%>
-		1) Content-Type, Content-Length : response body 를 통해 전송되는 컨텐츠를 수식하는 표현.
+		1) Content-Type, Content-Length : response body 를 통해 전송되는 컨텐츠를 수식하는 표현. 컨텐츠타입 협상구조.
 			ex) Content-Type : text/html
 		2) Cache-Control(HTTP 1.1에서 추가됨) : 캐시 데이터 제어에 사용되는 헤더
 			브라우저의 캐싱 정책을 제어할 수 있는 디렉티브 종류

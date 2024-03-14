@@ -35,8 +35,10 @@ public class LoginProcessControllerServlet extends HttpServlet {
 			// 4. 인증 여부 판단.
 			if(authenticate(memId, memPass)) { // - 성공 : 웰컴 페이지로 이동 - 리다이렉트
 				resp.sendRedirect(req.getContextPath() + "/");
-			}else { // - 실패 : 로그인 페이지로 이동 - 1. 리퀘살려, 2. A는 응답책임없으 -> forward	
-				req.getRequestDispatcher("/login/loginForm.jsp").forward(req, resp);
+			}else { // - 실패 : 로그인 페이지로 이동 - 1. 리퀘살려, 2. A는 응답책임없으 -> forward
+				req.setAttribute("message", "로그인 실패");
+				// req.getRequestDispatcher("/login/loginForm.jsp").forward(req, resp);
+				resp.sendRedirect(req.getContextPath() + "/login/loginForm.jsp");
 			}
 			
 		}catch (RuntimeException e) {
