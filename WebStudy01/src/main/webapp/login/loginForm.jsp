@@ -7,8 +7,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%
-String message = (String) request.getAttribute("message");
+String message = (String) session.getAttribute("message");
 if(message != null && !message.isEmpty()) {
+	session.removeAttribute("message"); // flash attribute : 한번쓰고 지우는거.
 %>
 <script type="text/javascript">
 	alert("<%=message%>");
