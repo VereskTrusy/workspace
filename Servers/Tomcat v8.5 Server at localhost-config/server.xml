@@ -137,6 +137,9 @@
       <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
       -->
 
+	  <!-- 1. 저장된 사용자 데이터 -->
+	  <!-- 2. 보호자원 -->
+	  <!--  -->
       <!-- Use the LockOutRealm to prevent attempts to guess user passwords
            via a brute-force attack -->
       <Realm className="org.apache.catalina.realm.LockOutRealm">

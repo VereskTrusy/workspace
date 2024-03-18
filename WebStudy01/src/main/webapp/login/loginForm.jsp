@@ -19,14 +19,14 @@ if(message != null && !message.isEmpty()) {
 %>
 </head>
 <body>
-<form action="<%=request.getContextPath()%>/login/loginProcess.do" method="post" enctype="application/x-www-form-urlencoded">
+<form action="j_security_check" method="post" enctype="application/x-www-form-urlencoded">
 	<%
 		String paramId = Optional.ofNullable(request.getParameter("memId"))
 							.orElse("");
 		
 	%>
-	<input type="text" name="memId" placeholder="ID" value="<%=paramId%>"/>
-	<input type="password" name="memPass" placeholder="Password"/>
+	<input type="text" name="j_username" placeholder="ID" value="<%=paramId%>"/>
+	<input type="password" name="j_password" placeholder="Password"/>
 	<button type="submit">로그인</button>
 </form>
 </body>

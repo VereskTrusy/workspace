@@ -6,7 +6,7 @@ class SessionTimer2{
 	constructor(timeout, element){
 		this.timeout = timeout;
 		this.element = element;
-		this.element.sessinTimer = this;
+		this.element.sessionTimer = this;
 		this.init();
 	}
 	
@@ -64,7 +64,7 @@ class SessionTimer2{
 const SessionTimer = function(timeout, element){
 	this.timeout = timeout;
 	this.element = element;
-	this.element.sessinTimer = this;
+	this.element.sessionTimer = this;
 	
 	this.createMessageArea = function(){
 		let source = `
@@ -128,6 +128,6 @@ document.querySelectorAll("[data-ts-timeout]").forEach(element=>{
 
 stopBtn.addEventListener("click", ()=>{
 	document.querySelectorAll("[data-ts-timeout]").forEach(element=>{
-		element.sessinTimer.destroy();
+		element.sessionTimer.destroy();
 	});
 });

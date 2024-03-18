@@ -49,4 +49,10 @@
   <user username="both" password="<must-be-changed>" roles="tomcat,role1"/>
   <user username="role1" password="<must-be-changed>" roles="role1"/>
 -->
+<!-- 톰켓의 유저 데이터 베이스 -->
+<role rolename="ROLE_USER"/><!-- 역활 , 1. 일반사용자 로 설정한다-->
+<role rolename="ROLE_ADMIN"/><!-- 2. 관리자 로 설정한다-->
+<user username="a001" password="java" roles="ROLE_USER"/>
+<user username="b001" password="java" roles="ROLE_USER"/>
+<user username="c001" password="java" roles="ROLE_ADMIN"/>
 </tomcat-users>

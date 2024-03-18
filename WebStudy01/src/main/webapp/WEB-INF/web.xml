@@ -38,4 +38,31 @@
 		<session-timeout>2</session-timeout>
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
+	
+	<!-- 인증방법 설정 -->
+	<login-config><!-- 인증시스템의 종류 설정 -->
+		<auth-method>FORM</auth-method><!-- 인증방법 설정 (BASIC, BEARER, FORM 3종류 있음) -->
+		<form-login-config>
+			<form-login-page>/login/loginForm.jsp</form-login-page><!-- 로그인 페이지 URL -->
+			<form-error-page>/login/loginForm.jsp</form-error-page><!-- 다시 입력하라고 로그인페이지로 재 이동 -->
+		</form-login-config>
+	</login-config>
+	<!-- 보호 자원 등록 -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>MBTI</web-resource-name><!-- 보호자원 이름 등록 -->
+			<url-pattern>/09/mbti</url-pattern><!-- 보호자원 URL 등록 -->
+			<!-- <http-method>GET</http-method>GET요청은 막겟다. 접근 방식에 대한 보호 -->
+			<!-- <http-method>POST</http-method>POST요청은 막겟다. 접근 방식에 대한 보호, 아묻것도 설정안하면 다막을꺼임 -->
+			<!-- <http-method-omission>GET</http-method-omission>나머지 요청은 막고 GET은 허용 하겟다. -->
+		</web-resource-collection>
+		<auth-constraint><!-- 인가관련 -->
+			<role-name>ROLE_ADMIN</role-name><!-- 인가된 롤 설정 -->
+		</auth-constraint>
+		<!-- https 강제 사용 -->
+		<!-- <user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>https 사용하여 기밀성 시키겠다. 하지만 지금은 https를 사용하지 않아서 적용되지 않는다.
+		</user-data-constraint> -->
+	</security-constraint>
+	
 </web-app>

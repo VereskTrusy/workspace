@@ -45,8 +45,8 @@
 			//session.invalidate();
 		%>
 </pre>
-<input type="hidden" id="sessionCreateTime" value="<%=session.getCreationTime()%>" />
-<input type="hidden" id="sessionLastAccessedTime" value="<%=session.getLastAccessedTime()%>" />
+<%-- <input type="hidden" id="sessionCreateTime" value="<%=session.getCreationTime()%>" />
+<input type="hidden" id="sessionLastAccessedTime" value="<%=session.getLastAccessedTime()%>" /> --%>
 
 <h4>세션 타이머 : 
 <span id="time-area1" data-ts-timeout="<%=session.getMaxInactiveInterval()%>"></span>
