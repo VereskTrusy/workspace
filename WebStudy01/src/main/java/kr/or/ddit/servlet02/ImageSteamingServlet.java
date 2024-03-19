@@ -7,24 +7,30 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebServlet("/image.do")
 public class ImageSteamingServlet extends HttpServlet {
 	
 	private ServletContext application;
+	private String imageFolderPath;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException { // lifecycle callback !
 		super.init(config);
 		application = getServletContext();
+		imageFolderPath = application.getInitParameter("imageFolder");
 	}
 	
 	// 미션 : 이거 바꾸기 http://localhost/WebStudy01/image.do?name=cute3.jpg 받고, name요청이 없으면 400에러 보내기
@@ -36,7 +42,7 @@ public class ImageSteamingServlet extends HttpServlet {
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "이미지 파일명이 없습니다.");
 			return;
 		}
-		File imageFolder = new File("F:/00.medias/images");
+		File imageFolder = new File(imageFolderPath);
 		File imageFile = new File(imageFolder, name);
 		if(!imageFile.exists()) {
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND, String.format("%s 파일은 없습니다.", name));
@@ -47,9 +53,15 @@ public class ImageSteamingServlet extends HttpServlet {
 			resp.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, String.format("%s 은(는) 이미지가 아닙니다.", name));
 			return;
 		}
+		
+		Cookie imageCookie = new Cookie("imageCookie", URLEncoder.encode(name, "UTF-8"));
+		imageCookie.setPath(req.getContextPath());
+		imageCookie.setMaxAge(60*60*24*7);
+		resp.addCookie(imageCookie);
+		
 		resp.setContentType(mime); // 지금은 image/png
 		resp.setContentLengthLong(imageFile.length());
-		// 미션 : try with resource문 사용, 2차 스트림 사용, byte[size] 미사용 
+		// 미션 : try with resource문 사용, 2차 스트림 사용, byte[size] 미사용		
 		try(InputStream is = new FileInputStream(imageFile);
 			BufferedInputStream bis = new BufferedInputStream(is);
 			OutputStream os = resp.getOutputStream();
@@ -60,5 +72,6 @@ public class ImageSteamingServlet extends HttpServlet {
 					bos.write(readByte);
 			}
 		}
+		
 	}
 }

@@ -6,11 +6,13 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,21 +30,34 @@ import javax.servlet.http.HttpServletResponse;
 public class ImageFormServlet_case4 extends HttpServlet{
 	
 	private ServletContext application;
+	private String imageFolder;
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		application = getServletContext();
+		imageFolder = application.getInitParameter("imageFolder");
 	}
 	
 	// 리퀘스트 콜백 메서드
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
+	{
+		Cookie[] cookies = req.getCookies();
+		String findedName = null;
+		if(cookies != null) {
+			for(Cookie single : cookies) {
+				if("imageCookie".equals(single.getName())) {
+					 findedName = URLDecoder.decode(single.getValue(), "UTF-8");
+					 break;
+				}
+			}
+		}
+		req.setAttribute("imageCookieValue", findedName);
 		
 		resp.setContentType("text/html;charset=UTF-8");
 		
-		File folder = new File("F:/00.medias/images");
+		File folder = new File(imageFolder);
 		String[] filelist = folder.list(new FilenameFilter() { // 익명객체 : 특징 : 해당 객체를 여기서만 사용한다.
 			@Override
 			public boolean accept(File dir, String name) {
@@ -64,8 +79,4 @@ public class ImageFormServlet_case4 extends HttpServlet{
 		req.getRequestDispatcher(viewName).forward(req, resp);
 	}
 }
-/*
- * 
- * 
- * 
- */
+

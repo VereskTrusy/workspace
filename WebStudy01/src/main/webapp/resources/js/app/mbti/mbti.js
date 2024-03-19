@@ -18,10 +18,10 @@ window['mbti-form'].addEventListener("submit", (e)=>{
 	let body = queryString;
 	let option = {
 		method : method,
-		hreaders : headers,
+		headers : headers,
 		body : body
 	}
-	fetch(url, option) // durl answpdltdma
+	fetch(url, option) // 여기 문제잇음
 	.then((resp)=>{ // ok 가정
 		return resp.text()
 	})

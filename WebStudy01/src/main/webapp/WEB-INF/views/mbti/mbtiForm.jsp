@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="java.util.Map.Entry"%>
 <%@page import="java.util.Map"%>
 <%@ page contentType="text/html; charset=utf-8"%>
@@ -7,6 +8,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MBTI</title>
+<%
+	String mbtiCookieValue = (String) request.getAttribute("mbtiCookie");
+	if(StringUtils.isNotBlank(mbtiCookieValue)){
+		%>
+		<script>
+			document.addEventListener("DOMContentLoaded", function(){
+				window["mbti-form"].type.value = "<%= mbtiCookieValue %>";
+				window["mbti-form"].requestSubmit();
+			});
+		</script>
+		<%
+	}
+%>
 </head>
 <body>
     <form id="mbti-form" method="post" enctype="application/x-www-form-urlencoded">
@@ -23,9 +37,7 @@
 	    	%>
         </select>
     </form>
-    <div id="mbti-area">
-    
-    </div>
+    <div id="mbti-area"></div>
     
 <script src="<%=request.getContextPath() %>/resources/js/app/mbti/mbti.js">
 // 동기 비동기

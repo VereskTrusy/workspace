@@ -34,4 +34,6 @@ document.forms[0].addEventListener("submit", (event)=>{
 	let newImg = document.createElement("img");
 	newImg.src= `${url}?name=${imageName}`; // ${}템플ㄹ릿 머시기
 	document.body.appendChild(newImg);
+	
+	
 });

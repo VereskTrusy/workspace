@@ -1,6 +1,8 @@
 package kr.or.ddit.servlet07;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -8,11 +10,13 @@ import java.util.Optional;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.or.ddit.exception.ResponseStatusException;
+import kr.or.ddit.utils.CookieMapReqeustWrapper;
 
 @WebServlet(loadOnStartup = 1, value="/09/mbti")
 public class MbtiControllerServlet extends HttpServlet{
@@ -47,17 +51,22 @@ public class MbtiControllerServlet extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String findedName = new CookieMapReqeustWrapper(req).getCookieValue("");
+		req.setAttribute("mbtiCookie", findedName);
+		
 		String path = "/WEB-INF/views/mbti/mbtiForm.jsp";
 		req.getRequestDispatcher(path).forward(req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Map<String, String> mbtiMap = (Map) application.getAttribute("mbtiMap");
+		Map<String, String> mbtiMap = (Map) application.getAttribute("mbtiCookie");
+		
 		// 1. type 파라미터를 확보
 		// 2. 파라미터가 검증. 필수 파라미터. 누락 시 400 에러
 		// 3. type에 해당하는 페이지로 이동 할것
 		try {
+			//
 			String mbtiType = Optional.ofNullable(req.getParameter("type"))
 									.filter(tp->!tp.isEmpty())
 									.orElseThrow(()->new ResponseStatusException(400, "필수파라미터 누락"));
@@ -65,6 +74,11 @@ public class MbtiControllerServlet extends HttpServlet{
 			if(!mbtiMap.containsKey(mbtiType)) {
 				throw new ResponseStatusException(400, String.format("%s mbti 유형은 없음.", mbtiType));
 			}
+			// 쿠키 생성 및 세팅
+			Cookie mbtiCookie = new Cookie("mbtiCookie", URLEncoder.encode(mbtiType, "UTF-8"));
+			mbtiCookie.setPath(req.getContextPath());
+			mbtiCookie.setMaxAge(60*60*24*7);
+			resp.addCookie(mbtiCookie);
 			
 			String content = String.format("/WEB-INF/views/mbti/%s.html", mbtiType);
 			req.setAttribute("content", content);
