@@ -1,3 +1,5 @@
+<%@page import="kr.or.ddit.servlet02.ImageSteamingServlet"%>
+<%@page import="java.net.URL"%>
 <%@page import="java.io.FileOutputStream"%>
 <%@page import="java.io.IOException"%>
 <%@page import="java.io.BufferedOutputStream"%>
@@ -30,15 +32,19 @@
 			String realPath = application.getRealPath(url); 
 			out.println(new File(realPath));
 		%>
+		
 	2. FileSystem Resource : 파일시스템상의 절대 경로로 접근. 물리주소로 접근
 		ex) F:\00.medias\images\cute1.PNG
 		<%= new File("F:\\00.medias\\images\\cute1.PNG") %>
+		
 	3. ClassPath Resource : classpath 이후의 경로(qualified name)로 접근. 논리주소로 접근
 		ex) /kr/or/ddit/MemberData.properties
 		<%
 			String logicalPath = "/kr/or/ddit/MemberData.properties";
-			String physicalPath = MbtiControllerServlet.class.getResource(logicalPath).getFile();
+			String physicalPath = ImageSteamingServlet.class.getResource(logicalPath).getFile();
 			out.println(new File(physicalPath));
+			URL url2 = MbtiControllerServlet.class.getResource(logicalPath);
+			out.println(url2.getPath());
 		%>
 		<%
 			// 소스경로 + 파일네임

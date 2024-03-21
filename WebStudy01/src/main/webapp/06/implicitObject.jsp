@@ -15,7 +15,7 @@
 	3. session(HttpSession)
 	4. application(ServletContext)
 	
-	5. out(JspWriter)
+	5. out(JspWriter) : html의 정적인 텍스트들은 out이란 매소드를 통해 작성된다.
 	6. page : this
 	7. config
 	8. exception(Throwable) : 에러를 처리하기 위한 에러페이지에서 활성화됨

@@ -1,21 +1,16 @@
-<%@page import="kr.or.ddit.vo.PersonVo"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set value="${pageContext.request.contextPath}" var="cPath" scope="application"></c:set><!-- var 저장 : page scope에 저장됨 -->
 <!-- 웹에서 기본 컨텐츠 타입으로 사용되는 HTML 컨텐츠를 생성하기위한 View Layer -->
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-	/* CSS */
-</style>
 </head>
 <body>
-<form name="personForm" action="<%=request.getContextPath()%>/people.do" method="post">
+<form name="personForm" action="${cPath}/people.do" method="post">
 	<input type="text" name="who" />
 </form>
 <div>
@@ -29,27 +24,16 @@
 				</tr>
 			</thead>
 			<tbody>
-			<%
-				List<PersonVo> people = (List<PersonVo>) request.getAttribute("people");
-				for(PersonVo once : people){
-					%>
-					<tr>
-						<td><%= once.getId() %></td>
-						<td><a href="javascript:;" onclick="clickHandler(event)" data-member-id="<%=once.getId() %>"><%=once.getName() %></a></td>
-						<!-- data-member-id : HTML5에 추가된 data-XXX속성이다. -->
-						<!-- HTML의 속성은 대소문자 구분이 없기때문에 member-id -> javascript로 접근하면 memberId로 변환된다. '-'이후 첫글자 대문자로 변경됨 -->
-						<!-- <a href="javascript:;"> 더미스크립트라고 부른다. -->
-						<!-- onclick="clickHandler()" 여기서 ""쌍따음표 안에는 익명함수 영역이다. -->
-					</tr>
-					<%
-				}
-			%>
+			<c:forEach var="once" items="${people}">
+				<tr>
+					<td>${once.id}</td>
+					<td><a href="javascript:;" onclick="clickHandler(event)" data-member-id="${once.id}">${once.name}</a></td>
+				</tr>
+			</c:forEach>
 			</tbody>
 		</table>
 	</div>
 </div>
-
-
 <script type="text/javascript">
 	function clickHandler(event){
 		event.preventDefault(); // 기존 이벤트 제거
@@ -60,10 +44,10 @@
 		let memberId = aTag.dataset.memberId;
 		
 		// 컨텍스트 패스 가져오기
-		console.log(location.host); // localhost
-		console.log(location.href.indexOf(location.host)); // 7
-		console.log(location.host.length); // 9
-		console.log(location.href); // http://localhost/WebStudy01/peopleList.do
+		//console.log(location.host); // localhost
+		//console.log(location.href.indexOf(location.host)); // 7
+		//console.log(location.host.length); // 9
+		//console.log(location.href); // http://localhost/WebStudy01/peopleList.do
 		
 		let hostIndex = location.href.indexOf( location.host ) + location.host.length; // 
 		let contextPath = location.href.substring( hostIndex, location.href.indexOf('/', hostIndex + 1) );

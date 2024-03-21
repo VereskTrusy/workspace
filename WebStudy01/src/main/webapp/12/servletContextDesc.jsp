@@ -24,7 +24,7 @@
 		<%
 			application.log("로그기록 메시지");
 		%>
-	<a href="resourceType.jsp">5(*****). 웹리소스 확보</a>
+	<a href="resourceType.jsp">5(*****). 웹리소스 확보</a> <!-- 이거 중요 -->
 		
 </pre>
 </body>

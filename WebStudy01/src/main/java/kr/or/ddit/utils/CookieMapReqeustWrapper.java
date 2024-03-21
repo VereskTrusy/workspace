@@ -15,6 +15,11 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 어뎁터 패턴
+ * 원래 객체를 변경하지 않고 맵핑해서 접근하는 방법 
+ * 
+ */
 public class CookieMapReqeustWrapper {
 	private HttpServletRequest adaptee;
 	private Map<String, Cookie> cookieMap;
@@ -41,7 +46,7 @@ public class CookieMapReqeustWrapper {
 	}
 	
 	/**
-	 * 쿠키 가져가~
+	 * 쿠키 객체 가져가~
 	 * @param cookieName
 	 * @return
 	 */
@@ -61,7 +66,7 @@ public class CookieMapReqeustWrapper {
 				return URLDecoder.decode(finded.getValue(), "UTF-8");
 			} catch (IOException e) {
 				// $(".selector")
-				throw new UncheckedIOException(e);
+				throw new UncheckedIOException(e); // 이거 이해안됨
 			}
 		} else {
 			return null;
