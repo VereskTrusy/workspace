@@ -32,15 +32,20 @@ public class ServerFileExplorer extends HttpServlet{
 						.filter((bp)->!bp.isEmpty())
 						.orElse("/");
 		
-		List<File> fileList = new ArrayList<File>();
+		//List<File> fileList = new ArrayList<File>();
+		List<Map<String, Object>> fileList = new ArrayList<>();
+		Map<String, File> fileMap = new HashMap<>();
 		for(String path : application.getResourcePaths(base)) {
 			String realPath = application.getRealPath(path);
+			Map<String, Object> singleMap = new HashMap<>();
 			File tmp = new File(realPath);
-			fileList.add(tmp);
-			//System.out.println(String.format("%s%s%s", "/", tmp.getName(), "/"));
+			fileMap.put(path, tmp);
+			singleMap.put("path", path);
+			singleMap.put("file", tmp);
+			fileList.add(singleMap);
 		}
 		req.setAttribute("fileList", fileList);
-		
+		req.setAttribute("fileMap", fileMap);
 		String viewName = "/WEB-INF/views/explorer/fileView.jsp";
 		req.getRequestDispatcher(viewName).forward(req, resp);
 	}

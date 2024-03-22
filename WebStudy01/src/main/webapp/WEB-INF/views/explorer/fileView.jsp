@@ -17,7 +17,7 @@
 <c:set value="${pageContext.request.contextPath}" var="cPath"></c:set>
 <ul>
 	<c:forEach items="${fileList}" var="single">
-		<c:set value="${cPath}/serverFile?base=/${single.name}/" var="folderPath"></c:set>
+		<c:set value="${cPath}/serverFile?base=/${single.value.name}/" var="folderPath"></c:set>
 		<li id="${single.name}" class="${single.file ? 'file':'folder'}" ondblclick="navigator('${folderPath}')">
 			${single.name}
 		</li>
