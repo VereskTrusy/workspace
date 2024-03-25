@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebServlet("/case2/serverFile")
 public class ServerFileExplorer_case2 extends HttpServlet{
+	
 	private ServletContext application;
 
 	@Override
