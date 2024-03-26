@@ -28,6 +28,18 @@ public interface MemberDAO {
 	 * @return 존재하지 않으면 null 반환
 	 */
 	MemberVO selectMember(String memId);
-//	update
-//	delete
+	
+	/**
+	 * 회원 정보 수정
+	 * @param member
+	 * @return 등록된 레코드 수
+	 */
+	int update(MemberVO member);
+	
+	/**
+	 * 회원 정보 삭제(???)
+	 * @param memId
+	 * @return 삭제(???)된 레코드 수
+	 */
+	int delete(String memId);
 }

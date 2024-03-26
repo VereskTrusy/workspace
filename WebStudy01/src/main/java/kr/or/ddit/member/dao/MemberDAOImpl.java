@@ -158,12 +158,13 @@ public class MemberDAOImpl implements MemberDAO {
 		sql.append("     , MEM_DELETE 		");
 		sql.append(" FROM MEMBER 			");
 		sql.append(" WHERE MEM_ID = ? 		");
-		
+		System.out.println(sql.toString());
 		try(
 			Connection conn = ConnectionFactory.getConnection(); // 커넥션 팩토리 패턴 사용
 			PreparedStatement  pstmt = conn.prepareStatement(sql.toString());
 		){
 			pstmt.setString(1, memId);
+			System.out.println("Parameter : " + memId);
 			ResultSet rs = pstmt.executeQuery();
 			
 			MemberVO member = null;
@@ -191,6 +192,99 @@ public class MemberDAOImpl implements MemberDAO {
 			}
 			rs.close();
 			return member;
+		} catch(SQLException e) {
+			throw new PersistenceException(e);
+		}
+	}
+
+	/**
+	 * 회원 정보 수정
+	 * @param member
+	 * @return 등록된 레코드 수
+	 */
+	@Override
+	public int update(MemberVO member) {
+		StringBuffer sql = new StringBuffer();
+		sql.append(" UPDATE MEMBER             "); 
+		sql.append(" SET                       "); 
+		sql.append("       MEM_PASS 	   = ? ");
+		sql.append("     , MEM_NAME 	   = ? ");
+		sql.append("     , MEM_REGNO1 	   = ? ");
+		sql.append("     , MEM_REGNO2 	   = ? ");
+		sql.append("     , MEM_BIR 		   = ? ");
+		sql.append("     , MEM_ZIP 		   = ? ");
+		sql.append("     , MEM_ADD1 	   = ? ");
+		sql.append("     , MEM_ADD2 	   = ? ");
+		sql.append("     , MEM_HOMETEL 	   = ? ");
+		sql.append("     , MEM_COMTEL 	   = ? ");
+		sql.append("     , MEM_HP 		   = ? ");
+		sql.append("     , MEM_MAIL 	   = ? ");
+		sql.append("     , MEM_JOB 		   = ? ");
+		sql.append("     , MEM_LIKE 	   = ? ");
+		sql.append("     , MEM_MEMORIAL    = ? ");
+		sql.append("     , MEM_MEMORIALDAY = ? ");  
+		sql.append("     , MEM_MILEAGE 	   = ? ");
+		sql.append("     , MEM_DELETE 	   = ? ");
+		sql.append(" WHERE MEM_ID 		   = ? ");
+		
+		
+		try(
+			Connection conn = ConnectionFactory.getConnection();
+			PreparedStatement  pstmt = conn.prepareStatement(sql.toString());
+		){
+			int idx = 1;
+			pstmt.setString(idx++, member.getMemPass());
+			pstmt.setString(idx++, member.getMemName());
+			pstmt.setString(idx++, member.getMemRegno1());
+			pstmt.setString(idx++, member.getMemRegno2());
+			pstmt.setString(idx++, member.getMemBir());
+			pstmt.setString(idx++, member.getMemZip());
+			pstmt.setString(idx++, member.getMemAdd1());
+			pstmt.setString(idx++, member.getMemAdd2());
+			pstmt.setString(idx++, member.getMemHometel());
+			pstmt.setString(idx++, member.getMemComtel());
+			pstmt.setString(idx++, member.getMemHp());
+			pstmt.setString(idx++, member.getMemMail());
+			pstmt.setString(idx++, member.getMemJob());
+			pstmt.setString(idx++, member.getMemLike());
+			pstmt.setString(idx++, member.getMemMemorial());
+			pstmt.setString(idx++, member.getMemMemorialday());
+			if(member.getMemMileage() == null){
+				pstmt.setNull(idx++, JDBCType.NUMERIC.ordinal());
+			}else {				
+				pstmt.setLong(idx++, member.getMemMileage());
+			}
+			pstmt.setString(idx++, member.getMemDelete());
+			pstmt.setString(idx++, member.getMemId());
+			
+			int rowcnt = pstmt.executeUpdate();
+			
+			return rowcnt;
+		} catch(SQLException e) {
+			throw new PersistenceException(e);
+		}
+	}
+
+	
+	@Override
+	public int delete(String memId) {
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" UPDATE MEMBER 			");
+		sql.append(" SET					");
+		sql.append("     MEM_DELETE = 'Y'	");
+		sql.append(" WHERE MEM_ID = ?		");
+		
+		try(
+			Connection conn = ConnectionFactory.getConnection();
+			PreparedStatement  pstmt = conn.prepareStatement(sql.toString());
+		){
+			int idx = 1;
+			pstmt.setString(idx++, memId);
+			
+			int rowcnt = pstmt.executeUpdate();
+			
+			return rowcnt;
 		} catch(SQLException e) {
 			throw new PersistenceException(e);
 		}

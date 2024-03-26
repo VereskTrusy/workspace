@@ -19,6 +19,7 @@ import kr.or.ddit.servlet09.FileWrapper;
 
 @WebServlet("/jsonView.do")
 public class JsonView extends HttpServlet {
+	// 모든 요청에 대하여 응답하기 위해 service() 메서드 사용.
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		marshalling(req, resp);

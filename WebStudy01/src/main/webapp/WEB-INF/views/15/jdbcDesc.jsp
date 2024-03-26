@@ -1,16 +1,3 @@
-<%@page import="kr.or.ddit.db.ConnectionFactory"%>
-<%@page import="kr.or.ddit.utils.NamingUtils"%>
-<%@page import="java.rmi.Naming"%>
-<%@page import="java.sql.ResultSetMetaData"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.LinkedHashMap"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="java.sql.DriverManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -32,10 +19,10 @@
 		- preparedStatement(미리 컴파일)
 		- CallableStatement(plsql 의 펑션 등..)
 	5. 쿼리 실행
-		- ResultSet executeQuery : SELECT // 돌아오는 결과 집합이 있을때 사용
+		- ResultSet executeQuery : SELECT // 돌아오는 결과 집합이 있을때 사용, 결과집합에서 중복되지 않는 primarykey가 필요하다. 
 		- int executeUpdate : INSERT, UPDATE, DELETE // 몇개의 쿼리가 반영이 됐는지 리턴
 	6. 결과 집합 핸들링
-	7. Connection, Statement, ResultSet release
+	7. Connection, Statement, ResultSet release // 자원 해제
 	
 	SSR : Server Side Randering
 	CSR : Client Side Randering
@@ -43,20 +30,8 @@
 
 <table>
 	<thead id="head-area">
-<!-- 		<tr> -->
-<%-- 			<c:forEach items="${headers}" var="colName"> --%>
-<%-- 				<th>${colName}</th> --%>
-<%-- 			</c:forEach> --%>
-<!-- 		</tr> -->
 	</thead>
 	<tbody id="data-area">
-<%-- 		<c:forEach items="${resultList}" var="propsMap"> --%>
-<!-- 			<tr> -->
-<%-- 				<c:forEach items="${propsName}" var="propName"> --%>
-<%-- 					<td>${propsMap[propName]}</td> --%>
-<%-- 				</c:forEach> --%>
-<!-- 			</tr> -->
-<%-- 		</c:forEach> --%>
 	</tbody>
 </table>
 <script src="<c:url value='/resources/js/app/15/jdbcDesc.js'></c:url>"></script>

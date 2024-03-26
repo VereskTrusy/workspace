@@ -7,7 +7,7 @@ package kr.or.ddit.exception;
 public class PkNotFoundException extends ResponseStatusException{
 
 	public PkNotFoundException(int status) {
-		super(status, "해당 데이터가 존재하지 않습니다.");
+		super(status, "test 해당 데이터가 존재하지 않습니다.");
 	}
 
 }
