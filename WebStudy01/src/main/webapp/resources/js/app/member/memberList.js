@@ -9,8 +9,10 @@ $(function(){
 		
 		let tr = event.relatedTarget;
 		let memId = $(tr).data("memId") // 데이터 빼낼때
-		const cPath = document.body.dataset.contextPath;
-		let url = `${cPath}/member/memberDetail.do`; 
+		// body 안에 패스 설정 안쓰고 c:url 태그 사용하기 위해 주석처리함
+		//const cPath = document.body.dataset.contextPath;
+		//let url = `${cPath}/member/memberDetail.do`; 
+		let url = tr.dataset.url;
 		let method = "get";
 		let headers = {
 			"accept" : "application/json" // -> "json"
@@ -36,6 +38,9 @@ $(function(){
 	.on("hidden.bs.modal", function(){
 		$modal.find("td[id]").html(""); // td[] 의 내부 비우기
 	});
+	
+	// 멤버 리스트의 클릭 이벤트 강제 실행 - trigger() 사용
+	$("tr[data-mem-id].active").trigger("click");
 });
 
 // 이벤트 부여 방법

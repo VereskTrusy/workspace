@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.vo.MemberVO;
@@ -43,7 +45,8 @@ public class MemberListControllerServlet extends HttpServlet{
 		
 		// view 결정
 		// flow control
-		String viewName = "/WEB-INF/views/member/memberList_bak.jsp";
-		req.getRequestDispatcher(viewName).forward(req, resp);
+		String viewName = null;
+		viewName = "/WEB-INF/views/member/memberList_bak.jsp";
+		req.getRequestDispatcher(viewName).forward(req, resp);		
 	}
 }

@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.or.ddit.db.ConnectionFactory;
+import kr.or.ddit.db.ConnectionFactory_HikariCP;
+import kr.or.ddit.db.ConnectionFactory_JDBC_Ver3;
 import kr.or.ddit.exception.PersistenceException;
 import kr.or.ddit.vo.MemberVO;
 
@@ -60,7 +61,7 @@ public class MemberDAOImpl implements MemberDAO {
 		sql.append("	)                    ");
 		
 		try(
-			Connection conn = ConnectionFactory.getConnection(); // 커넥션 팩토리 패턴 사용
+			Connection conn = ConnectionFactory_HikariCP.getConnection(); // 커넥션 팩토리 패턴 사용
 			PreparedStatement  pstmt = conn.prepareStatement(sql.toString());
 		){
 			int idx = 1;
@@ -110,7 +111,7 @@ public class MemberDAOImpl implements MemberDAO {
 		sql.append(" FROM MEMBER 			");
 		
 		try(
-			Connection conn = ConnectionFactory.getConnection(); // 커넥션 팩토리 패턴 사용
+			Connection conn = ConnectionFactory_HikariCP.getConnection(); // 커넥션 팩토리 패턴 사용
 			PreparedStatement  pstmt = conn.prepareStatement(sql.toString());
 		){
 			ResultSet rs = pstmt.executeQuery();
@@ -160,7 +161,7 @@ public class MemberDAOImpl implements MemberDAO {
 		sql.append(" WHERE MEM_ID = ? 		");
 		System.out.println(sql.toString());
 		try(
-			Connection conn = ConnectionFactory.getConnection(); // 커넥션 팩토리 패턴 사용
+			Connection conn = ConnectionFactory_HikariCP.getConnection(); // 커넥션 팩토리 패턴 사용
 			PreparedStatement  pstmt = conn.prepareStatement(sql.toString());
 		){
 			pstmt.setString(1, memId);
@@ -229,7 +230,7 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		
 		try(
-			Connection conn = ConnectionFactory.getConnection();
+			Connection conn = ConnectionFactory_HikariCP.getConnection();
 			PreparedStatement  pstmt = conn.prepareStatement(sql.toString());
 		){
 			int idx = 1;
@@ -276,7 +277,7 @@ public class MemberDAOImpl implements MemberDAO {
 		sql.append(" WHERE MEM_ID = ?		");
 		
 		try(
-			Connection conn = ConnectionFactory.getConnection();
+			Connection conn = ConnectionFactory_HikariCP.getConnection();
 			PreparedStatement  pstmt = conn.prepareStatement(sql.toString());
 		){
 			int idx = 1;

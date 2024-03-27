@@ -51,7 +51,8 @@
 	
 </style>
 </head>
-<body>
+<body data-context-path="${pageContext.request.contextPath}">
+<button type="button" onclick="location.href='<c:url value='/member/memberInsert.do'/>'">회원가입</button>
 <table class="table table-bordered table-striped">
 	<thead class="table-dark">
 		<tr>
@@ -66,10 +67,11 @@
 	<tbody>
 	<c:if test="${not empty memberList}">
 		<c:forEach items="${memberList}" var="member">
+			<c:set value="${member.memId eq lastCreated.memId ? 'active' : ''}" var="clzValue"/>
 			<c:url value="/member/memberDetail.do" var="memberURL">
 				<c:param name="who" value="${member.memId}" />
 			</c:url>
-			<tr data-mem-id="${member.memId}" data-bs-toggle="modal" data-bs-target="#exampleModal" data-url="${memberURL}">
+			<tr class="${clzValue}" data-mem-id="${member.memId}" data-bs-toggle="modal" data-bs-target="#exampleModal" data-url="${memberURL}">
 				<td>${member.memName}</td>
 				<td>${member.memAdd1}</td>
 				<td>${member.memAdd2}</td>
@@ -84,9 +86,10 @@
 			<td colspan="6">회원 정보 없음</td>				
 		</tr>
 	</c:if>
+	<c:remove var="lastCreated" scope="session"/> <!-- 세션안에 해당 속성 지우기 -->
 	</tbody>
 </table>
 <jsp:include page="/WEB-INF/includee/postScript.jsp"></jsp:include>
-<script src="<c:url value='/resources/js/app/member/memberList_bak.js' />"></script>
+<script src="<c:url value='/resources/js/app/member/memberList.js' />"></script>
 </body>
 </html>

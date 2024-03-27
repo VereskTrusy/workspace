@@ -23,8 +23,8 @@ public class MemberDetailControllerServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// QueryString의 파라메터 받기
 		String memId = req.getParameter("who");
-		//memId = "asdfasdfa";
-		// 파라메터 null 검증 : StringUtils.isBlank() 라이브러리 사용
+		
+		// 파라메터 null 검증
 		if(StringUtils.isBlank(memId)) {
 			resp.sendError(400);
 			return;
@@ -33,7 +33,7 @@ public class MemberDetailControllerServlet extends HttpServlet{
 		// 서비스 실행
 		MemberVO member = null;
 		try {
-		member = service.retriveMember(memId);
+			member = service.retriveMember(memId);
 		}catch(PkNotFoundException e) {
 			resp.sendError(e.getStatus(), e.getMessage());
 			return;
@@ -41,6 +41,7 @@ public class MemberDetailControllerServlet extends HttpServlet{
 		
 		// Attribute 태우기 : scope 결정 -> request 왜? application,session단위에서 데이터가 남아 있을 필요가 없어서.
 		req.setAttribute("member", member);
+		req.setAttribute("who", member.getMemId());
 		
 		// Content 협상 : Accept 헤더를 통해 판단.
 		String accept = req.getHeader("accept");

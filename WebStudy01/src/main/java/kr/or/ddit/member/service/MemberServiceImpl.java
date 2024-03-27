@@ -12,8 +12,15 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public ServiceResult createMember(MemberVO member) {
+		ServiceResult result = null;
 		
-		return null;
+		if(dao.selectMember(member.getMemId()) == null) {
+			int rowcnt = dao.insertMember(member);
+			result = rowcnt > 0 ? ServiceResult.OK : ServiceResult.FAIL;
+		} else {
+			result = ServiceResult.PKDUPLICATED;
+		}
+		return result;
 	}
 
 	@Override
