@@ -8,7 +8,7 @@ import kr.or.ddit.designpattern.adapterpattern.obj.OtherConcrete;
 public class AdatterPatternPlayground {
 	public static void main(String[] args) {
 		Client client = new Client();
-		client.setTarget(new Adapter(new Adaptee));
+		client.setTarget(new Adapter(new Adaptee()));
 		
 		client.getTarget().request();
 	}
