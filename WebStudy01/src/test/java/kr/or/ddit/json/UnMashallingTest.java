@@ -1,5 +1,6 @@
 package kr.or.ddit.json;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ class UnMashallingTest {
 	ObjectMapper mapper = new ObjectMapper();
 	
 	@Test
-	void test1() throws JsonMappingException, JsonProcessingException {
+	void test1() throws IOException {
 		String json = "[1,2,3]";
 		int[] array = mapper.readValue(json, int[].class); // 내부적으로 제네릭 타입 사용
 		System.out.println(array.length);
@@ -25,21 +26,21 @@ class UnMashallingTest {
 
 	
 	@Test
-	void test2() throws JsonMappingException, JsonProcessingException {
+	void test2() throws IOException {
 		String json = "{\"key1\":34,\"key2\":false,\"key5\":{\"innerKey\":\"INNERVALUE\"},\"key3\":\"STRINGVALUE\",\"key4\":[1,2,3]}";
 		Map<String, Object> target = mapper.readValue(json, HashMap.class);
 		System.out.println(target);
 	}
 	
 	@Test
-	void test3() throws JsonMappingException, JsonProcessingException {
+	void test3() throws IOException {
 		String json ="{\"prop1\":\"한글값\",\"prop2\":23.567}";
 		TestVo target = mapper.readValue(json, TestVo.class);
 		System.out.println(target.getProp1() + " " + target.getProp2());
 	}
 	
 	@Test
-	void test4() throws JsonMappingException, JsonProcessingException {
+	void test4() throws IOException {
 		String xml = "<TestVo><prop1>한글값</prop1><prop2>23.567</prop2></TestVo>";
 		ObjectMapper mapper = new XmlMapper();
 		TestVo target = mapper.readValue(xml, TestVo.class);

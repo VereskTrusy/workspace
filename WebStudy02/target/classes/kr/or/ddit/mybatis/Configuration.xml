@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<properties resource="kr/or/ddit/db/DbInfo.properties"/>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	<typeAliases>
+		<!--<typeAlias type="kr.or.ddit.vo.MemberVO" alias="MemberVO" />-->
+		<package name="kr.or.ddit.vo" /><!--패키지에 있는걸 다 alias 설정 해줌-->
+	</typeAliases>
+	<environments default="dev">
+    <environment id="dev">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driverClassName}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${user}"/>
+        <property name="password" value="${password}"/>
+		<property name="poolMaximumActiveConnections" value="${maxActive}" />
+        <property name="poolMaximumIdleConnections" value="${maxIdle}" />
+        <property name="poolTimeToWait" value="${maxWait}" />
+        <property name="poolPingQuery" value="${testQuery}" />
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="kr/or/ddit/mybatis/mappers/member.xml"/>
+  </mappers>
+</configuration>

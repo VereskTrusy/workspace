@@ -1,10 +1,8 @@
 package kr.or.ddit.servlet08;
 
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -15,10 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.ctc.wstx.util.StringUtil;
-
-import kr.or.ddit.exception.ResponseStatusException;
 
 @WebServlet("/bts")
 public class btsControllerServlet extends HttpServlet{

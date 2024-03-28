@@ -1,0 +1,104 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>kr.or.ddit</groupId>
+  <artifactId>DummyWebMVN2</artifactId>
+  <version>1.0</version>
+  <packaging>war</packaging>
+  <!-- 프로퍼티 등록 -->
+  <properties>
+  	<java-version>1.8</java-version><!-- 프로퍼티 네임으로 자바버전 사용 -->
+  </properties>
+  <!-- 플러그인 등록 -->
+  <build>
+  	<plugins>
+		<plugin>
+	  		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-compiler-plugin</artifactId>
+		    <version>3.13.0</version>
+		    <configuration>
+		    	<source>${java-version}</source><!-- placeholder 사용, 프로퍼티 네임 넣어줌. -->
+		    	<target>${java-version}</target>
+		    </configuration>
+		</plugin>
+		<plugin>
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-war-plugin -->
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-war-plugin</artifactId>
+		    <version>3.4.0</version>
+		</plugin>
+  	</plugins>
+  </build>
+  <!--  -->
+  <dependencies>
+  <!-- Setting.xml에 지정된 경로에 .jar 모아진다 -->
+  	<!-- Servlet 의존성 추가 -->
+  	<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>javax.servlet-api</artifactId>
+	    <version>3.1.0</version>
+	    <scope>provided</scope>
+	</dependency>
+	<!-- JSP 의존성 추가 -->
+	<!-- https://mvnrepository.com/artifact/javax.servlet.jsp/jsp-api -->
+	<dependency>
+	    <groupId>javax.servlet.jsp</groupId>
+	    <artifactId>jsp-api</artifactId>
+	    <version>2.2</version>
+	    <scope>provided</scope>
+	</dependency>
+	<!-- EL 태그 의존성 추가 -->
+	<!-- https://mvnrepository.com/artifact/javax.el/javax.el-api -->
+	<dependency>
+	    <groupId>javax.el</groupId>
+	    <artifactId>javax.el-api</artifactId>
+	    <version>3.0.0</version>
+	</dependency>
+	<!-- Commons BeanUtils 의존성 추가 -->
+	<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+	<dependency>
+	    <groupId>commons-beanutils</groupId>
+	    <artifactId>commons-beanutils</artifactId>
+	    <version>1.9.4</version>
+	</dependency>
+	<!-- Hikari 의존성 추가 -->
+	<!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+	<dependency>
+	    <groupId>com.zaxxer</groupId>
+	    <artifactId>HikariCP</artifactId>
+	    <version>4.0.3</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-dbcp2 -->
+	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-dbcp2</artifactId>
+	    <version>2.12.0</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-lang3</artifactId>
+	    <version>3.14.0</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.16.1</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.dataformat</groupId>
+	    <artifactId>jackson-dataformat-xml</artifactId>
+	    <version>2.16.1</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>jstl</artifactId>
+	    <version>1.2</version>
+	</dependency>
+	
+  </dependencies>
+</project>
