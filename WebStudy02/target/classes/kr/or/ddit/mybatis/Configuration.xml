@@ -12,7 +12,7 @@
 	<environments default="dev">
     <environment id="dev">
       <transactionManager type="JDBC"/>
-      <dataSource type="POOLED">
+      <dataSource type="POOLED"><!-- 해당 xml을 통해 PooledDataSource 객체가 마이바티스 내부에서 생성된다. -->
         <property name="driver" value="${driverClassName}"/>
         <property name="url" value="${url}"/>
         <property name="username" value="${user}"/>

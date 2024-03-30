@@ -7,7 +7,8 @@
   <!-- 프로퍼티 등록 -->
   <properties>
   	<java-version>1.8</java-version><!-- 프로퍼티 네임으로 자바버전 사용 -->
-  	<json-version>2.6.1</json-version>
+  	<com.fasterxml.jackson-version>2.6.1</com.fasterxml.jackson-version><!-- jackson 버전 -->
+  	<org.apache.logging.log4j-version>2.23.1</org.apache.logging.log4j-version><!-- log4j-api, core, slf4j-impl 버전 사용 -->
   </properties>
   <build>
     <plugins>
@@ -49,21 +50,22 @@
 	    <!-- <scope>compile</scope> --><!-- 컴파일 스코프는 전 주기에서 사용 -->
 	</dependency>
 	<!-- 데이터베이스 연결용 -->
-	<!-- <dependency>
-	    <groupId>com.oracle.database.jdbc</groupId>
-	    <artifactId>ojdbc8</artifactId>
-	    <version>23.2.0.0</version>
-	</dependency> -->
 	<dependency>
 	    <groupId>com.oracle.database.jdbc</groupId>
-	    <artifactId>ojdbc6</artifactId>
-	    <version>11.2.0.4</version>
+	    <artifactId>ojdbc8</artifactId>
+	    <version>21.13.0.0</version>
 	</dependency>
 	<!-- Connection Pooling 지원용 -->
 	<dependency>
 	    <groupId>com.zaxxer</groupId>
 	    <artifactId>HikariCP</artifactId>
 	    <version>4.0.3</version>
+	    <exclusions><!-- 히카리 사용시 slf4j 사용 x 으로 설정 -->
+	    	<exclusion>
+	    		<groupId>org.slf4j</groupId>
+	    		<artifactId>slf4j-api</artifactId>
+	    	</exclusion>
+	    </exclusions>
 	</dependency>
 	<!-- Mybatis를 부르는 몇가지 이름 Mybatis SQL Mapper, Data Mapper, Persistence Framwork, ORM -->
 	<dependency>
@@ -81,18 +83,24 @@
 	    <groupId>commons-beanutils</groupId>
 	    <artifactId>commons-beanutils</artifactId>
 	    <version>1.9.4</version>
+	    <exclusions>
+	    	<exclusion>
+	    		<groupId>commons-logging</groupId>
+	    		<artifactId>commons-logging</artifactId>
+	    	</exclusion>
+	    </exclusions>
 	</dependency>
 	<!-- JSON 마샬링 지원용 -->
 	<dependency>
 	    <groupId>com.fasterxml.jackson.core</groupId>
 	    <artifactId>jackson-databind</artifactId>
-	    <version>${json-version}</version>
+	    <version>${com.fasterxml.jackson-version}</version>
 	</dependency>
 	<!-- XML 마샬링 지원용 -->
 	<dependency>
 	    <groupId>com.fasterxml.jackson.dataformat</groupId>
 	    <artifactId>jackson-dataformat-xml</artifactId>
-	    <version>${json-version}</version>
+	    <version>${com.fasterxml.jackson-version}</version>
 	</dependency>
 	<!-- jstl -->
 	<dependency>
@@ -100,7 +108,42 @@
 	    <artifactId>jstl</artifactId>
 	    <version>1.2</version>
 	</dependency>
-
+	<!-- JavaBean 규약 지원용 -->
+	<dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.18.32</version>
+		<scope>provided</scope>
+	</dependency>
+	
+	
+	<!-- Logging 지원용 , 관행적으로 테스트 바로 위에 넣는다.-->
+	<!-- log4j가 실제 appender에 로그를 만들어줌 -->
+	<dependency>
+	  <groupId>org.apache.logging.log4j</groupId>
+	  <artifactId>log4j-api</artifactId>
+	  <version>${org.apache.logging.log4j-version}</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.logging.log4j</groupId>
+	  <artifactId>log4j-core</artifactId>
+	  <version>${org.apache.logging.log4j-version}</version>
+	</dependency>
+	<dependency><!-- app이 로깅 명령을 내림(퍼사드 - 리모콘에 해당하는 역활) -->
+	    <groupId>org.apache.logging.log4j</groupId>
+	    <artifactId>log4j-slf4j-impl</artifactId>
+	    <version>${org.apache.logging.log4j-version}</version>
+	</dependency>
+	<dependency><!--commons-BeanUtils > commons-logging 대신 slf4j를 사용 -->
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>jcl-over-slf4j</artifactId>
+	    <version>1.7.36</version>
+	</dependency>
+	<dependency><!-- Query + Parameter > 싱글로깅 -->
+	    <groupId>org.bgee.log4jdbc-log4j2</groupId>
+	    <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+	    <version>1.16</version>
+	</dependency>
 	
 	<!-- 테스트용 depandency는 맨마지막에 넣는다. -->
 	<dependency>

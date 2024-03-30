@@ -9,11 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
-
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.vo.MemberVO;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * C : /member/memberInsert.do
@@ -31,14 +30,24 @@ import kr.or.ddit.vo.MemberVO;
  * 
  * 
  */
+@Slf4j // 롬복 로그 생성
 @WebServlet("/member/memberList.do")
 public class MemberListControllerServlet extends HttpServlet{
+	// 등록되어 있는 로거를 받아오면 해당 로거의 등급으로 기록한다.
+	// lombok으로 
+	//private static final Logger logger = LoggerFactory.getLogger(MemberListControllerServlet.class);
+	
 	private MemberService service = new MemberServiceImpl(); // 서비스
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		logger.info("컨트롤러 동작");
+		log.info("컨트롤러 동작"); // 롬복으로 생성된 log 사용
+		
 		// 멤버 조회를 위한 리스트의 폼으로 이동
 		List<MemberVO> memberList = service.retriveMemberList();
+//		logger.info("조회된 모델 : {}", memberList); // {} : 메시지 아규먼트
+		log.info("조회된 모델 : {}", memberList); // 롬복으로 생성된 log 사용
 		
 		// scope 결정
 		req.setAttribute("memberList", memberList);

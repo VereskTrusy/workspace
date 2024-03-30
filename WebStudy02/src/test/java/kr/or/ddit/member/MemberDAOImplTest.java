@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.junit.jupiter.api.Test;
 
-import kr.or.ddit.exception.PersistenceException;
 import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.vo.MemberVO;
 
@@ -22,14 +22,6 @@ class MemberDAOImplTest {
 	void testInsertMember() {
 		MemberVO member = new MemberVO();
 		assertThrows(PersistenceException.class, ()->dao.insertMember(member));
-		
-//		MEM_ID
-//		MEM_PASS
-//		MEM_NAME
-//		MEM_ZIP
-//		MEM_ADD1
-//		MEM_ADD2
-//		MEM_MAIL
 		member.setMemId("a002");
 		member.setMemPass("java");
 		member.setMemName("테스트");
@@ -39,6 +31,38 @@ class MemberDAOImplTest {
 		member.setMemMail("aa@naver.com");
 		member.setMemBir("2024-01-01");
 		int rowcnt = dao.insertMember(member);
+		assertEquals(1, rowcnt);
+	}
+	
+	@Test
+	void testUpdateMember() {
+		MemberVO member = new MemberVO();
+		member.setMemId("a002");
+		// nullable 요소들에 null이 들어갔을때 에러가 발생 할거다 
+		assertThrows(PersistenceException.class, ()->dao.update(member));
+		
+		member.setMemId("a002");
+		member.setMemPass("java");
+		member.setMemName("졸려엇2");
+		member.setMemZip("00000");
+		member.setMemAdd1("대전 오류");
+		member.setMemAdd2("ㅇㄹㅇㄹ");
+		member.setMemMail("aa@naver.com");
+		member.setMemBir("2024-01-01");
+		int rowcnt = dao.update(member);
+		assertEquals(1, rowcnt);
+	}
+	
+	@Test
+	void testDeleteMember() {
+		MemberVO member = new MemberVO();
+		member.setMemId("a0012341234123"); // 없는 아이디
+		int rowcnt = dao.delete(member.getMemId());
+		assertNotEquals(1, rowcnt);
+		
+		member.setMemId("a002"); // 있는 아이디
+		rowcnt = dao.delete(member.getMemId());
+		
 		assertEquals(1, rowcnt);
 	}
 	

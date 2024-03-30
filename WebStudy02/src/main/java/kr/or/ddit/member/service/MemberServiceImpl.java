@@ -43,8 +43,23 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public ServiceResult modifyMember(MemberVO member) throws PkNotFoundException {
+		ServiceResult result = null;
+		MemberVO srchMember = new MemberVO();
 		
-		return null;
+		if(dao.selectMember(member.getMemId()) != null) {
+			// 회원은 잇음
+			srchMember = dao.selectMember(member.getMemId());
+			if(member.getMemPass().equals(srchMember.getMemPass())) {
+				result = ServiceResult.OK;
+			}else {
+				result = ServiceResult.INVALIDPASSWORD;
+			}
+		} else {
+			// 회원 없음
+			result = ServiceResult.FAIL;
+		}
+		
+		return result;
 	}
 
 	@Override

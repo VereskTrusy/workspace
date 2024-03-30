@@ -62,6 +62,7 @@
 			<th>핸드폰</th>
 			<th>메일주소</th>
 			<th>마일리지</th>
+			<th>기능</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -77,7 +78,8 @@
 				<td>${member.memAdd2}</td>
 				<td>${member.memHp}</td>
 				<td>${member.memMail}</td>
-				<td>${member.memMileage}</td>				
+				<td>${member.memMileage}</td>
+				<td><button type="button" id="" onclick="location.href='<c:url value="/member/memberUpdate.do?who=${member.memId}"/>'">수정하기</button></td>			
 			</tr>
 		</c:forEach>
 	</c:if>

@@ -21,12 +21,6 @@
 			<tr>
 				<th>회원번호</th>
 				<td><input type="text" name="memId" value="${member.memId}"
-					class="form-control" /> <span class="text-danger"></span>${errors.memId}
-				</td>
-			</tr>
-			<tr>
-				<th>회원번호</th>
-				<td><input type="text" name="memId" value="${member.memId}"
 					class="form-control" /> <span class="text-danger">${errors.memId}</span>
 				</td>
 			</tr>
