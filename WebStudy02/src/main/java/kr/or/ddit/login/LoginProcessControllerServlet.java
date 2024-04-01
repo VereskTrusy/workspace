@@ -11,9 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import kr.or.ddit.exception.ResponseStatusException;
+import kr.or.ddit.login.service.AuthenticateService;
+import kr.or.ddit.login.service.AutheticateServiceImpl;
+import kr.or.ddit.vo.MemberVO;
 
 @WebServlet("/login/loginProcess.do")
 public class LoginProcessControllerServlet extends HttpServlet {
+	private AuthenticateService service = new AutheticateServiceImpl();
 	
 	private boolean authenticate(String id, String password) { // 로그인 성공여부 판단
 		return id.equals(password);
@@ -42,18 +46,43 @@ public class LoginProcessControllerServlet extends HttpServlet {
 					.filter(id->!id.isEmpty())
 					.orElseThrow(()->new ResponseStatusException(400, "비밀번호 누락"));
 			
+			String viewName = null;
+			
 			// 4. 인증 여부 판단.
-			if(authenticate(memId, memPass)) { // - 성공 : 웰컴 페이지로 이동 - 리다이렉트
+			try {
+				MemberVO inputData = new MemberVO();
+				inputData.setMemId(memId);
+				inputData.setMemPass(memPass);
+				MemberVO authMember = service.authenticate(inputData);
+				
 				// 4-1. 로그인 인증이 되었다. 인증된 상태정보가 저장되어야함
-				session.setAttribute("authId", memId);
+				session.setAttribute("authMember", authMember);
 				// - 성공 : 웰컴페이지 이동 - redirect
-				resp.sendRedirect(req.getContextPath() + "/");
-			}else { // 인증 여부 판단 
+				viewName = "redirect:/";
+			}catch(AuthenticateException e) {
 				// - 실패 : 로그인 페이지로 이동 - 1. 리퀘살려, 2. A는 응답책임없으 -> forward
-				session.setAttribute("message", "로그인 실패"); // Session 으로 메시지를 전달 한 이유 => 페이지를 redirect하기 때문에 request에 정보가 남아 있지 않기 때문이다.
-				// req.getRequestDispatcher("/login/loginForm.jsp").forward(req, resp); // 잘못된사용자의 잘못된정보를 남길 필요가 없기때문에 redirect한다.
-				resp.sendRedirect(req.getContextPath() + "/login/loginForm.jsp");
+				session.setAttribute("message", e.getMessage()); // Session 으로 메시지를 전달 한 이유 => 페이지를 redirect하기 때문에 request에 정보가 남아 있지 않기 때문이다.
+				viewName = "redirect:/login/loginForm.jsp";
 			}
+			
+			if (viewName.startsWith("redirect:")) {
+				String location = viewName.replace("redirect:", req.getContextPath());
+				resp.sendRedirect(location);
+			} else {
+				req.getRequestDispatcher(viewName).forward(req, resp);
+			}
+			
+//			if(authenticate(memId, memPass)) { // - 성공 : 웰컴 페이지로 이동 - 리다이렉트
+//				// 4-1. 로그인 인증이 되었다. 인증된 상태정보가 저장되어야함
+//				session.setAttribute("authId", memId);
+//				// - 성공 : 웰컴페이지 이동 - redirect
+//				resp.sendRedirect(req.getContextPath() + "/");
+//			}else { // 인증 여부 판단 
+//				// - 실패 : 로그인 페이지로 이동 - 1. 리퀘살려, 2. A는 응답책임없으 -> forward
+//				session.setAttribute("message", "로그인 실패"); // Session 으로 메시지를 전달 한 이유 => 페이지를 redirect하기 때문에 request에 정보가 남아 있지 않기 때문이다.
+//				// req.getRequestDispatcher("/login/loginForm.jsp").forward(req, resp); // 잘못된사용자의 잘못된정보를 남길 필요가 없기때문에 redirect한다.
+//				resp.sendRedirect(req.getContextPath() + "/login/loginForm.jsp");
+//			}
 		}catch (ResponseStatusException e) {
 			// 파라미터 검증 - 검증 실패 : 상태코드 400
 			resp.sendError(e.getStatus(), e.getMessage());

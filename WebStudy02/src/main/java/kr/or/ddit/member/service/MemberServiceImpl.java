@@ -4,12 +4,17 @@ import java.util.List;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.PkNotFoundException;
+import kr.or.ddit.login.AuthenticateException;
+import kr.or.ddit.login.BadCredentialException;
+import kr.or.ddit.login.service.AuthenticateService;
+import kr.or.ddit.login.service.AutheticateServiceImpl;
 import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.vo.MemberVO;
 
 public class MemberServiceImpl implements MemberService {
 	// 의존관계 설정
 	private MemberDAOImpl dao = new MemberDAOImpl();
+	private AuthenticateService authService = new AutheticateServiceImpl();
 
 	@Override
 	public ServiceResult createMember(MemberVO member) {
@@ -41,31 +46,71 @@ public class MemberServiceImpl implements MemberService {
 		return member;
 	}
 
+//	@Override
+//	public ServiceResult modifyMember(MemberVO member) throws PkNotFoundException {
+//		ServiceResult result = null;
+//		MemberVO srchMember = new MemberVO();
+//		
+//		if(dao.selectMember(member.getMemId()) != null) {
+//			// 회원은 잇음
+//			srchMember = dao.selectMember(member.getMemId());
+//			if(member.getMemPass().equals(srchMember.getMemPass())) {
+//				result = ServiceResult.OK;
+//			}else {
+//				result = ServiceResult.INVALIDPASSWORD;
+//			}
+//		} else {
+//			// 회원 없음
+//			result = ServiceResult.FAIL;
+//		}
+//		
+//		return result;
+//	}
 	@Override
 	public ServiceResult modifyMember(MemberVO member) throws PkNotFoundException {
-		ServiceResult result = null;
-		MemberVO srchMember = new MemberVO();
 		
-		if(dao.selectMember(member.getMemId()) != null) {
-			// 회원은 잇음
-			srchMember = dao.selectMember(member.getMemId());
-			if(member.getMemPass().equals(srchMember.getMemPass())) {
-				result = ServiceResult.OK;
-			}else {
-				result = ServiceResult.INVALIDPASSWORD;
-			}
-		} else {
-			// 회원 없음
-			result = ServiceResult.FAIL;
+		try {
+			authService.authenticate(member);
+			return dao.updateMember(member) > 0 ? ServiceResult.OK : ServiceResult.FAIL;
+		}catch(BadCredentialException e) {
+			return ServiceResult.INVALIDPASSWORD;
 		}
 		
-		return result;
+//		MemberVO saved = retriveMember(member.getMemId());
+//		ServiceResult result = null;
+//		
+//		if(saved.getMemPass().equals(member.getMemPass())) {
+//			return dao.updateMember(member) > 0 ? ServiceResult.OK : ServiceResult.FAIL;
+//		}else {
+//			result = ServiceResult.INVALIDPASSWORD;
+//		}
+//		
+//		return result;
 	}
+	
 
 	@Override
 	public ServiceResult removeMember(MemberVO inputData) throws PkNotFoundException {
 		
-		return null;
+		try {
+			authService.authenticate(inputData);
+			return dao.deleteMember(inputData.getMemId()) > 0 ? ServiceResult.OK : ServiceResult.FAIL;
+		}catch(BadCredentialException e) {
+			return ServiceResult.INVALIDPASSWORD;
+		}
+		
+		
+//		// 조회해서 아이디가 존재하지 않으면 PkNotFoundException 예외발생
+//		MemberVO saved = retriveMember(inputData.getMemId()); 
+//		ServiceResult result = null;
+//		
+//		// 기존 데이터와 입력된 데이터의 패스워드가 같은지 검사
+//		if(saved.getMemPass().equals(inputData.getMemPass())) {
+//			return dao.deleteMember(inputData.getMemId()) > 0 ? ServiceResult.OK : ServiceResult.FAIL;
+//		}else {
+//			result = ServiceResult.INVALIDPASSWORD;
+//		}
+//		return result;
 	}
 	
 	

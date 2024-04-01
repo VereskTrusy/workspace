@@ -30,6 +30,13 @@ public class LogoutControllerServlet extends HttpServlet{
 		message = URLEncoder.encode(message, "UTF-8");
 		
 		// 웰컴 페이지로 이동.
-		resp.sendRedirect(req.getContextPath() + "/?message=" + message);
+		String viewName = "redirect:/?message=" + message;
+		
+		if (viewName.startsWith("redirect:")) {
+			String location = viewName.replace("redirect:", req.getContextPath());
+			resp.sendRedirect(location);
+		} else {
+			req.getRequestDispatcher(viewName).forward(req, resp);
+		}
 	}
 }

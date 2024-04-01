@@ -10,7 +10,7 @@ $(function(){
 		let tr = event.relatedTarget;
 		let memId = $(tr).data("memId") // 데이터 빼낼때
 		// body 안에 패스 설정 안쓰고 c:url 태그 사용하기 위해 주석처리함
-		//const cPath = document.body.dataset.contextPath;
+		const cPath = document.body.dataset.contextPath;
 		//let url = `${cPath}/member/memberDetail.do`; 
 		let url = tr.dataset.url;
 		let method = "get";
@@ -30,6 +30,8 @@ $(function(){
 					let propName = td.id; // 여기서 propName은 리털럴이다.
 					td.innerHTML = member[propName]; // 리터럴로 찾으려면 연상배열구조 사용한다.
 				});
+				$updateBtn.data("who", member.memId);
+				
 			}, error:function(jqXHR, status, errorText){
 				console.log(jqXHR, status, errorText);
 			}
@@ -37,10 +39,16 @@ $(function(){
 	})
 	.on("hidden.bs.modal", function(){
 		$modal.find("td[id]").html(""); // td[] 의 내부 비우기
+		$updateBtn.removeData("who");
 	});
 	
 	// 멤버 리스트의 클릭 이벤트 강제 실행 - trigger() 사용
 	$("tr[data-mem-id].active").trigger("click");
+	
+	const $updateBtn =  $("#updateBtn").on("click", function(){
+		let who = $(this).data("who");
+		location.href = `${pageContext.request.contextPath}/member/memberDetail.do`;
+	});
 });
 
 // 이벤트 부여 방법

@@ -82,14 +82,10 @@
 	</insert>
 	
 	
-	<update id="update" parameterType="MemberVO">
+	<update id="updateMember" parameterType="MemberVO">
 		UPDATE MEMBER
 		SET 
-			  MEM_PASS = #{memPass, jdbcType=VARCHAR}
-			, MEM_NAME = #{memName, jdbcType=VARCHAR}
-			, MEM_REGNO1 = #{memRegno1, jdbcType=CHAR}
-			, MEM_REGNO2 = #{memRegno2, jdbcType=CHAR}
-			, MEM_BIR = #{memBir, jdbcType=DATE}
+			  MEM_NAME = #{memName, jdbcType=VARCHAR}
 			, MEM_ZIP = #{memZip, jdbcType=CHAR}
 			, MEM_ADD1 = #{memAdd1, jdbcType=VARCHAR}
 			, MEM_ADD2 = #{memAdd2, jdbcType=VARCHAR}
@@ -101,15 +97,26 @@
 			, MEM_LIKE = #{memLike, jdbcType=VARCHAR}
 			, MEM_MEMORIAL = #{memMemorial, jdbcType=VARCHAR}
 			, MEM_MEMORIALDAY = #{memMemorialday, jdbcType=DATE}
-			, MEM_MILEAGE = #{memMileage, jdbcType=NUMERIC}
-			, MEM_DELETE = #{memDelete, jdbcType=VARCHAR}
 		WHERE MEM_ID = #{memId}
 	</update>
 	
-	<update id="delete" parameterType="String">
+	<update id="deleteMember" parameterType="String">
 		UPDATE MEMBER
 		SET
 			MEM_DELETE = 'T'
 		WHERE MEM_ID = #{memId}
 	</update>
+	
+	<select id="selectMemberForAuth" resultType="MemberVO">
+		SELECT 
+			MEM_ID
+			, MEM_PASS
+			, MEM_NAME
+			, MEM_HP
+			, MEM_MAIL
+			, MEM_DELETE
+		FROM MEMBER
+		WHERE MEM_ID= #{memId}
+		AND MEM_DELETE IS NULL
+	</select>
 </mapper>

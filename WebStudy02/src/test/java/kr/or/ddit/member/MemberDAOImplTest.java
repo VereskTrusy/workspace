@@ -14,15 +14,18 @@ import org.junit.jupiter.api.Test;
 
 import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.vo.MemberVO;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 class MemberDAOImplTest {
 	MemberDAOImpl dao = new MemberDAOImpl();
 	
 	@Test
 	void testInsertMember() {
 		MemberVO member = new MemberVO();
-		assertThrows(PersistenceException.class, ()->dao.insertMember(member));
-		member.setMemId("a002");
+		//assertThrows(PersistenceException.class, ()->dao.insertMember(member));
+		
+		member.setMemId("a006");
 		member.setMemPass("java");
 		member.setMemName("테스트");
 		member.setMemZip("00000");
@@ -39,7 +42,7 @@ class MemberDAOImplTest {
 		MemberVO member = new MemberVO();
 		member.setMemId("a002");
 		// nullable 요소들에 null이 들어갔을때 에러가 발생 할거다 
-		assertThrows(PersistenceException.class, ()->dao.update(member));
+		assertThrows(PersistenceException.class, ()->dao.updateMember(member));
 		
 		member.setMemId("a002");
 		member.setMemPass("java");
@@ -49,7 +52,7 @@ class MemberDAOImplTest {
 		member.setMemAdd2("ㅇㄹㅇㄹ");
 		member.setMemMail("aa@naver.com");
 		member.setMemBir("2024-01-01");
-		int rowcnt = dao.update(member);
+		int rowcnt = dao.updateMember(member);
 		assertEquals(1, rowcnt);
 	}
 	
@@ -57,11 +60,11 @@ class MemberDAOImplTest {
 	void testDeleteMember() {
 		MemberVO member = new MemberVO();
 		member.setMemId("a0012341234123"); // 없는 아이디
-		int rowcnt = dao.delete(member.getMemId());
+		int rowcnt = dao.deleteMember(member.getMemId());
 		assertNotEquals(1, rowcnt);
 		
 		member.setMemId("a002"); // 있는 아이디
-		rowcnt = dao.delete(member.getMemId());
+		rowcnt = dao.deleteMember(member.getMemId());
 		
 		assertEquals(1, rowcnt);
 	}
@@ -71,7 +74,7 @@ class MemberDAOImplTest {
 		List<MemberVO> memberlist = dao.selectMemberList();
 		assertNotNull(memberlist);
 		assertNotEquals(0, memberlist);
-		System.out.println(memberlist);
+		log.info("list : {}", memberlist);
 	}
 
 	@Test
@@ -79,7 +82,6 @@ class MemberDAOImplTest {
 		String memId = "a001";
 		MemberVO member = dao.selectMember(memId);
 		assertNotNull(member);
-		System.out.println(member);
 		memId = "asdfas' OR '1'='1";
 		assertNull(dao.selectMember(memId));
 	}

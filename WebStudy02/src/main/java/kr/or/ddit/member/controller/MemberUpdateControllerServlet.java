@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -54,37 +55,28 @@ import lombok.extern.slf4j.Slf4j;
 @WebServlet("/member/memberUpdate.do")
 public class MemberUpdateControllerServlet extends HttpServlet{
 	private MemberService service = new MemberServiceImpl();
-	
-	// 회원 수정 폼으로 이동
+
+	// 회원 가입 폼으로 이동
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// QueryString의 파라메터 받기
-		String memId = req.getParameter("who");
-		// 파라메터 null 검증
-		if(StringUtils.isBlank(memId)) {
-			resp.sendError(400, "잘못됐어");
+		req.setCharacterEncoding("UTF-8");
+		HttpSession session = req.getSession();
+		if(session.isNew()) {
+			resp.sendError(400);
 			return;
 		}
+		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
 		
-		// 단일 회원 조회 서비스 실행
-		MemberVO member = null;
-		member = service.retriveMember(memId);
 		
-		// Attribute 태우기 : scope 결정 -> request 왜? application,session단위에서 데이터가 남아 있을 필요가 없어서.
+		MemberVO member = service.retriveMember(authMember.getMemId());
+		
 		req.setAttribute("member", member);
-		req.setAttribute("who", member.getMemId());
 		
-		// Content 협상 : Accept 헤더를 통해 판단.
-		String accept = req.getHeader("accept");
-		String viewName = null;
-		if(accept.contains("json")) {
-			viewName = "/jsonView.do"; // 하는일 : request to serialize, response wriete.
-		}else {
-			viewName = "/WEB-INF/views/member/memberForm.jsp";
-		}
+		String viewName = "/WEB-INF/views/member/memberForm.jsp";
 		req.getRequestDispatcher(viewName).forward(req, resp);
 	}
-	
+
+	// 회원 가입 진행
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 1. 요청 접수, 분석
@@ -99,27 +91,31 @@ public class MemberUpdateControllerServlet extends HttpServlet{
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException();
 		}
+		//System.out.println(member);
 		
 		// 2. 검증
 		Map<String, String> errors = new LinkedHashMap<>();
 		boolean valid = validate(member, errors); // errors -> call by referense 
 		req.setAttribute("errors", errors);
 		
+		// 3. 로직 사용(model 확보)
+		// 4) 밸리데이션 검증 실패
 		String viewName = null;
-		if (errors.isEmpty()) {
+		if (errors.isEmpty()) { // 에러가 없다 == 검증이 끝났다.
+			// 4. scope를 이용하여 model 공유
 			ServiceResult result = service.modifyMember(member);
 			switch (result) {
-			case FAIL: 
-				req.setAttribute("message", "일치하는 회원의 정보가 없습니다.");
+			case INVALIDPASSWORD:
+				req.setAttribute("message", "비밀번호가 잘못됨");
 				viewName = "/WEB-INF/views/member/memberForm.jsp";
 				break;
-			case INVALIDPASSWORD: 
-				req.setAttribute("message", "비밀번호를 다시 확인하여주십시오.");
+			case FAIL: // 현재는 fail상황 없음. 그보다 먼저 SQLException 발생, 현티어구조때문임. 
+				req.setAttribute("message", "서버오류");
 				viewName = "/WEB-INF/views/member/memberForm.jsp";
 				break;
 			default: 
-				req.getSession().setAttribute("lastCreated", member);
-				viewName = "redirect:/member/memberList.do";
+//				req.getSession().setAttribute("lastCreated", member);
+				viewName = "redirect:/mypage";
 				break;
 			}
 		} else {
@@ -127,7 +123,92 @@ public class MemberUpdateControllerServlet extends HttpServlet{
 			req.setAttribute("errors", errors);
 			viewName = "/WEB-INF/views/member/memberForm.jsp"; // 리퀘스트에
 		}
+		
+		// 5. view 결정
+		// 6. view 로 이동(flow Control)
+		// Front Controller Pattern 을 통해서 하위의 모든 컨트롤러에서 중복되는 코드를 해결할 예정.
+		if (viewName.startsWith("redirect:")) {
+			String location = viewName.replace("redirect:", req.getContextPath());
+			resp.sendRedirect(location);
+		} else {
+			req.getRequestDispatcher(viewName).forward(req, resp);
+		}
 	}
+	
+	
+	// 회원 수정 폼으로 이동
+//	@Override
+//	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		// QueryString의 파라메터 받기
+//		String memId = req.getParameter("who");
+//		// 파라메터 null 검증
+//		if(StringUtils.isBlank(memId)) {
+//			resp.sendError(400, "잘못됐어");
+//			return;
+//		}
+//		
+//		// 단일 회원 조회 서비스 실행
+//		MemberVO member = null;
+//		member = service.retriveMember(memId);
+//		
+//		// Attribute 태우기 : scope 결정 -> request 왜? application,session단위에서 데이터가 남아 있을 필요가 없어서.
+//		req.setAttribute("member", member);
+//		req.setAttribute("who", member.getMemId());
+//		
+//		// Content 협상 : Accept 헤더를 통해 판단.
+//		String accept = req.getHeader("accept");
+//		String viewName = null;
+//		if(accept.contains("json")) {
+//			viewName = "/jsonView.do"; // 하는일 : request to serialize, response wriete.
+//		}else {
+//			viewName = "/WEB-INF/views/member/memberForm.jsp";
+//		}
+//		req.getRequestDispatcher(viewName).forward(req, resp);
+//	}
+	
+//	@Override
+//	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		// 1. 요청 접수, 분석
+//		req.setCharacterEncoding("UTF-8");
+//		
+//		MemberVO member = new MemberVO(); // command Object
+//		req.setAttribute("member", member);
+//		
+//		Map<String, String[]> parameterMap = req.getParameterMap();
+//		try {
+//			BeanUtils.populate(member, parameterMap); // 내부적으로 리플렉션 시킴
+//		} catch (IllegalAccessException | InvocationTargetException e) {
+//			throw new RuntimeException();
+//		}
+//		
+//		// 2. 검증
+//		Map<String, String> errors = new LinkedHashMap<>();
+//		boolean valid = validate(member, errors); // errors -> call by referense 
+//		req.setAttribute("errors", errors);
+//		
+//		String viewName = null;
+//		if (errors.isEmpty()) {
+//			ServiceResult result = service.modifyMember(member);
+//			switch (result) {
+//			case FAIL: 
+//				req.setAttribute("message", "일치하는 회원의 정보가 없습니다.");
+//				viewName = "/WEB-INF/views/member/memberForm.jsp";
+//				break;
+//			case INVALIDPASSWORD: 
+//				req.setAttribute("message", "비밀번호를 다시 확인하여주십시오.");
+//				viewName = "/WEB-INF/views/member/memberForm.jsp";
+//				break;
+//			default: 
+//				req.getSession().setAttribute("lastCreated", member);
+//				viewName = "redirect:/member/memberList.do";
+//				break;
+//			}
+//		} else {
+//			req.setAttribute("member", member);
+//			req.setAttribute("errors", errors);
+//			viewName = "/WEB-INF/views/member/memberForm.jsp"; // 리퀘스트에
+//		}
+//	}
 	
 	
 	

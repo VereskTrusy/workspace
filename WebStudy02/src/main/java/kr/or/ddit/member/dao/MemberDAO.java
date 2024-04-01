@@ -2,6 +2,8 @@ package kr.or.ddit.member.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import kr.or.ddit.vo.MemberVO;
 
 /**
@@ -34,12 +36,22 @@ public interface MemberDAO {
 	 * @param member
 	 * @return 등록된 레코드 수
 	 */
-	int update(MemberVO member);
+	int updateMember(MemberVO member);
 	
 	/**
 	 * 회원 정보 삭제(???)
 	 * @param memId
 	 * @return 삭제(???)된 레코드 수
 	 */
-	int delete(String memId);
+	int deleteMember(String memId);
+	
+	
+	
+	/**
+	 * 인증시스템에서 사용할 메소드로 사용자의 (아이디, 이름, 휴대폰, 주소, 이메일)을 조회한다. 인증여부 확인
+	 * @param memId
+	 * @return
+	 */
+	public MemberVO selectMemberForAuth(@Param("memId") String memId);
+	
 }

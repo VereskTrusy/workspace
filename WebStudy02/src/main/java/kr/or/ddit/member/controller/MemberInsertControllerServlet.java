@@ -88,8 +88,7 @@ public class MemberInsertControllerServlet extends HttpServlet {
 				viewName = "/WEB-INF/views/member/memberForm.jsp";
 				break;
 			default: 
-				req.getSession().setAttribute("lastCreated", member);
-				viewName = "redirect:/member/memberList.do";
+				viewName = "redirect:";
 				break;
 			}
 		} else {
