@@ -8,9 +8,8 @@
 <jsp:include page="/WEB-INF/includee/preScript.jsp"></jsp:include>
 </head>
 <body>
-<!-- 로그인 여부(authMember)를 판단하고,
-로그인이 된 경우, 해당 사용자의 이름을 출력.
-로그인 전인 경우, 로그인 페이지로 이동할 수 있는 a 태그 출력. -->
+<h4>Principal : ${pageContext.request.userPrincipal}</h4>
+<!-- 인증과 관련된 모든 요청은 get방식을 사용하지 않고, post 요청만을 사용한다. -->
 <h4>인덱스 페이지</h4>
 <c:choose>
 	<c:when test="${not empty sessionScope.authMember}">

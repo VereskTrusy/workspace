@@ -7,7 +7,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/WEB-INF/includee/preScript.jsp"></jsp:include>
-<!-- spring 의 flashMapManager를 통해 해결한다. -->
+
+<!-- 반복적 패턴 : spring 의 flashMapManager를 통해 해결한다. -->
 <c:if test="${not empty message }">
 	<script type="text/javascript">
 		alert("${message}");

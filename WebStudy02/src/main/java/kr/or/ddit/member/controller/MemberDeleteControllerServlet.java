@@ -57,8 +57,7 @@ public class MemberDeleteControllerServlet extends HttpServlet{
 				viewName = "redirect:/mypage";
 				break;
 			default :
-				session.setAttribute("message", "서버 오류");
-				viewName = "forward:/login/logout.do";
+				viewName = "forward:/login/logout.do"; // 로그아웃과 관련된 절차 분산.
 				break;
 			}
 			

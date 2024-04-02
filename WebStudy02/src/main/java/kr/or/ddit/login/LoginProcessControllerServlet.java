@@ -61,7 +61,8 @@ public class LoginProcessControllerServlet extends HttpServlet {
 				viewName = "redirect:/";
 			}catch(AuthenticateException e) {
 				// - 실패 : 로그인 페이지로 이동 - 1. 리퀘살려, 2. A는 응답책임없으 -> forward
-				session.setAttribute("message", e.getMessage()); // Session 으로 메시지를 전달 한 이유 => 페이지를 redirect하기 때문에 request에 정보가 남아 있지 않기 때문이다.
+				// Session 으로 메시지를 전달 한 이유 => 페이지를 redirect하기 때문에 request에 정보가 남아 있지 않기 때문이다.
+				session.setAttribute("message", e.getMessage());
 				viewName = "redirect:/login/loginForm.jsp";
 			}
 			

@@ -22,7 +22,7 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	private MemberDAO generateProxy(SqlSession sqlSession) {
 		return (MemberDAO) Proxy.newProxyInstance(MemberDAO.class.getClassLoader(), new Class[] {MemberDAO.class}, new InvocationHandler() {
-			
+			// 인터페이스가 없으면 프록시를 생성하지 못한다. -> 인터페이스가 있어야 프록시를 생성할 수 있다.
 			@Override
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 				//sqlSession.selectList("kr.or.ddit.member.dao.MemberDAO.selectMemberList");
@@ -48,7 +48,7 @@ public class MemberDAOImpl implements MemberDAO {
 		try(
 			SqlSession sqlSession = factory.openSession(false);
 		){
-			//int rowcnt = sqlSession.insert("kr.or.ddit.member.dao.MemberDAO.insertMember", member);
+//			int rowcnt = sqlSession.insert("kr.or.ddit.member.dao.MemberDAO.insertMember", member);
 			int rowcnt = sqlSession.getMapper(MemberDAO.class).insertMember(member);
 			if(rowcnt > 0) sqlSession.commit();
 			
