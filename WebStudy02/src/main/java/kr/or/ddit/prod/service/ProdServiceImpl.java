@@ -2,6 +2,7 @@ package kr.or.ddit.prod.service;
 
 import java.util.List;
 
+import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.PkNotFoundException;
 import kr.or.ddit.prod.dao.ProdDAO;
 import kr.or.ddit.prod.dao.ProdDAOImpl;
@@ -22,6 +23,20 @@ public class ProdServiceImpl implements ProdService {
 		if(item == null) throw new PkNotFoundException(400);
 			
 		return item;
+	}
+
+	@Override
+	public ServiceResult createProd(ProdVO prod) {
+		int rowcnt = dao.insertProd(prod);
+		if(rowcnt != -1) return ServiceResult.OK;
+		else return ServiceResult.FAIL;
+	}
+
+	@Override
+	public ServiceResult modifyProd(ProdVO prod) {
+		int rowcnt = dao.updateProd(prod);
+		if(rowcnt != -1) return ServiceResult.OK;
+		else return ServiceResult.FAIL;
 	}
 	
 	

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.member.dao.MemberDAO"><!-- dao인터페이스의 퀄러파이드네임 따라가기 -->
+
+	<resultMap type="MemberVO" id="memberMap" autoMapping="true">
+		<id property="memId" column="MEM_ID"/>
+		<collection property="cartList" ofType="CartVO" autoMapping="true">
+			<association property="prod" javaType="ProdVO" autoMapping="true"/>
+		</collection>
+	</resultMap>
+	
 	<select id="selectMemberList" resultType="MemberVO"  ><!-- statementType="CALLABLE" -->
 		SELECT 
 			MEM_ID memId 
@@ -14,7 +22,17 @@
 	</select>
 	
 	
-	<select id="selectMember" resultType="MemberVO" parameterType="String"><!-- 빌트인alias 만히사용하는거 등록해놈 -->
+	<select id="selectMember" resultMap="memberMap" parameterType="String"><!-- 빌트인alias 만히사용하는거 등록해놈 -->
+		WITH CARTPROD AS (
+		    SELECT 
+				CART_MEMBER
+			    , CART_NO
+			    , TO_DATE(SUBSTR(CART_NO, 1, 8), 'YYYYMMDD') CART_DATE /*논리컬럼*/
+			    , CART_PROD
+			    , CART_QTY
+			    , PROD.*
+		    FROM CART INNER JOIN PROD ON (CART_PROD = PROD_ID)
+		)
 		SELECT
 			MEM_ID
 			, MEM_PASS
@@ -35,7 +53,12 @@
 			, TO_CHAR(mem_MEMORIALDAY, 'yyyy-mm-dd') AS MEM_MEMORIALDAY
 			, MEM_MILEAGE
 			, MEM_DELETE
-		FROM MEMBER
+			, PROD_NAME
+			, CART_QTY
+			, CART_NO
+			, CART_PROD
+			, CART_DATE
+		FROM MEMBER LEFT OUTER JOIN CARTPROD ON (MEM_ID = CART_MEMBER)
 		WHERE MEM_ID = #{memId}
 	</select>
 	

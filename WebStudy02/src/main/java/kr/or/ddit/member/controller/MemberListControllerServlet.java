@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.mvc.ViewResolverComposite;
 import kr.or.ddit.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,7 +56,7 @@ public class MemberListControllerServlet extends HttpServlet{
 		// view 결정
 		// flow control
 		String viewName = null;
-		viewName = "/WEB-INF/views/member/memberList_bak.jsp";
-		req.getRequestDispatcher(viewName).forward(req, resp);		
+		viewName = "member/memberList_bak";
+		new ViewResolverComposite().resolveView(viewName, req, resp);	
 	}
 }

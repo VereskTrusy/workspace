@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import kr.or.ddit.exception.PkNotFoundException;
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.mvc.ViewResolverComposite;
 import kr.or.ddit.vo.MemberVO;
 
 @WebServlet("/mypage")
@@ -21,6 +22,7 @@ public class MypageControllerServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
+		
 		HttpSession session = req.getSession();
 		if(session.isNew()) {
 			resp.sendError(400);
@@ -41,21 +43,9 @@ public class MypageControllerServlet extends HttpServlet{
 			}
 			req.setAttribute("member", member);
 			
-			viewName = "/WEB-INF/views/member/mypage.jsp";
+			viewName = "member/mypage";
 		}
 		
-		if (viewName.startsWith("redirect:")) {
-			String location = viewName.replace("redirect:", req.getContextPath());
-			resp.sendRedirect(location);
-		} else {
-			req.getRequestDispatcher(viewName).forward(req, resp);
-		}
-		
-		// req 챠셋하기
-		// ㅅㅔ션에서 authMember 꺼내기
-		// 멤버 조회하기
-		// rq에 담기
-		// 또 뷰네임
-		// 포워드로 날라가기
+		new ViewResolverComposite().resolveView(viewName, req, resp);
 	}
 }

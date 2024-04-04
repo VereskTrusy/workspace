@@ -17,8 +17,15 @@ public class ProdDAOImpl implements ProdDAO{
 	
 	@Override
 	public int insertProd(ProdVO prod) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		try(
+			SqlSession sqlSession = factory.openSession(false);
+		){
+			int rowcnt = sqlSession.getMapper(ProdDAO.class).insertProd(prod);
+			if(rowcnt > 0) sqlSession.commit();
+			
+			return rowcnt;
+		}
 	}
 
 	@Override
@@ -43,7 +50,11 @@ public class ProdDAOImpl implements ProdDAO{
 
 	@Override
 	public int updateProd(ProdVO prod) {
-		// TODO Auto-generated method stub
-		return 0;
+		try(
+			SqlSession sqlSession = factory.openSession();
+		){
+			ProdDAO mapperProxy = sqlSession.getMapper(ProdDAO.class); // 마이바티스가 생성해주는 프록시
+			return mapperProxy.updateProd(prod);
+		}
 	}
 }

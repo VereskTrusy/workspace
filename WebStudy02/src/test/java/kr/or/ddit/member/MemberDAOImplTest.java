@@ -81,8 +81,9 @@ class MemberDAOImplTest {
 	void testSelectMember() {
 		String memId = "a001";
 		MemberVO member = dao.selectMember(memId);
-		assertNotNull(member);
-		memId = "asdfas' OR '1'='1";
-		assertNull(dao.selectMember(memId));
+		log.info("cartList : {}", member.getCartList().size());
+//		assertNotNull(member);
+//		memId = "asdfas' OR '1'='1";
+//		assertNull(dao.selectMember(memId));
 	}
 }

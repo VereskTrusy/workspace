@@ -9,6 +9,7 @@
   	<java-version>1.8</java-version><!-- 프로퍼티 네임으로 자바버전 사용 -->
   	<com.fasterxml.jackson-version>2.6.1</com.fasterxml.jackson-version><!-- jackson 버전 -->
   	<org.apache.logging.log4j-version>2.23.1</org.apache.logging.log4j-version><!-- log4j-api, core, slf4j-impl 버전 사용 -->
+  	<org.springframework.security-version>5.8.11</org.springframework.security-version>
   </properties>
   <build>
     <plugins>
@@ -27,6 +28,12 @@
     </plugins>
   </build>
   <dependencies>
+  	<!-- 암호화 지원 -->
+  	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-crypto</artifactId>
+	    <version>${org.springframework.security-version}</version>
+	</dependency>
   	<!-- Servlet 의존성 추가 -->
 	<dependency>
 	    <groupId>javax.servlet</groupId>
@@ -114,6 +121,17 @@
 		<artifactId>lombok</artifactId>
 		<version>1.18.32</version>
 		<scope>provided</scope>
+	</dependency>
+	<!-- 도메인 레이어 검증 지원용 -->
+	<dependency>
+	    <groupId>org.hibernate.validator</groupId>
+	    <artifactId>hibernate-validator</artifactId>
+	    <version>6.2.5.Final</version>
+	</dependency>
+	<dependency><!-- EL -->
+	    <groupId>org.glassfish</groupId>
+	    <artifactId>jakarta.el</artifactId>
+	    <version>3.0.3</version>
 	</dependency>
 	
 	

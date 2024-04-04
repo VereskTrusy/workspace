@@ -45,6 +45,27 @@
 			</table>
 		</td>
 	</tr>
+	<tr>
+		<th>구매자 목록</th>
+		<td>
+			<table>
+				<thead>
+					<tr>
+						<th>이름</th>
+						<th>이메일</th>					
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${prod.cartList}" var="cart">
+						<tr>
+							<td>${cart.member.memName }</td>
+							<td>${cart.member.memMail }</td>
+						</tr>					
+					</c:forEach>
+				</tbody>
+			</table>
+		</td>
+	</tr>
 </table>
 <jsp:include page="/WEB-INF/includee/postScript.jsp"></jsp:include>
 </body>

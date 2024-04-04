@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import kr.or.ddit.exception.PkNotFoundException;
 import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
+import kr.or.ddit.mvc.ViewResolverComposite;
 import kr.or.ddit.vo.MemberVO;
 
 @WebServlet("/member/memberDetail.do")
@@ -45,10 +46,7 @@ public class MemberDetailControllerServlet extends HttpServlet{
 		
 		// Content 협상 : Accept 헤더를 통해 판단.
 		String accept = req.getHeader("accept");
-		String viewName = null;
-		if(accept.contains("json")) {
-			viewName = "/jsonView.do"; // 하는일 : request to serialize, response wriete.
-		}
-		req.getRequestDispatcher(viewName).forward(req, resp);
+		String viewName = "";
+		new ViewResolverComposite().resolveView(viewName, req, resp);
 	}
 }

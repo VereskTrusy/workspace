@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import kr.or.ddit.mvc.ViewResolverComposite;
+
 @WebServlet("/login/logout.do")
 public class LogoutControllerServlet extends HttpServlet{
 	@Override
@@ -31,12 +33,6 @@ public class LogoutControllerServlet extends HttpServlet{
 		
 		// 웰컴 페이지로 이동.
 		String viewName = "redirect:/?message=" + message;
-		
-		if (viewName.startsWith("redirect:")) {
-			String location = viewName.replace("redirect:", req.getContextPath());
-			resp.sendRedirect(location);
-		} else {
-			req.getRequestDispatcher(viewName).forward(req, resp);
-		}
+		new ViewResolverComposite().resolveView(viewName, req, resp);
 	}
 }

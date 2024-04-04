@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import kr.or.ddit.exception.ResponseStatusException;
 import kr.or.ddit.login.service.AuthenticateService;
 import kr.or.ddit.login.service.AutheticateServiceImpl;
+import kr.or.ddit.mvc.ViewResolverComposite;
 import kr.or.ddit.vo.MemberVO;
 
 @WebServlet("/login/loginProcess.do")
@@ -65,13 +66,7 @@ public class LoginProcessControllerServlet extends HttpServlet {
 				session.setAttribute("message", e.getMessage());
 				viewName = "redirect:/login/loginForm.jsp";
 			}
-			
-			if (viewName.startsWith("redirect:")) {
-				String location = viewName.replace("redirect:", req.getContextPath());
-				resp.sendRedirect(location);
-			} else {
-				req.getRequestDispatcher(viewName).forward(req, resp);
-			}
+			new ViewResolverComposite().resolveView(viewName, req, resp);
 			
 //			if(authenticate(memId, memPass)) { // - 성공 : 웰컴 페이지로 이동 - 리다이렉트
 //				// 4-1. 로그인 인증이 되었다. 인증된 상태정보가 저장되어야함

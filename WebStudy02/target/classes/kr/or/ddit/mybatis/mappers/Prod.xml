@@ -6,8 +6,12 @@
 	<!-- autoMapping="true" : 단순 컬럼의 내용은 자동 바인딩 -->
 	<!-- association :  연관관계, vo멤버변수와 vo멤버변수에 해당하는 VO 수동 연결 -->
 	<resultMap type="ProdVO" id="prodMap" autoMapping="true">
+		<id property="prodId" column="PROD_ID" />
 		<association property="buyer" javaType="BuyerVO" autoMapping="true" />
 		<association property="lprod" javaType="LprodVO" autoMapping="true" />
+		<collection property="cartList" ofType="CartVO" autoMapping="true">
+			<association property="member" javaType="MemberVO" autoMapping="true" />
+		</collection>
 	</resultMap>
 	
 	<select id="selectProdList" resultMap="prodMap">
@@ -27,11 +31,15 @@
 		INNER JOIN LPROD ON (PROD.PROD_LGU = LPROD.LPROD_GU)
 	</select>
 	
-	<resultMap type="ProdVO" id="prodMapAllData" autoMapping="true">
-		<association property="buyer" javaType="BuyerVO" autoMapping="true" />
-		<association property="lprod" javaType="LprodVO" autoMapping="true" />
-	</resultMap>
-	<select id="selectProd" resultMap="prodMapAllData" parameterType="String">
+	<select id="selectProd" resultMap="prodMap" parameterType="String">
+		WITH CARTMEM AS (
+		    SELECT 
+		        DISTINCT CART.CART_MEMBER
+		        , CART.CART_PROD
+		        , MEMBER.MEM_NAME
+		        , MEMBER.MEM_MAIL
+		    FROM CART INNER JOIN MEMBER ON (CART.CART_MEMBER = MEMBER.MEM_ID)
+		)
 		SELECT
 			  PROD.PROD_ID /* 상품코드 */
 			, PROD.PROD_NAME /* 상품명 */
@@ -70,10 +78,68 @@
 			, LPROD.LPROD_ID /* 상품순번 */
 			, LPROD.LPROD_GU /* 상품분류코드 */
 			, LPROD.LPROD_NM /* 상품분류명 */
+			, CART_MEMBER
+		    , CART_PROD
+		    , MEM_NAME
+		    , MEM_MAIL
 		FROM PROD
 		INNER JOIN BUYER ON (PROD.PROD_BUYER = BUYER.BUYER_ID)
 		INNER JOIN LPROD ON (PROD.PROD_LGU = LPROD.LPROD_GU)
+    	LEFT OUTER JOIN CARTMEM ON (PROD.PROD_ID = CARTMEM.CART_PROD)
 		WHERE 1=1
 		AND PROD.PROD_ID = #{prodId}
 	</select>
+	
+	<insert id="insertProd" parameterType="ProdVO">
+		<selectKey order="BEFORE" resultType="String" keyProperty="prodId" >
+			SELECT 
+				#{prodLgu} || LPAD(NVL(TO_NUMBER(SUBSTR(MAX(PROD_ID), 5)), 0) + 1, 6, '0')
+			FROM PROD
+			WHERE PROD_LGU = #{prodLgu}
+		</selectKey>
+		INSERT INTO PROD(
+			  PROD_ID
+			, PROD_NAME
+			, PROD_LGU
+			, PROD_BUYER
+			, PROD_COST
+			, PROD_PRICE
+			, PROD_SALE
+			, PROD_OUTLINE
+			, PROD_DETAIL
+			, PROD_IMG
+			, PROD_TOTALSTOCK
+			, PROD_INSDATE
+			, PROD_PROPERSTOCK
+			, PROD_SIZE
+			, PROD_COLOR
+			, PROD_DELIVERY
+			, PROD_UNIT
+			, PROD_QTYIN
+			, PROD_QTYSALE
+			, PROD_MILEAGE
+		)VALUES(
+			  #{prodId, jdbcType=VARCHAR }
+			, #{prodName, jdbcType=VARCHAR }
+			, #{prodLgu, jdbcType=VARCHAR }
+			, #{prodBuyer, jdbcType=VARCHAR }
+			, #{prodCost, jdbcType=NUMERIC}
+			, #{prodPrice, jdbcType=NUMERIC}
+			, #{prodSale, jdbcType=NUMERIC}
+			, #{prodOutline, jdbcType=VARCHAR }
+			, #{prodDetail, jdbcType=VARCHAR }
+			, #{prodImg, jdbcType=VARCHAR }
+			, #{prodTotalstock, jdbcType=NUMERIC}
+			, #{prodInsdate, jdbcType=DATE}
+			, #{prodProperstock, jdbcType=NUMERIC}
+			, #{prodSize, jdbcType=VARCHAR }
+			, #{prodColor, jdbcType=VARCHAR }
+			, #{prodDelivery, jdbcType=VARCHAR }
+			, #{prodUnit, jdbcType=VARCHAR }
+			, #{prodQtyin, jdbcType=NUMERIC}
+			, #{prodQtysale, jdbcType=NUMERIC}
+			, #{prodMileage, jdbcType=NUMERIC}
+		)
+		
+	</insert>
 </mapper>

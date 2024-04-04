@@ -1,6 +1,7 @@
 package kr.or.ddit.login.service;
 
-import java.rmi.UnexpectedException;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import kr.or.ddit.login.AuthenticateException;
 import kr.or.ddit.login.BadCredentialException;
@@ -33,10 +34,11 @@ public class AutheticateServiceImpl implements AuthenticateService{
 			throw new AuthenticateException("이미 탈퇴한 회왼");
 		}
 		
-		// 비밀번호 인증
-		String savedPass = saved.getMemPass();
+		// 비밀번호 인증 로직 변경할것
+		String savedPass = saved.getMemPass(); // 암호화된 상태
 		String inputPass = inputData.getMemPass();
-		if(savedPass.equals(inputPass)) {
+		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		if(encoder.matches(inputPass, savedPass)) {
 			// 정상처리
 			return saved;
 		}else {
