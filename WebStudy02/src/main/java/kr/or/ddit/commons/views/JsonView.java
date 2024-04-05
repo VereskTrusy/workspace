@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @WebServlet("/jsonView.do")
 public class JsonView extends HttpServlet {
@@ -36,8 +38,11 @@ public class JsonView extends HttpServlet {
 			Object value = req.getAttribute(name);
 			targetMap.put(name, value);
 		}
+//		ObjectMapper mapper = new ObjectMapper(); // ObjectMapper 를 통한 직렬화 및 전송
+		ObjectMapper mapper = new ObjectMapper()
+		   .registerModule(new JavaTimeModule()); // new module, NOT JSR310Module
 		
-		ObjectMapper mapper = new ObjectMapper(); // ObjectMapper 를 통한 직렬화 및 전송
+		mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); // 날짜 데이터 직렬화 시 시점별 배열([2,2,2024])로 분활되는 기능 disable하기
 		try(
 			PrintWriter out = resp.getWriter(); // text를 전송 할 수 있는 stream 을 response 로 부터 받기
 		){

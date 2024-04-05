@@ -1,5 +1,6 @@
 package kr.or.ddit.vo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,7 +28,7 @@ import lombok.ToString.Exclude;
 @Data
 @EqualsAndHashCode(of="prodId")
 //@ToString(exclude = "prodDetail")
-public class ProdVO {
+public class ProdVO implements Serializable {
 	@NotBlank(groups = {UpdateGroup.class, DeleteGroup.class})
 	private String prodId; // 상품코드
 	@NotBlank

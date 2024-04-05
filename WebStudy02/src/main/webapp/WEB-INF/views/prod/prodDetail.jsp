@@ -1,14 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>/prod/prodDetail.jsp</title>
-<jsp:include page="/WEB-INF/includee/preScript.jsp"></jsp:include>
-</head>
-<body>
 <table class="table table-bordered table-striped">
 	<tr>
 		<th>상품명</th><td>${prod.prodName}</td>
@@ -46,7 +38,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th>구매자 목록</th>
+		<th>구매자<br>목록</th>
 		<td>
 			<table>
 				<thead>
@@ -67,6 +59,7 @@
 		</td>
 	</tr>
 </table>
-<jsp:include page="/WEB-INF/includee/postScript.jsp"></jsp:include>
-</body>
-</html>
+<c:url value="/prod/prodUpdate.do" var="updateURL">
+	<c:param name="what" value="${prod.prodId}" />
+</c:url>
+<button type="button" onclick="location.href='${updateURL}'">수정하기</button>

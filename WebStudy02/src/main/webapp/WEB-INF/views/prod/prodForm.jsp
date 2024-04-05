@@ -1,15 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<jsp:include page="/WEB-INF/includee/preScript.jsp"></jsp:include>
-</head>
-<body>
+
 <form method="post" enctype="application/x-www-form-urlencoded">
+	<!-- 상품코드 -->
+	<input type="hidden" name="prodId" value="${prod.prodId}" class="form-control" />
 	<table>
 		<%-- <tr>
 			<th>상품코드</th>
@@ -26,7 +21,7 @@
 		<tr>
 			<th>상품분류</th>
 			<td>
-				<select name="prodLgu" data-init-value="${prod.prodGu}">
+				<select name="prodLgu" data-init-value="${prod.prodLgu}">
 					<option value>분류선택</option>
 					<c:forEach items="${lprodList}" var="lprod">
 						<option value="${lprod.lprodGu}">${lprod.lprodNm}</option>					
@@ -38,7 +33,7 @@
 		<tr>
 			<th>거래처</th>
 			<td>
-				<select name="prodBuyer" data-init-value="${prod.buyerLgu}">
+				<select name="prodBuyer" data-init-value="${prod.prodBuyer}">
 					<option value>거래처선택</option>
 					<c:forEach items="${buyerList}" var="buyer">
 						<option value="${buyer.buyerId}" class="${buyer.buyerLgu}">${buyer.buyerName}</option>					
@@ -148,8 +143,4 @@
 		</tr>
 	</table>
 </form>
-<jsp:include page="/WEB-INF/includee/postScript.jsp"></jsp:include>
 <script src="${pageContext.request.contextPath }/resources/js/app/prod/prodForm.js">
-</script>
-</body>
-</html>

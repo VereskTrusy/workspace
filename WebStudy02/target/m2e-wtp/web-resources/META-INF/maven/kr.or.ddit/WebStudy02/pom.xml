@@ -56,6 +56,12 @@
 	    <version>3.0.0</version>
 	    <!-- <scope>compile</scope> --><!-- 컴파일 스코프는 전 주기에서 사용 -->
 	</dependency>
+	<!-- Tiles 사용 -->
+	<dependency>
+		<groupId>org.apache.tiles</groupId>
+		<artifactId>tiles-jsp</artifactId>
+		<version>3.0.8</version>
+	</dependency>
 	<!-- 데이터베이스 연결용 -->
 	<dependency>
 	    <groupId>com.oracle.database.jdbc</groupId>
@@ -101,6 +107,12 @@
 	<dependency>
 	    <groupId>com.fasterxml.jackson.core</groupId>
 	    <artifactId>jackson-databind</artifactId>
+	    <version>${com.fasterxml.jackson-version}</version>
+	</dependency>
+	<!-- Java 8 Date/time -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.datatype</groupId>
+	    <artifactId>jackson-datatype-jsr310</artifactId>
 	    <version>${com.fasterxml.jackson-version}</version>
 	</dependency>
 	<!-- XML 마샬링 지원용 -->

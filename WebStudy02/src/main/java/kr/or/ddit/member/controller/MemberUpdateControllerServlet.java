@@ -58,29 +58,17 @@ public class MemberUpdateControllerServlet extends HttpServlet{
 	// 회원 가입 폼으로 이동
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
+		String memId = req.getUserPrincipal().getName();
 		HttpSession session = req.getSession();
-		if(session.isNew()) {
-			resp.sendError(400);
-			return;
-		}
-		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
-		
-		
-		MemberVO member = service.retriveMember(authMember.getMemId());
-		
+		MemberVO member = service.retriveMember(memId);
 		req.setAttribute("member", member);
-		
-		String viewName = "member/memberForm";
+		 String viewName = "member/memberForm";
 		new ViewResolverComposite().resolveView(viewName, req, resp);
 	}
 
 	// 회원 가입 진행
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 1. 요청 접수, 분석
-		req.setCharacterEncoding("UTF-8");
-		
 		MemberVO member = new MemberVO(); // command Object
 		req.setAttribute("member", member);
 		

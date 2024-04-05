@@ -53,6 +53,7 @@
 			, TO_CHAR(mem_MEMORIALDAY, 'yyyy-mm-dd') AS MEM_MEMORIALDAY
 			, MEM_MILEAGE
 			, MEM_DELETE
+			, MEM_ROLE
 			, PROD_NAME
 			, CART_QTY
 			, CART_NO
@@ -138,6 +139,7 @@
 			, MEM_HP
 			, MEM_MAIL
 			, MEM_DELETE
+			, MEM_ROLE
 		FROM MEMBER
 		WHERE MEM_ID= #{memId}
 		AND MEM_DELETE IS NULL

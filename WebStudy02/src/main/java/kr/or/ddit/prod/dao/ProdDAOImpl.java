@@ -51,10 +51,12 @@ public class ProdDAOImpl implements ProdDAO{
 	@Override
 	public int updateProd(ProdVO prod) {
 		try(
-			SqlSession sqlSession = factory.openSession();
+			SqlSession sqlSession = factory.openSession(false);
 		){
-			ProdDAO mapperProxy = sqlSession.getMapper(ProdDAO.class); // 마이바티스가 생성해주는 프록시
-			return mapperProxy.updateProd(prod);
+			int rowcnt = sqlSession.getMapper(ProdDAO.class).updateProd(prod);
+			if(rowcnt > 0) sqlSession.commit();
+			
+			return rowcnt;
 		}
 	}
 }

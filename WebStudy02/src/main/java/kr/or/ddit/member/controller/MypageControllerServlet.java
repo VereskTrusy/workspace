@@ -14,6 +14,7 @@ import kr.or.ddit.member.service.MemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.ViewResolverComposite;
 import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.MemberVOWrapper;
 
 @WebServlet("/mypage")
 public class MypageControllerServlet extends HttpServlet{
@@ -21,30 +22,11 @@ public class MypageControllerServlet extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		
-		HttpSession session = req.getSession();
-		if(session.isNew()) {
-			resp.sendError(400);
-			return;
-		}
-		
-		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
-		MemberVO member = null;
-		String viewName = null;
-		if(authMember == null) {
-			viewName = "redirect:/login/loginForm.jsp";
-		}else {
-			try {
-				member = service.retriveMember(authMember.getMemId());
-			}catch(PkNotFoundException e) {
-				resp.sendError(e.getStatus(), e.getMessage());
-				return;
-			}
-			req.setAttribute("member", member);
-			
-			viewName = "member/mypage";
-		}
+		String viewName = "";	
+		MemberVOWrapper principal = (MemberVOWrapper) req.getUserPrincipal();
+		MemberVO member = service.retriveMember(principal.getName());
+		req.setAttribute("member", member);
+		viewName = "member/mypage";
 		
 		new ViewResolverComposite().resolveView(viewName, req, resp);
 	}

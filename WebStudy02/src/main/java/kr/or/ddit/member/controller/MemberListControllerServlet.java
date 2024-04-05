@@ -29,14 +29,14 @@ import lombok.extern.slf4j.Slf4j;
  * D : /member/memberDelete.do
  * 		Post
  * 
- * 
+ * 등록되어 있는 로거를 받아오면 해당 로거의 등급으로 기록한다.
+ * lombok으로 
+ * private static final Logger logger = LoggerFactory.getLogger(MemberListControllerServlet.class);
  */
 @Slf4j // 롬복 로그 생성
 @WebServlet("/member/memberList.do")
 public class MemberListControllerServlet extends HttpServlet{
-	// 등록되어 있는 로거를 받아오면 해당 로거의 등급으로 기록한다.
-	// lombok으로 
-	//private static final Logger logger = LoggerFactory.getLogger(MemberListControllerServlet.class);
+	
 	
 	private MemberService service = new MemberServiceImpl(); // 서비스
 	

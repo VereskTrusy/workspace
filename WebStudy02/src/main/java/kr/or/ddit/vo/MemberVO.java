@@ -74,7 +74,12 @@ public class MemberVO implements Serializable{
 	private Long memMileage;
 	private boolean memDelete; // 값이 null이면 false 값이 있다면 true로 마이바티스가 변환해준다.
 	
+	
 	// 구매기록
 	// Set - 중복허용 x
-	private Set<CartVO> cartList; // Has many 관계 
+	@JsonIgnore
+	private transient Set<CartVO> cartList; // Has many 관계 
+	
+	// 사용자 권한 정보
+	private String memRole;
 }
