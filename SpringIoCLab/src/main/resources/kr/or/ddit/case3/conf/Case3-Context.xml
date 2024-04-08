@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-lazy-init="false">
+
+	<!-- mariaDB 사용시 DAO(optional 전략) 와 Service 간의 의존 관계 설정. -->
+	<!-- service 를 주입 받고, T003 팀원을 검색함. -->
+	<bean id="sampleDAO" class="kr.or.ddit.case1.dao.SampleDAOImpl_Maria" 
+		init-method="initDao" 
+		destroy-method="distroy"/>
+		
+	<bean id="sampleService1" class="kr.or.ddit.case1.service.SampleServiceImpl" 
+		p:dao-ref="sampleDAO"
+		init-method="init"
+		/>
+		
+	<bean id="sampleService2" class="kr.or.ddit.case1.service.SampleServiceImpl" 
+		c:dao-ref="sampleDAO"/>
+	
+	<bean id="now" class="java.util.Date"  />
+	
+	<bean id="ldtnow" class="java.time.LocalDateTime" factory-method="now"  />
+</beans>

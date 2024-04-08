@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- bts 멤버 전원의 정보를 조회하고, 해당 정보를 콘솔에 출력 -->
+	<bean id="BtsDAO" class="kr.or.ddit.case4.bts.dao.InMemoryBtsDAOImpl"></bean>
+	<bean id="btsService" class="kr.or.ddit.case4.bts.service.BtsServiceImpl">
+		<constructor-arg ref="BtsDAO" />
+	</bean>
+	<bean id="case4Playground" class="kr.or.ddit.case4.Case4Playground" 
+		p:service-ref="btsService" />
+</beans>
