@@ -23,7 +23,8 @@ log level : 메시지의 경중도를 표현하는 우선순위 등급으로 로
 		</Console>
 	</Appenders>
 	<Loggers>
-		<Logger name="org.springframework" level="debug"/>
+		<!-- 스프링 로거 -->
+		<Logger name="org.springframework" level="info"/>
 		<Logger name="kr.or.ddit" level="INFO"/><!-- <Logger name="kr.or.ddit"> kr.or.ddit 계층구조를 표현한다. -->
 		<Logger name="jdbc.sqltiming" level="DEBUG"/><!-- log4jdbc 로거 사용 -->
 		<Logger name="jdbc.resultsettable" level="DEBUG"/><!-- log4jdbc 로거 사용 -->

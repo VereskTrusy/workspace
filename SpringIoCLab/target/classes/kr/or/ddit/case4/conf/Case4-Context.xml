@@ -3,13 +3,27 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:c="http://www.springframework.org/schema/c"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+	
+	<!-- 맵 빈등록 -->	
+    <util:map id="btsMap" key-type="java.lang.String" value-type="java.lang.Object"></util:map>
+	<!-- <bean id="btsMap" class="java.util.LinkedHashMap"></bean> -->
 
 	<!-- bts 멤버 전원의 정보를 조회하고, 해당 정보를 콘솔에 출력 -->
-	<bean id="BtsDAO" class="kr.or.ddit.case4.bts.dao.InMemoryBtsDAOImpl"></bean>
+	<!-- 등록된 맵 빈 주입 후 초기화 -->
+	<bean id="BtsDAO" class="kr.or.ddit.case4.bts.dao.InMemoryBtsDAOImpl"
+		c:btsMap-ref="btsMap"
+		init-method="init"
+	/>
+	
 	<bean id="btsService" class="kr.or.ddit.case4.bts.service.BtsServiceImpl">
 		<constructor-arg ref="BtsDAO" />
 	</bean>
+	
 	<bean id="case4Playground" class="kr.or.ddit.case4.Case4Playground" 
-		p:service-ref="btsService" />
+		p:service-ref="btsService" 
+	/>
+	
 </beans>

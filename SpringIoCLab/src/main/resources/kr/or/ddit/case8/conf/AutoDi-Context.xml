@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd"
+>
+
+<!-- 어노테이션 기반으로 빈을 등록하고, 의존관계를 형성하는 방법
+	1. 빈을 등록할 때 사용
+	@Component : 특정 레이어에 속하지 않은 객체를 빈등록
+	@Service : Service 를 빈등록
+	@Repository : DAO 를 빈등록
+	@Controller : Controller 를 빈등록
+	@RestController : 웹 어플리케이션에서 json/xml 로 데이터를 서비스할 컨트롤러를 빈등록(CSR 방식 서비스)
+	@Configuration : 자바 config 방식의 컨테이너 설정에 사용
+	
+	2. 주입에 사용
+	@Autowired(@Inject) : 주입할 대상을 type 으로 검색함
+	@Resource : name 속성으로 id 기반의 검색 설정 가능.
+	@Value : spEL 이나 문자열로 컨테이너에게 주입 정보를 전달할 때 사용.
+	
+	3. 생명주기 콜백
+	@PostConstruct : init-method
+	@PreDestroy : destroy-method
+
+	어노테이션사용 설정 -->
+<context:annotation-config></context:annotation-config>
+<!-- 읽어들일 패키지 설정 -->
+<context:component-scan base-package="kr.or.ddit.case1, kr.or.ddit.case2" use-default-filters="true">
+	<!-- 읽어들일, 읽어들이지 않을 어노테이션 설정 -->
+	<!-- <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/> -->
+	<!-- <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Component"/> -->
+</context:component-scan>
+
+</beans>

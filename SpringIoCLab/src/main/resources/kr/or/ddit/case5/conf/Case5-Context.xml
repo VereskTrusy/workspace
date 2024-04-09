@@ -3,9 +3,23 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:c="http://www.springframework.org/schema/c"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd"
+	default-init-method="init">
+	<!-- default-init-method="init" : 등록된 bean 중에서 init 메서드가 있으면 실행해줌 -->
 
-	<bean id="PersonDAO" class="kr.or.ddit.case5.person.dao.PersonDAOImpl"></bean>
+	<util:properties id="props" location="classpath:kr/or/ddit/MemberData.properties"></util:properties>
+	
+	<!-- 이해안감 -->
+	<!-- 리소스는 직접등록하지 않고 스프링컨테이너가 자동으로 만들어주는걸 사용한다. -->
+	<bean id="props" class="java.util.Properties"></bean>
+	<bean id="PersonDAO" class="kr.or.ddit.case5.person.dao.PersonDAOImpl"
+		c:props-ref="props"
+		p:fsRes="file:F:/00.medias/another_day.txt"
+	/>
+	<!-- init-method="init" -->
+	<!-- c:cpRes="classpath:kr/or/ddit/MemberData.properties" -->
 	
 	<bean id="PersonService" class="kr.or.ddit.case5.person.service.PersonServiceImpl"
 		c:dao-ref="PersonDAO"

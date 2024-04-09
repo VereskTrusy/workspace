@@ -16,8 +16,8 @@ import lombok.extern.slf4j.Slf4j;
  * 2. Spring Bean Configuration file 작성 : bean metadata 파일
  *    1) 사용 할 객체 bean 으로 등록 : bean(class, id)
  *    2) 등록된 bean 간의 의존관계를 형성(의존성 주입 구조)
- *       - constructor injection(required) : constructor-arg -> c prefix
- *       - setter injection(optional) : property -> p prefix
+ *       - constructor injection(required, 꼭필요할때사용) : constructor-arg -> c prefix
+ *       - setter injection(optional, 추가적인필요가있을때사용) : property -> p prefix
  *       주입될 대상에 따라 : value(기본형), ref(객체참조) 분리하여 주입.
  * 3. entrypoint 에서 컨테이너 객체 생성
  *    ApplicationContext -> ConfigurableApplicationContext -> 컨테이너의 특성에 따라 구현체 결정하여 사용하면 된다.

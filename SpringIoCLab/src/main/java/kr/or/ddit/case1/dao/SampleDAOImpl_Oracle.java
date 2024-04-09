@@ -5,9 +5,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import kr.or.ddit.vo.SampleVO;
 import lombok.extern.slf4j.Slf4j;
 
+@Repository(value = "daoOracle")
 @Slf4j
 public class SampleDAOImpl_Oracle implements SampleDAO {
 	private Map<String, SampleVO> oracleDB;
