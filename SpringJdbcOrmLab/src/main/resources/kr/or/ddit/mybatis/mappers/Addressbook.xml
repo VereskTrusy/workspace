@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.addressbook.dao.AddressbookDAO">
+	<select id="selectAddressbookList" resultType="AddressbookVO">
+		SELECT
+		    ADRS_NO
+		    , MEM_ID
+		    , ADRS_NAME
+		    , ADRS_TEL
+		    , ADRS_ADD
+		FROM
+		    ADDRESSBOOK
+	</select>
+	
+	<insert id="insertAddressbook" parameterType="AddressbookVO">
+		<selectKey order="BEFORE" resultType="long" keyProperty="adrsNo" >
+			SELECT 
+			    NVL(MAX(ADRS_NO), 0) + 1 AS ADRS_NO
+			FROM ADDRESSBOOK
+		</selectKey>
+		
+		INSERT INTO ADDRESSBOOK (
+		     ADRS_NO
+		    , MEM_ID
+		    , ADRS_NAME
+		    , ADRS_TEL
+		    , ADRS_ADD
+		) VALUES (
+		      #{adrsNo, jdbcType=NUMERIC}
+		    , #{memId, jdbcType=VARCHAR }
+		    , #{adrsName, jdbcType=VARCHAR }
+		    , #{adrsTel, jdbcType=VARCHAR }
+		    , #{adrsAdd, jdbcType=VARCHAR }
+		)
+	</insert>
+</mapper>
