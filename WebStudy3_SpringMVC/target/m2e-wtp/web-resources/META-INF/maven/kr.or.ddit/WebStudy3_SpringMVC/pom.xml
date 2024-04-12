@@ -1,0 +1,223 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>kr.or.ddit</groupId>
+  <artifactId>WebStudy3_SpringMVC</artifactId>
+  <version>1.0</version>
+  <packaging>war</packaging>
+  <!-- 프로퍼티 등록 -->
+  <properties>
+  	<java-version>1.8</java-version><!-- 프로퍼티 네임으로 자바버전 사용 -->
+  	<com.fasterxml.jackson-version>2.6.1</com.fasterxml.jackson-version><!-- jackson 버전 -->
+  	<org.apache.logging.log4j-version>2.23.1</org.apache.logging.log4j-version><!-- log4j-api, core, slf4j-impl 버전 사용 -->
+  	<org.springframework.security-version>5.8.11</org.springframework.security-version>
+	<org.springframework-version>5.3.33</org.springframework-version>
+  </properties>
+  <build>
+  	<finalName>ws03</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>${java-version}</source>
+          <target>${java-version}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.3</version>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+  	<!-- Spring DI Container -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+		<version>${org.springframework-version}</version>
+	</dependency>
+	<!-- WEB MVC Container -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+		<version>${org.springframework-version}</version>
+	</dependency>
+	<!-- 데이터베이스 연결용 -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-orm</artifactId>
+		<version>${org.springframework-version}</version>
+	</dependency>
+  	<!-- 암호화 지원 -->
+  	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-crypto</artifactId>
+	    <version>${org.springframework.security-version}</version>
+	</dependency>
+  	<!-- Servlet 의존성 추가 -->
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>javax.servlet-api</artifactId>
+	    <version>3.1.0</version>
+	    <scope>provided</scope><!-- 배포시 사용 x, 실행환경에 있는 놈으로 사용 -->
+	</dependency>
+  	<!-- View Layer 지원용 -->
+	<!-- JSP 의존성 추가 -->
+	<dependency>
+	    <groupId>javax.servlet.jsp</groupId>
+	    <artifactId>jsp-api</artifactId>
+	    <version>2.2</version>
+	    <scope>provided</scope>
+	</dependency>
+	<!-- EL 태그 의존성 추가 -->
+	<dependency>
+	    <groupId>javax.el</groupId>
+	    <artifactId>javax.el-api</artifactId>
+	    <version>3.0.0</version>
+	    <!-- <scope>compile</scope> --><!-- 컴파일 스코프는 전 주기에서 사용 -->
+	</dependency>
+	<!-- Tiles 사용 -->
+	<dependency>
+		<groupId>org.apache.tiles</groupId>
+		<artifactId>tiles-jsp</artifactId>
+		<version>3.0.8</version>
+	</dependency>
+	<!-- 데이터베이스 연결용 -->
+	<dependency>
+	    <groupId>com.oracle.database.jdbc</groupId>
+	    <artifactId>ojdbc8</artifactId>
+	    <version>21.13.0.0</version>
+	</dependency>
+	<!-- Connection Pooling 지원용 -->
+	<dependency>
+	    <groupId>com.zaxxer</groupId>
+	    <artifactId>HikariCP</artifactId>
+	    <version>4.0.3</version>
+	    <exclusions><!-- 히카리 사용시 slf4j 사용 x 으로 설정 -->
+	    	<exclusion>
+	    		<groupId>org.slf4j</groupId>
+	    		<artifactId>slf4j-api</artifactId>
+	    	</exclusion>
+	    </exclusions>
+	</dependency>
+	<!-- Mybatis를 부르는 몇가지 이름 Mybatis SQL Mapper, Data Mapper, Persistence Framwork, ORM -->
+	<dependency>
+	    <groupId>org.mybatis</groupId>
+	    <artifactId>mybatis</artifactId>
+	    <version>3.5.15</version>
+	</dependency>
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis-spring</artifactId>
+		<version>2.1.2</version>
+	</dependency>
+	<!-- Commons 계열 -->
+	<!-- File Util -->
+	<dependency>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+		<version>2.16.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-lang3</artifactId>
+	    <version>3.14.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>commons-beanutils</groupId>
+	    <artifactId>commons-beanutils</artifactId>
+	    <version>1.9.4</version>
+	    <exclusions>
+	    	<exclusion>
+	    		<groupId>commons-logging</groupId>
+	    		<artifactId>commons-logging</artifactId>
+	    	</exclusion>
+	    </exclusions>
+	</dependency>
+	<!-- JSON 마샬링 지원용 -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>${com.fasterxml.jackson-version}</version>
+	</dependency>
+	<!-- Java 8 Date/time -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.datatype</groupId>
+	    <artifactId>jackson-datatype-jsr310</artifactId>
+	    <version>${com.fasterxml.jackson-version}</version>
+	</dependency>
+	<!-- XML 마샬링 지원용 -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.dataformat</groupId>
+	    <artifactId>jackson-dataformat-xml</artifactId>
+	    <version>${com.fasterxml.jackson-version}</version>
+	</dependency>
+	<!-- jstl -->
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>jstl</artifactId>
+	    <version>1.2</version>
+	</dependency>
+	<!-- JavaBean 규약 지원용 -->
+	<dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>
+		<version>1.18.32</version>
+		<scope>provided</scope>
+	</dependency>
+	<!-- 도메인 레이어 검증 지원용 -->
+	<dependency>
+	    <groupId>org.hibernate.validator</groupId>
+	    <artifactId>hibernate-validator</artifactId>
+	    <version>6.2.5.Final</version>
+	</dependency>
+	<dependency><!-- EL -->
+	    <groupId>org.glassfish</groupId>
+	    <artifactId>jakarta.el</artifactId>
+	    <version>3.0.3</version>
+	</dependency>
+	
+	
+	<!-- Logging 지원용 , 관행적으로 테스트 바로 위에 넣는다.-->
+	<!-- log4j가 실제 appender에 로그를 만들어줌 -->
+	<dependency>
+	  <groupId>org.apache.logging.log4j</groupId>
+	  <artifactId>log4j-api</artifactId>
+	  <version>${org.apache.logging.log4j-version}</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.logging.log4j</groupId>
+	  <artifactId>log4j-core</artifactId>
+	  <version>${org.apache.logging.log4j-version}</version>
+	</dependency>
+	<dependency><!-- app이 로깅 명령을 내림(퍼사드 - 리모콘에 해당하는 역활) -->
+	    <groupId>org.apache.logging.log4j</groupId>
+	    <artifactId>log4j-slf4j-impl</artifactId>
+	    <version>${org.apache.logging.log4j-version}</version>
+	</dependency>
+	<dependency><!--commons-BeanUtils > commons-logging 대신 slf4j를 사용 -->
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>jcl-over-slf4j</artifactId>
+	    <version>1.7.36</version>
+	</dependency>
+	<dependency><!-- Query + Parameter > 싱글로깅 -->
+	    <groupId>org.bgee.log4jdbc-log4j2</groupId>
+	    <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+	    <version>1.16</version>
+	</dependency>
+	
+	<!-- 테스트용 depandency는 맨마지막에 넣는다. -->
+	<dependency>
+	    <groupId>org.junit.jupiter</groupId>
+	    <artifactId>junit-jupiter-engine</artifactId>
+	    <version>5.10.2</version>
+	    <scope></scope>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<version>${org.springframework-version}</version>
+		<scope>test</scope>
+	</dependency>
+  </dependencies>
+</project>

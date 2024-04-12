@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd" >
+<tiles-definitions>
+	<!-- index -->
+	<definition name="index" template="/WEB-INF/views/template.jsp">
+		<put-attribute name="preScript" value="/WEB-INF/includee/preScript.jsp"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/views/index.jsp"></put-attribute>
+		<put-attribute name="postScript" value="/WEB-INF/includee/postScript.jsp"></put-attribute>
+	</definition>
+	<definition name="prod/*" template="/WEB-INF/views/template.jsp"><!-- member/* 와일드카드 사용 -->
+		<put-attribute name="preScript" value="/WEB-INF/includee/preScript.jsp"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/views/prod/{1}.jsp"></put-attribute><!-- {1} 와일드카드로 받은 문자열을 인덱스 적용.  -->
+		<put-attribute name="postScript" value="/WEB-INF/includee/postScript.jsp"></put-attribute>
+	</definition>
+	<definition name="member/*" template="/WEB-INF/views/template.jsp">
+		<put-attribute name="preScript" value="/WEB-INF/includee/preScript.jsp"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/views/member/{1}.jsp"></put-attribute>
+		<put-attribute name="postScript" value="/WEB-INF/includee/postScript.jsp"></put-attribute>
+	</definition>
+</tiles-definitions>

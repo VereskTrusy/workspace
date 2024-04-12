@@ -1,0 +1,45 @@
+<form method="POST" onsubmit="return false;" enctype="multipart/form-data">
+       
+         <label>아이디</label> <input type="text" name="mem_id"><br>
+         <label>이름</label> <input type="text" name="mem_name"><br>
+        <input type="file" name="upfile" onchange="addFile(this);" multiple />
+        <br><br>
+        <div class="file-list"></div>
+        <br>
+      <input type="button"  value="전송" onclick="submitForm()"> 
+    </form>
+-----------------------------------------------------------------------
+
+function submitForm() {
+    // 폼데이터 담기
+    var vform = document.querySelector("form");
+    var formData = new FormData(vform);
+    
+    for (var i = 0; i < filesArr.length; i++) {
+        // 삭제되지 않은 파일만 폼데이터에 담기
+        if (!filesArr[i].is_delete) {
+            formData.append("attach_file", filesArr[i]);
+        }
+    }
+    console.log('formData =', formData);
+ 
+    $.ajax({
+        method: 'POST',
+        url: '/fileppro/Register.do',
+        dataType: 'json',
+        data: formData,
+        enctype : "multipart/form-data", 
+        async: true,
+        cache: false,
+        contentType : false, 
+        processData : false,
+        success: function () {
+            alert("파일업로드 성공");
+        },
+        error: function (xhr) {
+            alert('에러가 발생 하였습니다.');
+         
+        }
+    })
+}
+----------------------------------------------------------------------------

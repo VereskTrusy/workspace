@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+	<display-name>WebStudy3_SpringMVC</display-name>
+	<welcome-file-list>
+		<welcome-file>index.do</welcome-file>
+	</welcome-file-list>
+	
+	<!-- 상위 컨테이너 리스너 등록 -->
+	<!-- Bootstraps the root web application context before servlet initialization -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- needed for ContextLoaderListener -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:kr/or/ddit/spring/conf/*-context.xml</param-value>
+	</context-param>
+
+	
+	
+	<!--  -->
+	<filter>
+		<filter-name>GeneratePrincipalFilter</filter-name>
+		<filter-class>kr.or.ddit.auth.GeneratePrincipalFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>GeneratePrincipalFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	
+</web-app>
