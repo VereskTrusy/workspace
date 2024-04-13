@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.hr.dao.HrDAO">
+	
+	<resultMap type="vo.RegionsVO" id="AllLocationMap">
+		<id property="regionId" column="REGION_ID"/>
+		<collection property="countryList" ofType="vo.CountriesVO" autoMapping="true">
+			<collection property="locationList" ofType="vo.LocationsVO" autoMapping="true">
+				
+			</collection>
+		</collection>
+	</resultMap>
+	
+	<select id="selectAllLocationInfo" resultMap="AllLocationMap">
+		SELECT *
+		FROM REGIONS R
+		LEFT OUTER JOIN COUNTRIES C
+		    ON(R.REGION_ID = C.REGION_ID)
+	    LEFT OUTER JOIN LOCATIONS L
+            ON(C.COUNTRY_ID = L.COUNTRY_ID)
+        LEFT OUTER JOIN DEPARTMENTS D
+    		ON(L.LOCATION_ID = D.LOCATION_ID)
+	</select>
+	
+	
+</mapper>

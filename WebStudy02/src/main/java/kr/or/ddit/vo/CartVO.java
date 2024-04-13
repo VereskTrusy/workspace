@@ -13,6 +13,7 @@ public class CartVO implements Serializable {
 	private String cartNo; // 주문번호
 	private String cartProd; // 상품코드
 	private Long cartQty; // 수량
+	
 	private LocalDate cartDate; // 구매일
 	
 	private MemberVO member; // has a 관계
