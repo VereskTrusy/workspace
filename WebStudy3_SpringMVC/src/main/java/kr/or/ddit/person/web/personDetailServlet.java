@@ -8,10 +8,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Controller;
+
 import kr.or.ddit.person.service.PersonService;
 import kr.or.ddit.person.service.PersonServiceImpl;
 import kr.or.ddit.vo.PersonVo;
 
+@Controller
 @WebServlet("/people.do")
 public class personDetailServlet extends HttpServlet {
 	private PersonService service = new PersonServiceImpl();

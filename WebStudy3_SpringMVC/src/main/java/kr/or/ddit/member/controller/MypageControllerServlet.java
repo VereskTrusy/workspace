@@ -1,38 +1,33 @@
 package kr.or.ddit.member.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.or.ddit.member.service.MemberService;
-import kr.or.ddit.mvc.ViewResolverComposite;
 import kr.or.ddit.vo.MemberVO;
-import kr.or.ddit.vo.MemberVOWrapper;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@WebServlet("/mypage")
-public class MypageControllerServlet extends HttpServlet{
+public class MypageControllerServlet {
 
 	@Autowired
 	private final MemberService service;
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String viewName = "";	
-		MemberVOWrapper principal = (MemberVOWrapper) req.getUserPrincipal();
-		MemberVO member = service.retriveMember(principal.getName());
-		req.setAttribute("member", member);
-		viewName = "member/mypage";
+	@RequestMapping("/mypage")
+	protected String mypage(Principal principal, Model model) { // 핸들러어댑터는 리퀘스트에서 확보할 수 있는 모든 것들은 가져오는게 가능하다.
 		
-		new ViewResolverComposite().resolveView(viewName, req, resp);
+		MemberVO member = service.retriveMember(principal.getName());
+		
+		model.addAttribute("member", member);
+		
+		return "member/mypage";
 	}
 }

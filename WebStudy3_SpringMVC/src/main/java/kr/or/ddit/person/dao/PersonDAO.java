@@ -2,6 +2,8 @@ package kr.or.ddit.person.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import kr.or.ddit.vo.PersonVo;
 
 
@@ -9,6 +11,7 @@ import kr.or.ddit.vo.PersonVo;
  * Persistent Layer : persistence 영역에 저장된 raw data 를 domain 객체로 매핑하는 역활을 담당하는 객체이다. 
  *
  */
+@Mapper // 매퍼 프록시가 만들어지는 설정
 public interface PersonDAO {
 
 	public List<PersonVo> selectPersonList();

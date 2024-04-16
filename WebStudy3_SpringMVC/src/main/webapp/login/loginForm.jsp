@@ -14,6 +14,7 @@
 </script>
 </head>
 <body>
+
 <form action="<c:url value='/login/loginProcess.do' />" method="post" enctype="application/x-www-form-urlencoded">
 	<input type="text" name="memId" placeholder="ID"/>
 	<input type="password" name="memPass" placeholder="Password"/>

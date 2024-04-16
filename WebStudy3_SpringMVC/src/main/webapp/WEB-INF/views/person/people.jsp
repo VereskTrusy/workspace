@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set value="${pageContext.request.contextPath}" var="cPath" scope="application"></c:set><!-- var 저장 : page scope에 저장됨 -->
 <!-- 웹에서 기본 컨텐츠 타입으로 사용되는 HTML 컨텐츠를 생성하기위한 View Layer -->
 <!DOCTYPE html>
 <html>
@@ -10,9 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form name="personForm" action="${cPath}/people.do" method="post">
-	<input type="text" name="who" />
-</form>
+<c:set value="${pageContext.request.contextPath}" var="cPath" scope="application"></c:set><!-- var 저장 : page scope에 저장됨 -->
 <div>
 	<div id="memberInfo"></div>
 	<div>
@@ -27,7 +24,7 @@
 			<c:forEach var="once" items="${people}">
 				<tr>
 					<td>${once.id}</td>
-					<td><a href="javascript:;" onclick="clickHandler(event)" data-member-id="${once.id}">${once.name}</a></td>
+					<td><a href="<c:url value='/peple/${once}'/>${once.id}">${once.name}</a></td>
 				</tr>
 			</c:forEach>
 			</tbody>

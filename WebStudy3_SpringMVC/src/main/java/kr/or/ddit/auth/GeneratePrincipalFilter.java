@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ser.impl.UnwrappingBeanPropertyWriter;
 
@@ -34,17 +35,16 @@ public class GeneratePrincipalFilter implements Filter{
 			throws IOException, ServletException {
 		
 		HttpServletRequest req = (HttpServletRequest) request;
-		
-		Object authMember = req.getSession().getAttribute("authMember");
-		if(authMember == null) {
-			chain.doFilter(request, response); // 원본 리퀘스트 넘기기
-		} else {
-			UserPrincipalRequestMapper wrapper = new UserPrincipalRequestMapper(req);
-			chain.doFilter(wrapper, response); // 랩핑된 리퀘스트 넘기기
+		HttpSession session = req.getSession(false);
+		if(session != null) {
+			Object authMember = session.getAttribute("authMember");
+			if(authMember != null) {
+				UserPrincipalRequestMapper wrapper = new UserPrincipalRequestMapper(req);
+				chain.doFilter(wrapper, response); // 랩핑된 리퀘스트 넘기기
+				return;
+			}
 		}
-		
-		
-		
+		chain.doFilter(request, response); // 원본 리퀘스트 넘기기
 	}
 
 	@Override

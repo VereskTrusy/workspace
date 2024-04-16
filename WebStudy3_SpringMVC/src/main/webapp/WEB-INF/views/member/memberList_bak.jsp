@@ -33,7 +33,8 @@
 				<td>${member.memHp}</td>
 				<td>${member.memMail}</td>
 				<td>${member.memMileage}</td>
-				<td><button type="button" id="" onclick="location.href='<c:url value="/member/memberUpdate.do?who=${member.memId}"/>'">수정하기</button></td>			
+				<td><button type="button" id="" onclick="location.href='${memberURL}'">수정하기</button></td>			
+<%-- 				<td><button type="button" id="" onclick="location.href='<c:url value="/member/memberUpdate.do?who=${member.memId}"/>'">수정하기</button></td>			 --%>
 			</tr>
 		</c:forEach>
 	</c:if>

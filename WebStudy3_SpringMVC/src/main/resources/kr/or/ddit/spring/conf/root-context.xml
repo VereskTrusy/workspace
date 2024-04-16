@@ -10,8 +10,8 @@
 	<context:component-scan base-package="kr.or.ddit" use-default-filters="true">
 		<!-- 배제된 목록 -->
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-		<!-- RestController -->
 		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
-		<!-- RestControllerAdvice -->
 	</context:component-scan>
+
+	
 </beans>

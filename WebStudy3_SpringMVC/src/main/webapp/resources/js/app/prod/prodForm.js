@@ -16,16 +16,9 @@ $(function(){
 		});
 		
 		$prodBuyer.find(`option:first`).prop(`selected`, true);
-//		if(lgu){
-//			$prodBuyer.find(`option`).hide();
-//			$prodBuyer.find(`option.${lgu}`).show();
-//		}else{
-//			$prodBuyer.find(`option`).show();
-//		}
+
 	});
 	$(":input[data-init-value]").each(function(index, ipt){ // select Box 요소 선택
-		let initValue = $(ipt).data("initValue"); // 
-		$(ipt).val(initValue);
 		$(ipt).trigger("change");
 	});
 	

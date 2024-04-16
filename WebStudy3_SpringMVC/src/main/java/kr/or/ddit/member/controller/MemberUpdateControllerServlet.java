@@ -1,27 +1,25 @@
 package kr.or.ddit.member.controller;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.security.Principal;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.MemberService;
-import kr.or.ddit.mvc.ViewResolverComposite;
-import kr.or.ddit.utils.PopulateUtils;
-import kr.or.ddit.utils.ValidateUtils;
+import kr.or.ddit.validate.groups.UpdateGroup;
 import kr.or.ddit.vo.MemberVO;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -55,51 +53,41 @@ import lombok.extern.slf4j.Slf4j;
 **/
 @Slf4j
 @Controller
-@RequiredArgsConstructor
-@WebServlet("/member/memberUpdate.do")
-public class MemberUpdateControllerServlet extends HttpServlet{
+@RequestMapping("/member/memberUpdate.do")
+public class MemberUpdateControllerServlet {
 	
 	@Autowired
-	private final MemberService service;
+	private MemberService service;
 
 	// 회원 가입 폼으로 이동
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String memId = req.getUserPrincipal().getName();
-		HttpSession session = req.getSession();
-		MemberVO member = service.retriveMember(memId);
-		req.setAttribute("member", member);
-		 String viewName = "member/memberForm";
-		new ViewResolverComposite().resolveView(viewName, req, resp);
+	@GetMapping
+	protected String doGet(Model model, Principal principal) throws ServletException, IOException {
+		if(!model.containsAttribute("member")) {
+			String memId = principal.getName();
+			MemberVO member = service.retriveMember(memId);
+			model.addAttribute("member", member);			
+		}
+		return "member/memberForm";
 	}
 
 	// 회원 가입 진행
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		MemberVO member = new MemberVO(); // command Object
-		req.setAttribute("member", member);
-		
-		Map<String, String[]> parameterMap = req.getParameterMap();
-		PopulateUtils.populate(member, parameterMap);
-		
-		// 2. 검증
-		Map<String, List<String>> errors = new LinkedHashMap<>();
-		boolean valid = ValidateUtils.validate(member, errors); // errors -> call by referense 
-		req.setAttribute("errors", errors);
-		
-		// 3. 로직 사용(model 확보)
-		// 4) 밸리데이션 검증 실패
+	@PostMapping
+	protected String doPost(@Validated(UpdateGroup.class) @ModelAttribute("Member") MemberVO member
+			, BindingResult errors
+			, RedirectAttributes redirectAttributes
+			, Model model
+	) {
 		String viewName = null;
-		if (errors.isEmpty()) { // 에러가 없다 == 검증이 끝났다.
+		if (!errors.hasErrors()) { // 에러가 없다 == 검증이 끝났다.
 			// 4. scope를 이용하여 model 공유
 			ServiceResult result = service.modifyMember(member);
 			switch (result) {
 			case INVALIDPASSWORD:
-				req.setAttribute("message", "비밀번호가 잘못됨");
-				viewName = "member/memberForm";
+				redirectAttributes.addFlashAttribute("message", "비밀번호가 잘못됨");
+				viewName = "redirect:/member/memberUpdate.do";
 				break;
 			case FAIL: // 현재는 fail상황 없음. 그보다 먼저 SQLException 발생, 현티어구조때문임. 
-				req.setAttribute("message", "서버오류");
+				model.addAttribute("message", "서버오류");
 				viewName = "member/memberForm";
 				break;
 			default: 
@@ -108,14 +96,14 @@ public class MemberUpdateControllerServlet extends HttpServlet{
 				break;
 			}
 		} else {
-			req.setAttribute("member", member);
-			req.setAttribute("errors", errors);
-			viewName = "member/memberForm"; // 리퀘스트에
+			redirectAttributes.addFlashAttribute("member", member);
+			redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX+"member", errors);
+			viewName = "redirect:/member/memberUpdate.do"; // 리퀘스트에
 		}
 		
 		// 5. view 결정
 		// 6. view 로 이동(flow Control)
 		// Front Controller Pattern 을 통해서 하위의 모든 컨트롤러에서 중복되는 코드를 해결할 예정.
-		new ViewResolverComposite().resolveView(viewName, req, resp);
+		return viewName;
 	}
 }

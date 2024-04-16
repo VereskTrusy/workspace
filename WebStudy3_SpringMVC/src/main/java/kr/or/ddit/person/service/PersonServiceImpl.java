@@ -2,14 +2,18 @@ package kr.or.ddit.person.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import kr.or.ddit.person.dao.PersonDAO;
-import kr.or.ddit.person.dao.PersonDAOImpl;
 import kr.or.ddit.person.exception.PersonNotFoundException;
 import kr.or.ddit.vo.PersonVo;
 
+@Service
 public class PersonServiceImpl implements PersonService {
 	
-	private PersonDAO dao = new PersonDAOImpl();
+	@Autowired
+	private PersonDAO dao;
 
 	@Override
 	public List<PersonVo> retrievePersonList() {

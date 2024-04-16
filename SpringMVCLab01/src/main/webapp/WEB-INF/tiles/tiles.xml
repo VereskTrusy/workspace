@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd" >
+<tiles-definitions>
+	<definition name="parent" template="/WEB-INF/views/templete.jsp">
+		<put-attribute name="preScript" value="/WEB-INF/includee/preScript.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="parentCase07" template="/WEB-INF/views/templeteCase07.jsp">
+		<put-attribute name="preScript" value="/WEB-INF/includee/preScript.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="mission/*" extends="parent">
+		<put-attribute name="content" value="/WEB-INF/views/case04/misson.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="case06/*" extends="parent">
+		<put-attribute name="content" value="/WEB-INF/views/case06/{1}.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="case07/*" extends="parent">
+		<put-attribute name="content" value="/WEB-INF/views/case07/{1}.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="case07/*" extends="parentCase07">
+		<put-attribute name="content" value="/WEB-INF/views/case07/{1}.jsp"></put-attribute>
+	</definition>
+	
+</tiles-definitions>
