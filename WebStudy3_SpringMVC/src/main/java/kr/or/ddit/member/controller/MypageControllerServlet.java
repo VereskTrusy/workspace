@@ -1,9 +1,6 @@
 package kr.or.ddit.member.controller;
 
-import java.io.IOException;
 import java.security.Principal;
-
-import javax.servlet.ServletException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

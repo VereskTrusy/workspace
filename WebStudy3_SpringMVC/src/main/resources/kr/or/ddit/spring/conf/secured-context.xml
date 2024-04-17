@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+	<!-- 
+	1. 컨테이너안에 빈으로 등록한다.
+	2. web.xml에 필터를 등록한다.(순서대로)
+	 -->
+	<util:properties id="securedProps" location="classpath:kr/or/ddit/SecuredResources.properties"></util:properties>
+	<util:map id="securedResource" key-type="java.lang.String" value-type="java.lang.String" ></util:map>
+	
+	
+	<bean id="securedFilterChain"  class="org.springframework.web.filter.CompositeFilter">
+		<property name="filters">
+			<list>
+				<bean class="kr.or.ddit.auth.GeneratePrincipalFilter"></bean>
+<!-- 				<bean class="kr.or.ddit.auth.AuthenticateCheckFilter" -->
+<!-- 					init-method="init" -->
+<!-- 				/> -->
+				<bean class="kr.or.ddit.auth.AuthorizationCheckFilter"></bean>
+			</list>
+		</property>
+	</bean>
+</beans>

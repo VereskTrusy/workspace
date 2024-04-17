@@ -11,8 +11,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.databind.ser.impl.UnwrappingBeanPropertyWriter;
 
+import kr.or.ddit.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -24,6 +27,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class GeneratePrincipalFilter implements Filter{
+	
+	@Autowired
+	MemberService service;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {

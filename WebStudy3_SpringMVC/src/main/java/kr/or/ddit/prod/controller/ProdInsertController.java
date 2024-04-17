@@ -1,9 +1,5 @@
 package kr.or.ddit.prod.controller;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServlet;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.view.ViewResolverComposite;
 
 import kr.or.ddit.enumpkg.ServiceResult;
-import kr.or.ddit.lprod.controller.OthersControllerAdvice;
 import kr.or.ddit.prod.service.ProdService;
 import kr.or.ddit.validate.groups.InsertGroup;
 import kr.or.ddit.vo.ProdVO;

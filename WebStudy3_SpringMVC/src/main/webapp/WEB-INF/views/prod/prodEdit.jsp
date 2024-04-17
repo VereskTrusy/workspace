@@ -68,9 +68,12 @@
 		</tr>
 		<tr>
 			<th>이미지</th>
-			<td><form:input type="text" path="prodImg"
-					cssClass="form-control" />
-				<form:errors path="prodImg" element="span" cssClass="text-danger"></form:errors></td>
+			<td>
+				<img src="<c:url value='/resources/prodImages/${prod.prodImg}'/>">
+				<form:input type="hidden" path="prodImg" cssClass="form-control" />
+				<input type="file" name="prodImage" />
+				<form:errors path="prodImg" element="span" cssClass="text-danger"></form:errors>
+			</td>
 		</tr>
 		<tr>
 			<th>총재고</th>

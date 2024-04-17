@@ -3,22 +3,15 @@ package kr.or.ddit.vo;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.Default;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import kr.or.ddit.validate.groups.DeleteGroup;
-import kr.or.ddit.validate.groups.InsertGroup;
-import kr.or.ddit.validate.groups.UpdateGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString.Exclude;
@@ -34,13 +27,13 @@ import lombok.ToString.Exclude;
 @EqualsAndHashCode(of="prodId")
 //@ToString(exclude = "prodDetail")
 public class ProdVO implements Serializable {
-	@NotBlank(groups = {UpdateGroup.class, DeleteGroup.class})
+	@NotBlank
 	private String prodId; // 상품코드
 	@NotBlank
 	private String prodName; // 상품명
-	@NotBlank(groups = InsertGroup.class)
+	@NotBlank
 	private String prodLgu; // 상품분류
-	@NotBlank(groups = InsertGroup.class)
+	@NotBlank
 	private String prodBuyer; // 거래처
 	@Min(value = 0)
 	private long prodCost; // 구매가
@@ -53,19 +46,8 @@ public class ProdVO implements Serializable {
 	@Exclude
 	@JsonIgnore
 	private String prodDetail; // 상세정보
-	
 	@NotBlank
-	private String prodImg; // 이미지 DB 데이터를 받기위한 프로퍼티
-	
-	public void setProdImage(MultipartFile prodImage) {
-		if(prodImage.isEmpty()) return;
-		
-		this.prodImage = prodImage;
-		this.prodImg = UUID.randomUUID().toString();
-	}
-	
-	private MultipartFile prodImage; // 클라이언트의 파트데이터를 받기위한 프로퍼티
-	
+	private String prodImg; // 이미지
 	@Min(value = 0)
 	private long prodTotalstock; // 총재고
 	@DateTimeFormat(iso = ISO.DATE) // 문자열 파싱 해주는 설정. java.util.Date, java.util.Calender, java.time.*
