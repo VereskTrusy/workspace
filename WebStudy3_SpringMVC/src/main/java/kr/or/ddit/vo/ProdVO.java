@@ -34,6 +34,9 @@ import lombok.ToString.Exclude;
 @EqualsAndHashCode(of="prodId")
 //@ToString(exclude = "prodDetail")
 public class ProdVO implements Serializable {
+	
+	private int rnum;
+	
 	@NotBlank(groups = {UpdateGroup.class, DeleteGroup.class})
 	private String prodId; // 상품코드
 	@NotBlank
@@ -54,7 +57,7 @@ public class ProdVO implements Serializable {
 	@JsonIgnore
 	private String prodDetail; // 상세정보
 	
-	@NotBlank
+	@NotBlank(groups = InsertGroup.class)
 	private String prodImg; // 이미지 DB 데이터를 받기위한 프로퍼티
 	
 	public void setProdImage(MultipartFile prodImage) {

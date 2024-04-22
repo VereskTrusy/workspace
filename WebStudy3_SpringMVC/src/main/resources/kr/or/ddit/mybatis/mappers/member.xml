@@ -9,16 +9,81 @@
 		</collection>
 	</resultMap>
 	
-	<select id="selectMemberList" resultType="MemberVO"  ><!-- statementType="CALLABLE" -->
-		SELECT 
-			MEM_ID memId 
-			, MEM_NAME 
-			, MEM_ADD1 
-			, MEM_ADD2 
-			, MEM_HP 
-			, MEM_MAIL 
-			, MEM_MILEAGE 
+	<!-- 페이징, 검색 조건 조각 쿼리 -->
+	<!-- 이걸 flagment 라고 부른다. -->
+	<sql id="searchFrag">
+		<where>
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(simpleCondition.searchWord)">
+				<choose>
+					<when test="simpleCondition.searchType eq 'name'">
+						INSTR(MEM_NAME, #{simpleCondition.searchWord}) > 0
+					</when>
+					<when test="simpleCondition.searchType eq 'address'">
+						INSTR(MEM_ADD1, #{simpleCondition.searchWord}) > 0
+					</when>
+					<otherwise>
+						INSTR(MEM_NAME, #{simpleCondition.searchWord}) > 0
+						OR INSTR(MEM_ADD1, #{simpleCondition.searchWord}) > 0
+					</otherwise>
+				</choose>
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 전체 멤버 건수 조회 -->
+	<select id="selectTotalRecord" resultType="int" parameterType="kr.or.ddit.paging.PaginationInfo">
+		SELECT COUNT(*)
 		FROM MEMBER
+		<include refid="searchFrag"></include>
+	</select>
+	
+	<!-- 멤버 목록 -->
+	<select id="selectMemberList" resultType="MemberVO" parameterType="kr.or.ddit.paging.PaginationInfo"><!-- statementType="CALLABLE" -->
+		WITH ORDERED AS (
+			SELECT 
+				MEM_ID memId 
+				, MEM_NAME 
+				, MEM_ADD1 
+				, MEM_ADD2 
+				, MEM_HP 
+				, MEM_MAIL 
+				, MEM_MILEAGE 
+			FROM MEMBER
+			<include refid="searchFrag"></include>
+			ORDER BY MEMBER.ROWID DESC
+		)
+		, RNUMORDERED AS (
+			SELECT 
+				ROWNUM RNUM
+				, ORDERED.*
+			FROM ORDERED
+		)
+		SELECT *
+		FORM RNUMORDERED
+		WHERE RNUM BETWEEN #{firstRecord} AND #{lastRecord}
+		
+	
+	
+<!-- 		SELECT B.* -->
+<!-- 		FROM ( -->
+<!-- 			SELECT ROWNUM RNUM, A.* -->
+<!-- 			FROM ( -->
+<!-- 				SELECT  -->
+<!-- 					MEM_ID memId  -->
+<!-- 					, MEM_NAME  -->
+<!-- 					, MEM_ADD1  -->
+<!-- 					, MEM_ADD2  -->
+<!-- 					, MEM_HP  -->
+<!-- 					, MEM_MAIL  -->
+<!-- 					, MEM_MILEAGE  -->
+<!-- 				FROM MEMBER -->
+<!-- 				<include refid="searchFrag"></include> -->
+<!-- 				ORDER BY MEMBER.ROWID DESC -->
+<!-- 			) A -->
+<!-- 		) B -->
+<!-- 		<![CDATA[ -->
+<!-- 		WHERE RNUM >= #{firstRecord} AND RNUM <= #{lastRecord} -->
+<!-- 		]]>  -->
 	</select>
 	
 	
@@ -54,6 +119,7 @@
 			, MEM_MILEAGE
 			, MEM_DELETE
 			, MEM_ROLE
+			, MEM_IMG
 			, PROD_NAME
 			, CART_QTY
 			, CART_NO
@@ -83,6 +149,9 @@
 		    ,MEM_MEMORIAL
 		    ,MEM_MEMORIALDAY
 		    ,MEM_MILEAGE
+		    <if test="memImg neq null and memImg.length gt 0">
+		    ,MEM_IMG
+		    </if>
 		) VALUES (
 		      #{memId, jdbcType=VARCHAR}<!-- #{memId} -> member.getMemId() : 자바코드로 변경될때 getter로 바뀐다. -->
 			, #{memPass, jdbcType=VARCHAR}
@@ -102,6 +171,9 @@
 			, #{memMemorial, jdbcType=VARCHAR}
 			, #{memMemorialday, jdbcType=DATE}
 			, 3000
+			<if test="memImg neq null and memImg.length gt 0">
+			, #{memImg, jdbcType=BLOB}
+		    </if>
 		)
 	</insert>
 	
@@ -121,6 +193,9 @@
 			, MEM_LIKE = #{memLike, jdbcType=VARCHAR}
 			, MEM_MEMORIAL = #{memMemorial, jdbcType=VARCHAR}
 			, MEM_MEMORIALDAY = #{memMemorialday, jdbcType=DATE}
+			<if test="memImg neq null and memImg.length gt 0">
+		    , MEM_IMG = #{memImg, jdbcType=BLOB}
+		    </if>
 		WHERE MEM_ID = #{memId}
 	</update>
 	

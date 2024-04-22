@@ -55,7 +55,7 @@ public class MemberInsertController {
 			, RedirectAttributes redirectAttributes
 	) {
 		String viewName = null;
-		if (errors.hasErrors()) {
+		if (!errors.hasErrors()) {
 			ServiceResult result = service.createMember(member);
 			switch (result) {
 			case PKDUPLICATED:
@@ -79,3 +79,5 @@ public class MemberInsertController {
 		return viewName;
 	}
 }
+
+

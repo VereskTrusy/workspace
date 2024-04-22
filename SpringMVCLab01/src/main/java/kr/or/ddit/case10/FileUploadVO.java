@@ -15,7 +15,7 @@ public class FileUploadVO {
 	public FileUploadVO(MultipartFile file) {
 		this.file = file;
 		this.fileName = file.getOriginalFilename();
-		this.fileSize = fileSize.getSize();
+		this.fileSize = file.getSize();
 		this.saveName = UUID.randomUUID().toString();
 	}
 	

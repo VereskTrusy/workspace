@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
@@ -46,15 +47,10 @@ public class FileUploadController {
 			  @Valid @ModelAttribute("co") Case10CommandObject co
 			, BindingResult errors
 			, RedirectAttributes redirectAttributes
-	) throws IOException {
-		log.info("upload : {}", co.getUpload());
-		log.info("count : {}", co.getCount());
-	 	
+	) throws IOException {	 	
 		List<FileUploadVO> fileList = co.getFileList();
 		redirectAttributes.addFlashAttribute("co", co);
 		for(FileUploadVO fileVO: fileList) {
-			
-			
 			Resource saveRes = saveFolder.createRelative(fileVO.getSaveName());
 			FileUtils.copyInputStreamToFile(fileVO.getFile().getInputStream(), saveRes.getFile());
 			log.info("{} 업로드 완료, DB에 저장할 메타데이터 : {}", fileVO.getFileName(), fileList);
@@ -152,6 +148,7 @@ public class FileUploadController {
 			, MultipartHttpServletRequest req
 			, RedirectAttributes redirectAttributes
 	) throws IOException {
+		
 		log.info("uploader : {}", uploader);
 		log.info("uploader : {}", count);
 		

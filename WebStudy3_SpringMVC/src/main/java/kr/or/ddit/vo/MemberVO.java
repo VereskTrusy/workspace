@@ -1,12 +1,16 @@
 package kr.or.ddit.vo;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.Base64;
 import java.util.Set;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import javax.validation.groups.Default;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -38,6 +42,8 @@ import oracle.jdbc.logging.annotations.DefaultLevel;
 @ToString(exclude = {"memPass", "memRegno1", "memRegno2"}) // 빼는게 중요
 @EqualsAndHashCode(of = "memId") // 넣는게 중요
 public class MemberVO implements Serializable{
+	private int rnum;
+	
 	@NotBlank(groups = InsertGroup.class)
 	private String memId;
 	@NotBlank(groups = {DeleteGroup.class, Default.class})
@@ -74,6 +80,25 @@ public class MemberVO implements Serializable{
 	private Long memMileage;
 	private boolean memDelete; // 값이 null이면 false 값이 있다면 true로 마이바티스가 변환해준다.
 	
+	// 이미지 컬럼 추가 (MEM_IMG)
+	private byte[] memImg;
+//	public void setMemImg(MultipartFile memImage) {
+//		try {
+//			this.memImg = memImage.getBytes();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
+	private MultipartFile memImage;
+	public void setMemImage(MultipartFile memImage) {
+		if(memImage.isEmpty()) return;
+		this.memImage = memImage;
+		try {
+			this.memImg = memImage.getBytes();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	// 구매기록
 	// Set - 중복허용 x
@@ -82,4 +107,9 @@ public class MemberVO implements Serializable{
 	
 	// 사용자 권한 정보
 	private String memRole;
+	
+	public String getMemImgBase64() {
+		if(memImg == null) return null;
+		return Base64.getEncoder().encodeToString(memImg);
+	}
 }

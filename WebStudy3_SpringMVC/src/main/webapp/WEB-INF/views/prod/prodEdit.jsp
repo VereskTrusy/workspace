@@ -7,7 +7,7 @@
 
 
 <form:form modelAttribute="${ProdUpdateControllerServlet.MODELNAME}"
-	method="post" enctype="application/x-www-form-urlencoded">
+	method="post" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<th>상품코드</th>
@@ -70,7 +70,7 @@
 			<th>이미지</th>
 			<td>
 				<img src="<c:url value='/resources/prodImages/${prod.prodImg}'/>">
-				<form:input type="hidden" path="prodImg" cssClass="form-control" />
+				<form:hidden path="prodImg" />
 				<input type="file" name="prodImage" />
 				<form:errors path="prodImg" element="span" cssClass="text-danger"></form:errors>
 			</td>

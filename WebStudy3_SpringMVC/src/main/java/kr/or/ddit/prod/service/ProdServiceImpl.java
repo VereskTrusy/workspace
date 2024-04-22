@@ -1,5 +1,6 @@
 package kr.or.ddit.prod.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
@@ -7,17 +8,16 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.ctc.wstx.util.StringUtil;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.PkNotFoundException;
+import kr.or.ddit.paging.PaginationInfo;
 import kr.or.ddit.prod.dao.ProdDAO;
 import kr.or.ddit.vo.ProdVO;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class ProdServiceImpl implements ProdService {
 	
 	@Autowired
-	private final ProdDAO dao;
+	private final ProdDAO dao; // 얘가 픠록시다
 	
 	@Value("/resources/prodImages/")
 	private Resource prodImages;
@@ -40,23 +40,27 @@ public class ProdServiceImpl implements ProdService {
 	}
 	
 	private void processImage(ProdVO prod) {
+//		if(1==1) {
+//			throw new RuntimeException("강제 발생 예외");
+//		}
+		MultipartFile uploadFile = prod.getProdImage();
 		String saveName = prod.getProdImg();
-		if(StringUtils.isBlank(saveName)) {
-			return;
-		}
+		if(uploadFile == null) return;
+		
 		try {
-			Resource saveRes = prodImages.createRelative(saveName);
-			MultipartFile uploadFile = prod.getProdImage();
-			FileUtils.copyInputStreamToFile(uploadFile.getInputStream(), saveRes.getFile());
+//			Resource saveRes = prodImages.createRelative(saveName);
+			File saveFile = new File(prodImages.getFile(), saveName);
+			FileUtils.copyInputStreamToFile(uploadFile.getInputStream(), saveFile);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
 	}
 
 	@Override
-	public List<ProdVO> retriveProdList() {
-		List<ProdVO> list = dao.selectProdList();
-		return list;
+	public List<ProdVO> retriveProdList(PaginationInfo paging) {
+		int totalRecord = dao.selectTotalRecord(paging);
+		paging.setTotalRecord(totalRecord);
+		return dao.selectProdList(paging);
 	}
 
 	@Override
@@ -77,20 +81,20 @@ public class ProdServiceImpl implements ProdService {
 		}
 	}
 
+//	@Transactional
 	@Override
 	public ServiceResult modifyProd(ProdVO prod) {
+		if(dao.updateProd(prod) > 0) {
+			processImage(prod);
+			return ServiceResult.OK;
+		}else {
+			return ServiceResult.FAIL;
+		}
+		
 		// 디비 조회 uuid
 		// prod uuid 똑 같고, image not null -> 업뎃
 		// prod uuid 똑 같고, image null -> 이미지 빼고 업뎃
-		ProdVO oriProd = dao.selectProd(prod.getProdId());
-		String prodImg = oriProd.getProdImg();
-		if() {
-			
-		}
-		int rowcnt = dao.updateProd(prod);
-		if(rowcnt != -1) return ServiceResult.OK;
-		else return ServiceResult.FAIL;
+//		ProdVO oriProd = dao.selectProd(prod.getProdId());
+//		String prodImg = oriProd.getProdImg();
 	}
-	
-	
 }

@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<jsp:include page="/WEB-INF/includee/preScript.jsp"></jsp:include>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -50,11 +44,12 @@
 	}
 	
 </style>
-</head>
+
 <body data-context-path="${pageContext.request.contextPath}">
 <table class="table table-bordered table-striped">
 	<thead class="table-dark">
 		<tr>
+			<th>번호</th>
 			<th>회원명</th>
 			<th>기본주소</th>
 			<th>상세주소</th>
@@ -67,6 +62,7 @@
 	<c:if test="${not empty memberList}">
 		<c:forEach items="${memberList}" var="member">
 			<tr data-mem-id="${member.memId}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+				<td>${member.rnum}</td>
 				<td>${member.memName}</td>
 				<td>${member.memAdd1}</td>
 				<td>${member.memAdd2}</td>
@@ -85,5 +81,80 @@
 </table>
 <jsp:include page="/WEB-INF/includee/postScript.jsp"></jsp:include>
 <script src="<c:url value='/resources/js/app/member/memberList.js' />"></script>
-</body>
-</html>
+
+
+<tfoot>
+	<tr>
+		<td colspan="6">
+			이름 지역 전체 세가지 검색 조건으로 검색 및 페이징 처리
+			레코드 카운트 3 페이지 사이즈 2
+			<!-- search -->
+			<div id="searchUI">
+				<select name="searchType">
+					<option value="">전체</option>
+					<option value="memName" >이름</option>
+					<option value="memAdd1">지역</option>
+				</select>
+				<input type="text" name="searchWord"/>
+				<button id="searchBtn">검색</button>						
+			</div>
+			<!-- paging -->
+			${pagingHTML }
+		</td>
+	</tr>
+</tfoot>
+<!-- 검색 전달용 -->
+<form id="searchForm" action="<c:url value='/prod/prodList.do'/>">
+	<input type="text" name="searchType" />
+	<input type="text" name="searchWord"/>
+	<input type="text" name="currentPage"/>
+</form>
+
+<script>
+	$("[name='searchType']").val("${condition.searchType}");
+	$("[name='searchWord']").val("${condition.searchWord}");
+
+	function paging(page){
+// 		location.href = "?currentPage=" + page;
+		searchForm.currentPage.value = page;
+		$searchForm.submit();
+	}
+// 	searchBtn을 클릭하면 , searchUI 가 가진 모든 입력값을 searchForm 으로 복사하고 searchForm 을 전송
+	const $searchForm = $("#searchForm");
+	
+	$("#searchBtn").on("click", function(event){
+		let $searchUI = $(this).parents("#searchUI");
+		$searchUI.find(":input[name]").each(function(idx, ipt){
+			let name = this.name;
+			let value = $(this).val();
+			searchForm[name].value = value;
+		});
+		
+		$searchForm.submit();
+	});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

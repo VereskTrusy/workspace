@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.or.ddit.paging.PaginationInfo;
 import kr.or.ddit.vo.ProdVO;
 
 /**
@@ -24,8 +25,8 @@ public interface ProdDAO {
 	 * 상품코드, 거래처코드, 분류코드, 상품명, 구매가, 판매가, 마일리지, 입고일을 조회한다.
 	 * @return empty체크 할것
 	 */
-	List<ProdVO> selectProdList();
-	
+	List<ProdVO> selectProdList(PaginationInfo paging);
+	public int selectTotalRecord(PaginationInfo paging);
 	/**
 	 * 
 	 * @param prodId

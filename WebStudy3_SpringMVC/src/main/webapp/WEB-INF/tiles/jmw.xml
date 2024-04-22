@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd" >
 <tiles-definitions>
+	<definition name="parent" template="/WEB-INF/views/templateBS.jsp">
+		<put-attribute name="preScript" value="/WEB-INF/includee/preScript.jsp"></put-attribute>
+		<put-attribute name="header" value="/WEB-INF/includee/header.jsp"></put-attribute>
+		<put-attribute name="leftMenu" value="/WEB-INF/includee/leftMenu.jsp"></put-attribute>
+
+		<put-attribute name="footer" value="/WEB-INF/includee/footer.jsp"></put-attribute>
+		<put-attribute name="postScript" value="/WEB-INF/includee/postScript.jsp"></put-attribute>
+	</definition>
 	<!-- index -->
-	<definition name="index" template="/WEB-INF/views/template.jsp">
-		<put-attribute name="preScript" value="/WEB-INF/includee/preScript.jsp"></put-attribute>
+	<definition name="index" extends="parent">
 		<put-attribute name="content" value="/WEB-INF/views/index.jsp"></put-attribute>
-		<put-attribute name="postScript" value="/WEB-INF/includee/postScript.jsp"></put-attribute>
 	</definition>
-	<definition name="prod/*" template="/WEB-INF/views/template.jsp"><!-- member/* 와일드카드 사용 -->
-		<put-attribute name="preScript" value="/WEB-INF/includee/preScript.jsp"></put-attribute>
+	<!-- prod -->
+	<definition name="prod/*" extends="parent"><!-- member/* 와일드카드 사용 -->
 		<put-attribute name="content" value="/WEB-INF/views/prod/{1}.jsp"></put-attribute><!-- {1} 와일드카드로 받은 문자열을 인덱스 적용.  -->
-		<put-attribute name="postScript" value="/WEB-INF/includee/postScript.jsp"></put-attribute>
 	</definition>
-	<definition name="member/*" template="/WEB-INF/views/template.jsp">
-		<put-attribute name="preScript" value="/WEB-INF/includee/preScript.jsp"></put-attribute>
+	<!-- member -->
+	<definition name="member/*" extends="parent">
 		<put-attribute name="content" value="/WEB-INF/views/member/{1}.jsp"></put-attribute>
-		<put-attribute name="postScript" value="/WEB-INF/includee/postScript.jsp"></put-attribute>
 	</definition>
 </tiles-definitions>

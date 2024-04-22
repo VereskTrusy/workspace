@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+
 <style type="text/css">
 	tr[data-mem-Id]{ /* 속성으로 그룹핑 */
 		cursor: pointer;
@@ -10,6 +12,7 @@
 <table class="table table-bordered table-striped">
 	<thead class="table-dark">
 		<tr>
+			<th>번호</th>
 			<th>회원명</th>
 			<th>기본주소</th>
 			<th>상세주소</th>
@@ -27,6 +30,7 @@
 				<c:param name="who" value="${member.memId}" />
 			</c:url>
 			<tr class="${clzValue}" data-mem-id="${member.memId}" data-bs-toggle="modal" data-bs-target="#exampleModal" data-url="${memberURL}">
+				<td>${member.rnum}</td>
 				<td>${member.memName}</td>
 				<td>${member.memAdd1}</td>
 				<td>${member.memAdd2}</td>
@@ -45,6 +49,56 @@
 	</c:if>
 	<c:remove var="lastCreated" scope="session"/> <!-- 세션안에 해당 속성 지우기 -->
 	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="6">
+				<!-- paging -->
+				${pagingHTML }
+				<!-- search -->
+				<div id="searchUI">
+					<form:select path="paging.simpleCondition.searchType">
+						<form:option value="" lable="전체" />
+						<form:option value="name" lable="이름" />
+						<form:option value="address" lable="지역" />
+					</form:select>
+					<form:input path="paging.simpleCondition.searchWord"/>
+					<button id="searchBtn">검색</button>						
+				</div>
+			</td>
+		</tr>
+	</tfoot>
+	<!-- 검색 전달용 -->
+	<form:form id="searchForm" modelAttribute="paging" action="${pageContext.request.contextPath}/member/memberList.do" method="get"> <!-- 컨트롤러에서 보낸 모델과 연동됨 -->
+		<form:input path="simpleCondition.searchType"/>
+		<form:input path="simpleCondition.searchWord"/>
+		<input type="text" name="currentPage" value="1"/>
+	</form:form>
+<%-- 	<form id="searchForm" action="<c:url value='/member/memberList.do'/>"> --%>
+<!-- 		<input type="text" name="searchType" /> -->
+<!-- 		<input type="text" name="searchWord"/> -->
+<!-- 		<input type="text" name="currentPage"/> -->
+<%-- 	</form> --%>
+	
+	<script>
+		function ${pagingFunction}(page){
+	// 		location.href = "?currentPage=" + page;
+			searchForm.currentPage.value = page;
+			$searchForm.submit();
+		}
+	// 	searchBtn을 클릭하면 , searchUI 가 가진 모든 입력값을 searchForm 으로 복사하고 searchForm 을 전송
+		const $searchForm = $("#searchForm");
+		
+		$("#searchBtn").on("click", function(event){
+			let $searchUI = $(this).parents("#searchUI");
+			$searchUI.find(":input[name]").each(function(idx, ipt){
+				let name = this.name;
+				let value = $(this).val();
+				searchForm[name].value = value;
+			});
+			
+			$searchForm.submit();
+		});
+	</script>
 </table>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

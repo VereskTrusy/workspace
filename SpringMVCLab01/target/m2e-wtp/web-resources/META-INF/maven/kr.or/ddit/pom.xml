@@ -156,7 +156,7 @@
       </dependency>
       <dependency>
          <groupId>com.fasterxml.jackson.datatype</groupId>
-         <artifactId>jackson-datatype-jsr310</artifactId>
+         <artifactId>jackson-datatype-jsr310</artifactId><!-- 타임api -->
          <version>${com.fasterxml.jackson-version}</version>
       </dependency>
       <!-- XML 마샬링 지원용 -->

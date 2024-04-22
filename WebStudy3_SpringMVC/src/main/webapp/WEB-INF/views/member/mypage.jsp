@@ -18,6 +18,13 @@
 		</td>
 	</tr>
 	<tr>
+		<th>프로필 이미지</th>
+		<td>
+			${memImg}
+			<img src="data:image/*;base64, ${member.memImgBase64}" />
+		</td>
+	</tr>
+	<tr>
 		<th>회원명</th>
 		<td><input type="text" name="memName"
 			value="${member.memName}" class="form-control" /><span

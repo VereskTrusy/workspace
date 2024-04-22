@@ -4,6 +4,7 @@ import java.util.List;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.PkNotFoundException;
+import kr.or.ddit.paging.PaginationInfo;
 import kr.or.ddit.vo.ProdVO;
 
 public interface ProdService {
@@ -16,7 +17,7 @@ public interface ProdService {
 	public ServiceResult createProd(ProdVO prod);
 	
 	
-	public List<ProdVO> retriveProdList();
+	public List<ProdVO> retriveProdList(PaginationInfo paging);
 	
 	
 	public ProdVO retriveProd(String prodId) throws PkNotFoundException;

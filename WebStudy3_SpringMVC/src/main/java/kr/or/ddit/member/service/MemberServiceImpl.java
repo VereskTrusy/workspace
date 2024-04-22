@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.PkNotFoundException;
 import kr.or.ddit.login.BadCredentialException;
 import kr.or.ddit.login.service.AuthenticateService;
 import kr.or.ddit.member.dao.MemberDAO;
+import kr.or.ddit.paging.PaginationInfo;
 import kr.or.ddit.vo.MemberVO;
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +26,7 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private AuthenticateService authService;
 	
+	// 비밀번호 엔코딩
 	private void encryptMember(MemberVO member) {
 		String plain = member.getMemPass();
 		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -48,9 +49,10 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<MemberVO> retriveMemberList() {
-		List<MemberVO> memberList = dao.selectMemberList();
-		return memberList;
+	public List<MemberVO> retriveMemberList(PaginationInfo paging) {
+		int totalRecord = dao.selectTotalRecord(paging);
+		paging.setTotalRecord(totalRecord);
+		return dao.selectMemberList(paging);
 	}
 
 	@Override
