@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.sample.board.mapper.BoardMapper">
+	<insert id="insertBoard" parameterType="BoardVO">
+		<selectKey order="BEFORE" resultType="int"
+			keyProperty="boNo">
+			SELECT BOARD_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO BOARD
+		(
+		BO_NO
+		, BO_TITLE
+		, BO_WRITER
+		, BO_PASSWD
+		, BO_EMAIL
+		, BO_IP
+		, BO_CONTENT
+		)
+		VALUES
+		(
+		#{boNo,jdbcType=NUMERIC}
+		,#{boTitle,jdbcType=VARCHAR}
+		,#{boWriter,jdbcType=VARCHAR}
+		, #{boPasswd,jdbcType=VARCHAR}
+		, #{boEmail,jdbcType=VARCHAR}
+		, #{boIp,jdbcType=VARCHAR}
+		, #{boContent,jdbcType=CLOB}
+		)
+	</insert>
+	<resultMap type="BoardVO" id="boardMap" autoMapping="true">
+		<id property="boNo" column="BO_NO" />
+		<collection property="atchList" javaType="java.util.List" ofType="AttatchVO" autoMapping="true" />
+	</resultMap>
+	<sql id="boardSelectFrag">
+		BO_NO, BO_TITLE, BO_WRITER, BO_PASSWD,
+		BO_EMAIL, BO_IP, BO_CONTENT, BO_HIT,
+		BO_DATE
+	</sql>
+	<select id="selectBoard" parameterType="int"
+		resultMap="boardMap">
+		SELECT
+		<include refid="boardSelectFrag" />
+		,
+		<include
+			refid="kr.co.sample.board.mapper.AttatchMapper.atchSelectFrag" />
+		FROM BOARD LEFT OUTER JOIN ATTATCH ON (BOARD.BO_NO = ATCH_REF_KEY)
+		WHERE BOARD.BO_NO = #{boNo}
+	</select>
+	<update id="incrementHit" parameterType="int">
+		UPDATE BOARD
+		SET
+		BO_HIT = BO_HIT + 1
+		WHERE BO_NO = #{boNo}
+	</update>
+	<!-- 검색 조건 -->
+	<sql id="searchFrag">
+		<where>
+			<if
+				test="simpleCondition neq null and 
+@org.apache.commons.lang3.StringUtils@isNotBlank(simpleCondition.searchWord)">
+				<choose>
+					<when test="simpleCondition.searchType eq 'title'">
+						INSTR(BO_TITLE, #{simpleCondition.searchWord}) > 0
+					</when>
+					<when test="simpleCondition.searchType eq 'writer'">
+						INSTR(BO_WRITER, #{simpleCondition.searchWord}) > 0
+					</when>
+					<when test="simpleCondition.searchType eq 'content'">
+						INSTR(BO_CONTENT, #{simpleCondition.searchWord}) > 0
+					</when>
+					<otherwise>
+						INSTR(BO_TITLE, #{simpleCondition.searchWord}) > 0
+						OR INSTR(BO_WRITER, #{simpleCondition.searchWord}) > 0
+						OR INSTR(BO_CONTENT, #{simpleCondition.searchWord}) > 0
+					</otherwise>
+				</choose>
+			</if>
+		</where>
+	</sql>
+	<select id="selectBoardCount" resultType="int"
+		parameterType="PaginationInfo">
+		SELECT COUNT(BO_NO)
+		FROM BOARD
+		<include refid="searchFrag" />
+	</select>
+	<select id="selectBoardList" resultType="BoardVO"
+		parameterType="PaginationInfo">
+		SELECT B.*
+		FROM (
+		SELECT ROWNUM RNUM, A.*
+		FROM (
+		SELECT
+		<include refid="boardSelectFrag" />
+		, (SELECT COUNT(*) FROM ATTATCH WHERE ATCH_REF_KEY = BOARD.BO_NO)
+		ATTATCHSIZE
+		FROM BOARD
+		<include refid="searchFrag" />
+		ORDER BY BO_NO DESC
+		) A
+		) B
+		<![CDATA[
+		WHERE RNUM >= #{firstRecord} AND RNUM <= #{lastRecord}
+		]]>
+	</select>
+	<update id="updateBoard" parameterType="BoardVO">
+		UPDATE BOARD
+		SET
+		BO_EMAIL =#{boEmail,jdbcType=VARCHAR}
+		, BO_CONTENT =#{boContent,jdbcType=VARCHAR}
+		WHERE BO_NO =#{boNo}
+	</update>
+	<delete id="deleteBoard" parameterType="int">
+		DELETE
+		FROM BOARD
+		WHERE BO_NO = #{boNo}
+	</delete>
+</mapper>

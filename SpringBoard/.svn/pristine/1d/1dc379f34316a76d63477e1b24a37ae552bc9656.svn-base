@@ -1,0 +1,5 @@
+package kr.co.sample.board.exception;
+
+public class WriterAuthenticationException extends BoardException {
+
+}

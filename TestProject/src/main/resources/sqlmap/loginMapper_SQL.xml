@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.LoginMapper">
+
+	<resultMap type="memberVO" id="memberMap">
+		<id property="memNo" column="mem_no"/>
+		<result property="memId" column="mem_id"/>
+		<result property="memPw" column="mem_pw"/>
+		<result property="memName" column="mem_name"/>
+		<result property="memNickname" column="mem_nickname"/>
+		<result property="memRegdate" column="mem_regdate"/>
+		<collection property="authList" resultMap="memberAuthMap"/>
+	</resultMap>
+	
+	<resultMap type="memberAuthVO" id="memberAuthMap">
+		<result property="memNo" column="mem_no"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+
+	<select id="loginCheck" parameterType="memberVO" resultType="memberVO">
+		select
+			mem_no, mem_id, mem_pw, mem_name, mem_nickname, mem_regdate
+		from member
+		where mem_id = #{memId}
+		and mem_pw = #{memPw}		
+	</select>
+	
+	<insert id="signup" parameterType="memberVO" useGeneratedKeys="true">
+		<selectKey keyProperty="memNo" resultType="int" order="BEFORE">
+			select seq_member.nextval from dual
+		</selectKey>
+		insert into member(
+			mem_no, mem_id, mem_pw, mem_name, mem_nickname, mem_regdate, enabled
+		) values (
+			#{memNo}, #{memId}, #{memPw}, #{memName}, #{memNickname}, sysdate, '1'
+		)
+	</insert>
+	
+	<insert id="addAuth" parameterType="memberVO">
+		insert into member_auth(
+			mem_no, auth
+		)values(
+			#{memNo}, 'ROLE_MEMBER'
+		)
+	</insert>
+	
+	<select id="idCheck" parameterType="string" resultType="memberVO">
+		select 
+			mem_no, mem_id, mem_pw, mem_name, mem_nickname, mem_regdate
+		from member
+		where mem_id = #{memId}
+	</select>
+	
+	<select id="nickNameCheck" parameterType="string" resultType="memberVO">
+		select 
+			mem_no, mem_id, mem_pw, mem_name, mem_nickname, mem_regdate
+		from member
+		where mem_nickname = #{memNickname}
+	</select>
+	
+	<select id="readByUserId" parameterType="string" resultMap="memberMap">
+		select
+			m.mem_no, mem_id, mem_pw, mem_name, mem_nickname, mem_regdate,
+			auth
+		from member m left outer join member_auth ma on(m.mem_no = ma.mem_no)
+		where mem_id = #{memId}
+	</select>
+	
+</mapper>

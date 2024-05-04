@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.sample.board.mapper.AttatchMapper">
+	<insert id="insertAttatchList">
+		<selectKey order="BEFORE" resultType="int" keyProperty="genFstKey">
+			SELECT NVL(MAX(ATCH_NO), 0)+1 FROM ATTATCH
+		</selectKey>
+		INSERT ALL
+		<foreach collection="board.atchList" item="atch" index="idx">
+			INTO ATTATCH (
+			ATCH_NO
+			, ATCH_REF_KEY
+			, ATCH_SAVENAME
+			, ATCH_FILENAME
+			, ATCH_MIME
+			, ATCH_FILESIZE
+			, ATCH_FANCYSIZE
+			)VALUES(
+			#{genFstKey}+#{idx}
+			, #{board.boNo,jdbcType=NUMERIC}
+			, #{atch.atchSavename,jdbcType=VARCHAR}
+			, #{atch.atchFilename,jdbcType=VARCHAR}
+			, #{atch.atchMime,jdbcType=VARCHAR}
+			, #{atch.atchFilesize,jdbcType=NUMERIC}
+			, #{atch.atchFancysize,jdbcType=VARCHAR} )
+		</foreach>
+		SELECT * FROM DUAL
+	</insert>
+	<sql id="atchSelectFrag">
+		ATCH_NO, ATCH_REF_KEY, ATCH_SAVENAME,
+		ATCH_FILENAME, ATCH_FILESIZE, ATCH_MIME
+		ATCH_FANCYSIZE, ATCH_DOWNCOUNT, ATCH_DATE
+	</sql>
+	<select id="selectAttatch" parameterType="int" resultType="AttatchVO">
+		SELECT
+		<include refid="atchSelectFrag" />
+		FROM ATTATCH
+		WHERE ATCH_NO = #{atchNo}
+	</select>
+	<update id="incrementDowncount" parameterType="int">
+		UPDATE ATTATCH
+		SET
+		ATCH_DOWNCOUNT = ATCH_DOWNCOUNT+1
+		WHERE ATCH_NO = #{atchNo}
+	</update>
+	<delete id="deleteAttatch" parameterType="int">
+		DELETE
+		FROM ATTATCH
+		WHERE ATCH_NO = #{atchNo}
+	</delete>
+	<delete id="deleteAttatches" parameterType="int">
+		DELETE FROM ATTATCH
+		WHERE ATCH_REF_KEY = #{boNo}
+	</delete>
+</mapper>
