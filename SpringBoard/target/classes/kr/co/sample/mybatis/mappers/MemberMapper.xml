@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.sample.member.mapper.MemberMapper">
+	<select id="selectMemberForAuth" resultType="MemberVO" parameterType="string">
+		SELECT MEM_ID, MEM_PASS, MEM_NAME
+			, MEM_HP, MEM_MAIL
+			, MEM_DELETE
+			, MEM_ROLE
+		FROM MEMBER
+		WHERE MEM_ID = #{memId} AND MEM_DELETE IS NULL
+	</select>
+	<select id="selectMember" resultType="MemberVO" parameterType="string">
+		SELECT  *                                      
+		FROM MEMBER                   
+		WHERE MEM_ID = #{memId}                      
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -19,7 +19,7 @@ class AttatchMapperTest extends AbstractRootContextTest {
 	@Test
 	void testInsertAttatchList() {
 		BoardVO board = new BoardVO();
-		board.setBoNo(320);
+		board.setBoNo(340);
 		MockMultipartFile mockFile1 = new MockMultipartFile("uploadFile", "원본파일명1", "image/jpeg",
 				new byte[] { 1, 2, 3 });
 		MockMultipartFile mockFile2 = new MockMultipartFile("uploadFile", "원본파일명2", "image/jpeg",

@@ -7,9 +7,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
-	<!-- <util:properties id="dbInfo" location="classpath:kr/co/sample/db/DbInfo.properties" /> -->
-	
-	
+<!-- 	<util:properties id="dbInfo" location="classpath:kr/co/sample/db/DbInfo.properties" /> -->
 	
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig" 
 		p:driverClassName="#{dbInfo.driverClassName}"

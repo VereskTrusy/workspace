@@ -80,7 +80,7 @@ class BoardServiceTest extends AbstractRootContextTest{
 	@Test
 	void testDeleteBoard() {
 		BoardVO board = new BoardVO();
-		board.setBoNo(320);
+		board.setBoNo(300);
 		board.setBoPasswd("java");
 		assertDoesNotThrow(()->service.deleteBoard(board));
 		board.setBoPasswd("invalid");

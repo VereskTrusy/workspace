@@ -30,8 +30,7 @@ public class BoardUpdateController {
 	@GetMapping("auth")
 	public String authenticateForm() {
 		return "board/authForm";
-	}
-	
+	}	
 	@PostMapping("auth")
 	public String authenticateWriter(
 		BoardVO inputBoard
@@ -56,7 +55,6 @@ public class BoardUpdateController {
 			return "redirect:/board/{boNo}/auth";
 		}
 	}	
-	
 	@PutMapping("edit")
 	public String update(
 		@Valid @ModelAttribute(MODELNAME) BoardVO targetBoard

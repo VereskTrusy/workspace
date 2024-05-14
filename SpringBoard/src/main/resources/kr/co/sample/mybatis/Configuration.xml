@@ -7,6 +7,7 @@
 	<typeAliases>
 		<typeAlias type="kr.co.sample.paging.PaginationInfo" alias="PaginationInfo"/>
 		<package name="kr.co.sample.board.vo" />
+		<package name="kr.co.sample.member.vo" />
 	</typeAliases>
 </configuration>
 

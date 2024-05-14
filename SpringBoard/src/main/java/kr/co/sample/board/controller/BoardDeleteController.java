@@ -26,7 +26,6 @@ public class BoardDeleteController {
 		service.deleteAttatch(atchNo);
 		return "SUCCESS";
 	}
-	
 	@DeleteMapping
 	public String delete(BoardVO board, RedirectAttributes redirectAttributes) {
 		try {

@@ -3,7 +3,7 @@
 #url=jdbc:oracle:thin:@localhost:1521/xe
 driverClassName=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
 url=jdbc:log4jdbc:oracle:thin:@localhost:1521/xe
-user=JMW87
+user=sem
 password=ENC(qTEGk1c9CnYG3acJhFbVCA==)
 
 maxActive=5

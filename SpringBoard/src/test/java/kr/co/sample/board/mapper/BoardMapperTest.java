@@ -30,7 +30,7 @@ class BoardMapperTest extends AbstractRootContextTest {
 
 	@Test
 	void testSelectBoard() {
-		assertDoesNotThrow(() -> boardMapper.selectBoard(320));
+		assertDoesNotThrow(() -> boardMapper.selectBoard(300));
 	}
 
 	@Test
@@ -70,6 +70,6 @@ class BoardMapperTest extends AbstractRootContextTest {
 
 	@Test
 	void testDeleteBoard() {
-		assertThrows(DataAccessException.class, () -> boardMapper.deleteBoard(320));
+		assertThrows(DataAccessException.class, () -> boardMapper.deleteBoard(340));
 	}
 }
