@@ -39,51 +39,51 @@
 	
 	<!-- 멤버 목록 -->
 	<select id="selectMemberList" resultType="MemberVO" parameterType="kr.or.ddit.paging.PaginationInfo"><!-- statementType="CALLABLE" -->
-		WITH ORDERED AS (
-			SELECT 
-				MEM_ID memId 
-				, MEM_NAME 
-				, MEM_ADD1 
-				, MEM_ADD2 
-				, MEM_HP 
-				, MEM_MAIL 
-				, MEM_MILEAGE 
-			FROM MEMBER
-			<include refid="searchFrag"></include>
-			ORDER BY MEMBER.ROWID DESC
-		)
-		, RNUMORDERED AS (
-			SELECT 
-				ROWNUM RNUM
-				, ORDERED.*
-			FROM ORDERED
-		)
-		SELECT *
-		FORM RNUMORDERED
-		WHERE RNUM BETWEEN #{firstRecord} AND #{lastRecord}
+<!-- 		WITH ORDERED AS ( -->
+<!-- 			SELECT  -->
+<!-- 				MEM_ID memId  -->
+<!-- 				, MEM_NAME  -->
+<!-- 				, MEM_ADD1  -->
+<!-- 				, MEM_ADD2  -->
+<!-- 				, MEM_HP  -->
+<!-- 				, MEM_MAIL  -->
+<!-- 				, MEM_MILEAGE  -->
+<!-- 			FROM MEMBER -->
+<!-- 			<include refid="searchFrag"></include> -->
+<!-- 			ORDER BY MEMBER.ROWID DESC -->
+<!-- 		) -->
+<!-- 		, RNUMORDERED AS ( -->
+<!-- 			SELECT  -->
+<!-- 				ROWNUM RNUM -->
+<!-- 				, ORDERED.* -->
+<!-- 			FROM ORDERED -->
+<!-- 		) -->
+<!-- 		SELECT * -->
+<!-- 		FORM RNUMORDERED -->
+<!-- 		WHERE RNUM BETWEEN #{firstRecord} AND #{lastRecord} -->
 		
 	
 	
-<!-- 		SELECT B.* -->
-<!-- 		FROM ( -->
-<!-- 			SELECT ROWNUM RNUM, A.* -->
-<!-- 			FROM ( -->
-<!-- 				SELECT  -->
-<!-- 					MEM_ID memId  -->
-<!-- 					, MEM_NAME  -->
-<!-- 					, MEM_ADD1  -->
-<!-- 					, MEM_ADD2  -->
-<!-- 					, MEM_HP  -->
-<!-- 					, MEM_MAIL  -->
-<!-- 					, MEM_MILEAGE  -->
-<!-- 				FROM MEMBER -->
-<!-- 				<include refid="searchFrag"></include> -->
-<!-- 				ORDER BY MEMBER.ROWID DESC -->
-<!-- 			) A -->
-<!-- 		) B -->
-<!-- 		<![CDATA[ -->
-<!-- 		WHERE RNUM >= #{firstRecord} AND RNUM <= #{lastRecord} -->
-<!-- 		]]>  -->
+		SELECT B.*
+		FROM (
+			SELECT ROWNUM RNUM, A.*
+			FROM (
+				SELECT 
+					  MEM_ID
+					, MEM_NAME 
+					, MEM_ADD1 
+					, MEM_ADD2 
+					, MEM_HP 
+					, MEM_MAIL 
+					, MEM_MILEAGE 
+				FROM MEMBER
+				<include refid="searchFrag"></include>
+				ORDER BY MEMBER.ROWID DESC
+			) A
+		) B
+		<![CDATA[
+ 		WHERE RNUM >= #{firstRecord} AND RNUM <= #{lastRecord}
+ 		]]>
 	</select>
 	
 	

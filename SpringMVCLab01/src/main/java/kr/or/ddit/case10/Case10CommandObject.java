@@ -19,6 +19,7 @@ public class Case10CommandObject implements Serializable{
 	@ToString.Exclude
 	@JsonIgnore
 	private transient MultipartFile[] uploadFile;
+	private List<FileUploadVO> fileList;
 	
 	public void setUploadFile(MultipartFile[] uploadFile) {
 		this.uploadFile = uploadFile;
@@ -31,5 +32,4 @@ public class Case10CommandObject implements Serializable{
 			fileList.add(new FileUploadVO(null));
 		}
 	}
-	List<FileUploadVO> fileList;
 }

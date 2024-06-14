@@ -10,26 +10,29 @@
 	<bean id="passwordEncoder" class="org.springframework.security.crypto.factory.PasswordEncoderFactories" factory-method="createDelegatingPasswordEncoder"></bean>
 	<bean id="testEncoder" class="org.springframework.security.crypto.password.NoOpPasswordEncoder"></bean>
 	<security:authentication-manager>
-		<security:authentication-provider>
-			<security:password-encoder ref="testEncoder"/>
-			<security:user-service>
-				<security:user name="a001" password="java" authorities="ROLE_USER"/>
-				<security:user name="c001" password="java" authorities="ROLE_ADMIN,ROLE_SUPER"/>
-			</security:user-service>
+		<security:authentication-provider user-service-ref="customUserDetailsService">
+			<security:password-encoder ref="passwordEncoder"/>
+<!-- 			<security:user-service> -->
+<!-- 				<security:user name="a001" password="java" authorities="ROLE_USER"/> -->
+<!-- 				<security:user name="c001" password="java" authorities="ROLE_ADMIN,ROLE_SUPER"/> -->
+<!-- 			</security:user-service> -->
 		</security:authentication-provider>
 	</security:authentication-manager>
 	<security:http>
-		<security:form-login/>
+		<security:form-login />
 		<security:logout/>
-		<security:intercept-url pattern="/board/new" access="hasRole('SUPER')"/>
-		<security:intercept-url pattern="/board/**" method="GET" access="permitAll()"/>
-		<security:intercept-url pattern="/board/**" method="PUT" access="hasAuthority('ROLE_ADMIN')"/>
-		<security:intercept-url pattern="/board/**" method="DELETE" access="hasAuthority('ROLE_ADMIN')"/>
+<!-- 		<security:intercept-url pattern="/board/new" access="hasRole('ADMIN')"/> -->
+<!-- 		<security:intercept-url pattern="/board/**" method="GET" access="permitAll()"/> -->
+<!-- 		<security:intercept-url pattern="/board/**" method="PUT" access="hasAuthority('ROLE_ADMIN')"/> -->
+<!-- 		<security:intercept-url pattern="/board/**" method="DELETE" access="hasAuthority('ROLE_ADMIN')"/> -->
 		<security:intercept-url pattern="/login" access="isAnonymous()"/>
 		<security:intercept-url pattern="/logout" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/**" access="permitAll()"/>
 		
 	</security:http>
+	<security:global-method-security 
+		pre-post-annotations="enabled"
+	/>
 </beans>
 
 

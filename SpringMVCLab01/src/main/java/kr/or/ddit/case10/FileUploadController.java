@@ -42,12 +42,16 @@ public class FileUploadController {
 		return "case10/fileForm3";
 	}
 	
+	/**
+	 * 
+	 * @param co
+	 * @param errors
+	 * @param redirectAttributes
+	 * @return
+	 * @throws IOException
+	 */
 	@PostMapping("upload4")
-	public String uploadProcess4(
-			  @Valid @ModelAttribute("co") Case10CommandObject co
-			, BindingResult errors
-			, RedirectAttributes redirectAttributes
-	) throws IOException {	 	
+	public String uploadProcess4(@Valid @ModelAttribute("co") Case10CommandObject co, BindingResult errors, RedirectAttributes redirectAttributes) throws IOException {	 	
 		List<FileUploadVO> fileList = co.getFileList();
 		redirectAttributes.addFlashAttribute("co", co);
 		for(FileUploadVO fileVO: fileList) {
@@ -143,7 +147,7 @@ public class FileUploadController {
 	
 	@PostMapping("upload1")
 	public String uploadProcess1(
-			@RequestParam String uploader
+			  @RequestParam String uploader
 			, @RequestParam int count
 			, MultipartHttpServletRequest req
 			, RedirectAttributes redirectAttributes
